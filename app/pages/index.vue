@@ -8,8 +8,6 @@
 <script>
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import MessageModel from '../models/Message'
-import { auth } from '../plugins/firebase'
 import Header from '../layouts/Header'
 import Main from '../components/Main'
 

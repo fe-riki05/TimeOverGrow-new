@@ -86,7 +86,7 @@ export default {
         await vuechartData.push(chartdbtime)
       }
       // グラフにセットする
-      ;(this.BarChartData = {
+      this.BarChartData = {
         labels: ['学習時間'],
         datasets: [
           {
@@ -97,7 +97,7 @@ export default {
             // borderWidth: [1],
           },
         ],
-      }),
+      }(
         (this.BarChartOptions = {
           responsive: true,
           maintainAspectRatio: false, // グラフの縦横比を固定するか
@@ -132,11 +132,12 @@ export default {
           tooltips: {
             callbacks: {
               label(tooltipItem, data) {
-              return tooltipItem.yLabel + ' h'
-            },
+                return tooltipItem.yLabel + ' h'
+              },
             },
           },
         })
+      )
     },
     async fetchMessages() {
       let messages = []

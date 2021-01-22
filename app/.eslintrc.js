@@ -1,10 +1,12 @@
 module.exports = {
   root: true,
   env: {
-    browser: true,
     node: true,
+    es6: true,
   },
+  parser: 'vue-eslint-parser',
   parserOptions: {
+    sourceType: 'module',
     parser: 'babel-eslint',
   },
   extends: [
@@ -17,8 +19,6 @@ module.exports = {
   plugins: ['prettier'],
   // add your custom rules here
   rules: {
-    // jsのインデントは２
-    indent: [2, 2],
     // 不要なカッコは消す
     'no-extra-parens': 1,
     // 無駄なスペースは削除

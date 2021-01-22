@@ -56,7 +56,7 @@ import { auth } from '../plugins/firebase.js'
 
 export default {
   methods: {
-    googleLogin(err) { // eslint-disable-line
+    googleLogin(error) { // eslint-disable-line
       this.$store
         .dispatch('signInWithGoogle')
         .then(() => {
@@ -64,7 +64,7 @@ export default {
             name: 'index',
           })
         })
-        .catch((err) => {
+        .catch((error) => {
           this.$parent.socialLoginErrorMsg =
             '現在Googleでのログインは使用できません。後ほどお試しください。'
         })
@@ -77,7 +77,7 @@ export default {
           this.$router.push({
             name: 'index',
           })
-          console.log(e)
+          // console.log(e)
         })
         .catch((error) => {
           // エラーメッセージ

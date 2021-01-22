@@ -109,14 +109,14 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Vuetify from 'vuetify'
+// import Vue from 'vue'
+// import Vuetify from 'vuetify'
 import zxcvbn from 'zxcvbn'
-import { mapActions, mapState, mapGetters } from 'vuex'
+// import { mapActions, mapState, mapGetters } from 'vuex'
 import SocialLogin from '../components/SocialLogin.vue'
-import MessageModel from '../models/Message'
-import { auth } from '../plugins/firebase'
-import Header from '../layouts/Header'
+// import MessageModel from '../models/Message'
+// import { auth } from '../plugins/firebase'
+// import Header from '../layouts/Header'
 
 export default {
   components: {
@@ -170,31 +170,31 @@ export default {
     score() {
       const result = zxcvbn(this.register_password)
       switch (result.score) {
-      case 4:
-        return {
-          color: 'green',
-          value: 100,
-        }
-      case 3:
-        return {
-          color: 'light-green lighten-1',
-          value: 75,
-        }
-      case 2:
-        return {
-          color: 'amber accent-2',
-          value: 50,
-        }
-      case 1:
-        return {
-          color: 'deep-orange lighten-1',
-          value: 25,
-        }
-      default:
-        return {
-          color: 'red darken-3',
-          value: 0,
-        }
+        case 4:
+          return {
+            color: 'green',
+            value: 100,
+          }
+        case 3:
+          return {
+            color: 'light-green lighten-1',
+            value: 75,
+          }
+        case 2:
+          return {
+            color: 'amber accent-2',
+            value: 50,
+          }
+        case 1:
+          return {
+            color: 'deep-orange lighten-1',
+            value: 25,
+          }
+        default:
+          return {
+            color: 'red darken-3',
+            value: 0,
+          }
       }
     },
   },

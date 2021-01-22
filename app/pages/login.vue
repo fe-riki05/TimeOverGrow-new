@@ -87,9 +87,9 @@
 </template>
 
 <script>
-import axios from '../axios-for-auth'
+// import axios from '../axios-for-auth'
 import SocialLogin from '../components/SocialLogin.vue'
-import { auth } from '../plugins/firebase'
+// import { auth } from '../plugins/firebase'
 
 export default {
   components: {
@@ -130,11 +130,11 @@ export default {
           }
         })
     },
-    // login() {　//axiosでログイン用のインスタンスにアクセスするメソッドを定義
+    // login() { //axiosでログイン用のインスタンスにアクセスするメソッドを定義
     //   axios.post( //エンドポイントのURLがログイン用のものを使う
     //     '/accounts:signUp?key=AIzaSyDmGnMT66bkyCcGrTYNOWTczIATGwTydmk',
     //     {
-    //       email: this.login_email,　//送る情報は新規登録と同じ
+    //       email: this.login_email, //送る情報は新規登録と同じ
     //       password: this.login_password,
     //       returnSecureToken: true
     //     }

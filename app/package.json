@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@mdi/js": "^5.9.55",
     "@nuxtjs/axios": "^5.12.5",
     "core-js": "^3.8.2",
     "nuxt": "^2.14.12"
