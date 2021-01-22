@@ -16,5 +16,12 @@ module.exports = {
   ],
   plugins: ['prettier'],
   // add your custom rules here
-  rules: {},
+  rules: {
+    // jsのインデントは２
+    indent: [2, 2],
+    // 不要なカッコは消す
+    'no-extra-parens': 1,
+    // 無駄なスペースは削除
+    'no-multi-spaces': 2,
+  },
 }
