@@ -9,16 +9,9 @@
           <Chart :chart-data="BarChartData" :options="BarChartOptions" />
         </v-col>
       </v-row>
-      <TextBox
-        :on-post="addMessage"
-        :on-get="addTime"
-        :on-chart="makeData"
-        class="container"
-      />
+      <TextBox :on-post="addMessage" :on-get="addTime" :on-chart="makeData" class="container" />
       <Spinner v-if="!initialLoaded" class="container" />
-      <p v-else-if="initialLoaded && messages.length === 0" class="no-messages">
-        毎日の積み上げ0件
-      </p>
+      <p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
       <MessageList :messages="reversedMessages" class="container" />
     </client-only>
   </div>
@@ -38,7 +31,7 @@ export default {
     Chart,
     TextBox,
     Spinner,
-    MessageList,
+    MessageList
   },
   data() {
     return {
@@ -50,13 +43,13 @@ export default {
       BarChartData: {},
       options: {},
       times: 0,
-      initialLoaded: false,
+      initialLoaded: false
     }
   },
   computed: {
     reversedMessages() {
       return this.messages.slice().reverse()
-    },
+    }
   },
   async mounted() {
     await this.makeData()
@@ -93,10 +86,10 @@ export default {
             label: ['学習時間'],
             data: vuechartData,
             backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-            borderColor: ['rgba(54, 162, 235, 1)'],
+            borderColor: ['rgba(54, 162, 235, 1)']
             // borderWidth: [1],
-          },
-        ],
+          }
+        ]
       }(
         (this.BarChartOptions = {
           responsive: true,
@@ -109,9 +102,9 @@ export default {
                 // ラベルについて
                 scaleLabel: {
                   display: true,
-                  labelString: '',
-                },
-              },
+                  labelString: ''
+                }
+              }
             ],
             // y軸に関して
             yAxes: [
@@ -123,19 +116,19 @@ export default {
                   stepSize: 100, // 目盛りの間隔
                   callback(label, index, labels) {
                     return label + ' h'
-                  },
-                },
-              },
-            ],
+                  }
+                }
+              }
+            ]
           },
           // hoverした時に出てくる表示
           tooltips: {
             callbacks: {
               label(tooltipItem, data) {
                 return tooltipItem.yLabel + ' h'
-              },
-            },
-          },
+              }
+            }
+          }
         })
       )
     },
@@ -171,8 +164,8 @@ export default {
       }
 
       return vuechartData
-    },
-  },
+    }
+  }
 }
 </script>
 

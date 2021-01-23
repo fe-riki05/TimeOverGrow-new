@@ -2,12 +2,7 @@
   <div class="message-list">
     <client-only>
       <template v-for="(message, index) in messages">
-        <Message
-          :key="index"
-          :time="message.time"
-          :body="message.body"
-          :date="message.date"
-        />
+        <Message :key="index" :time="message.time" :body="message.body" :date="message.date" />
       </template>
     </client-only>
   </div>
@@ -18,14 +13,14 @@ import Message from './Message'
 
 export default {
   components: {
-    Message,
+    Message
   },
   props: {
     messages: {
       type: Array,
       required: true,
       validator(messages) {
-        return messages.every((message) => {
+        return messages.every(message => {
           if (typeof message.time !== 'number') {
             return false
           }
@@ -38,8 +33,8 @@ export default {
 
           return true
         })
-      },
-    },
-  },
+      }
+    }
+  }
 }
 </script>

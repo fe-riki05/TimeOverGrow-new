@@ -7,10 +7,7 @@
       </v-app-bar>
       <v-navigation-drawer v-model="drawer" absolute temporary>
         <v-list nav dense>
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-grey--text text--accent-4"
-          >
+          <v-list-item-group v-model="group" active-class="deep-grey--text text--accent-4">
             <v-list-item color="grey darken-3" @click="signOut">
               <v-list-item-icon>
                 <v-icon>mdi-arrow-left-bold</v-icon>
@@ -25,7 +22,7 @@
 </template>
 
 <script>
-import { mdiAccountPlus } from '@mdi/js'
+// import { mdiAccountPlus } from '@mdi/js'
 
 export default {
   name: 'TimeOverGrow',
@@ -33,7 +30,7 @@ export default {
     return {
       title: 'TimeOverGrow',
       drawer: false,
-      group: null,
+      group: null
     }
   },
   methods: {
@@ -42,14 +39,14 @@ export default {
         .dispatch('signOut')
         .then(() => {
           this.$router.push({
-            name: 'login',
+            name: 'login'
           })
         })
-        .catch((err) => {
-          alert(err.message)
+        .catch(err => {
+          console.error(err.message)
         })
-    },
-  },
+    }
+  }
 }
 </script>
 

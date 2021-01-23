@@ -7,7 +7,7 @@ Vue.use(Vuetify)
 
 describe('Component', () => {
   it('is a Vue instance', () => {
-    const wrapper = mount(Message);
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-});
+    const wrapper = mount(Message)
+    expect(wrapper.isVueInstance()).toBeTruthy()
+  })
+})

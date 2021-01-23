@@ -22,25 +22,25 @@ export default {
   props: {
     title: {
       type: String,
-      default: '今日の学習内容送信！！！',
+      default: '今日の学習内容送信！！！'
     },
     onClick: {
       type: Function,
-      required: true,
+      required: true
     },
     onGet: {
       type: Function,
-      required: true,
+      required: true
     },
     onChart: {
       type: Function,
-      required: true,
+      required: true
     },
     clickable: {
       type: Boolean,
-      default: true,
-    },
-  },
+      default: true
+    }
+  }
 }
 </script>
 

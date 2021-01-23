@@ -17,14 +17,14 @@ export default {
   props: {
     times: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      image_src: require('@/assets/Upgrade.png'),
+      image_src: require('@/assets/Upgrade.png')
     }
-  },
+  }
 }
 </script>
 

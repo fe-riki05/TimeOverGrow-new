@@ -5,10 +5,9 @@ import Button from '@/components/Button.vue'
 
 Vue.use(Vuetify)
 
-
 describe('Component', () => {
   it('is a Vue instance', () => {
-    const wrapper = mount(Button);
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-});
+    const wrapper = mount(Button)
+    expect(wrapper.isVueInstance()).toBeTruthy()
+  })
+})

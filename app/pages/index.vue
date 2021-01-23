@@ -15,7 +15,7 @@ Vue.use(Vuetify)
 export default {
   components: {
     Header,
-    Main,
-  },
+    Main
+  }
 }
 </script>

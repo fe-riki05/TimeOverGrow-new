@@ -19,6 +19,7 @@ module.exports = {
   plugins: ['prettier'],
   // add your custom rules here
   rules: {
+    'no-console': 'off',
     // 不要なカッコは消す
     'no-extra-parens': 1,
     // 無駄なスペースは削除

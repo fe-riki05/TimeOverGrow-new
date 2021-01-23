@@ -7,13 +7,13 @@ Vue.use(Vuex)
 export const strict = false
 
 export const state = () => ({
-  user: null,
+  user: null
 })
 
 export const mutations = {
   setUser(state, payload) {
     state.user = payload
-  },
+  }
 }
 
 export const actions = {
@@ -31,7 +31,7 @@ export const actions = {
 
   signOut() {
     return auth().signOut()
-  },
+  }
 }
 
 export const getters = {
@@ -40,5 +40,5 @@ export const getters = {
   },
   isAuthenticated(state) {
     return !!state.user
-  },
+  }
 }

@@ -2,17 +2,9 @@
   <v-row justify="center">
     <v-col cols="12" sm="10" md="10">
       <v-card>
-        <v-btn
-          block
-          class="color-google text-capitalize mb-2"
-          @click="googleLogin"
-        >
+        <v-btn block class="color-google text-capitalize mb-2" @click="googleLogin">
           <span class="color-google__icon v-icon notranslate v-icon--left">
-            <svg
-              enable-background="new 0 0 46 46"
-              viewBox="0 0 46 46"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg enable-background="new 0 0 46 46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
               <g transform="translate(14 14)">
                 <g clip-rule="evenodd" fill-rule="evenodd">
                   <path
@@ -41,9 +33,7 @@
       </v-card>
       <v-card>
         <v-btn block class="mb-2" @click="userLogin">
-          <v-icon class="notranslate v-icon--left theme--light"
-            >mdi-account</v-icon
-          >
+          <v-icon class="notranslate v-icon--left theme--light">mdi-account</v-icon>
           匿名アカウントでログイン
         </v-btn>
       </v-card>
@@ -56,37 +46,38 @@ import { auth } from '../plugins/firebase.js'
 
 export default {
   methods: {
-    googleLogin(error) { // eslint-disable-line
+    googleLogin(error) {
+      // eslint-disable-line
       this.$store
         .dispatch('signInWithGoogle')
         .then(() => {
           this.$router.push({
-            name: 'index',
+            name: 'index'
           })
         })
-        .catch((error) => {
-          this.$parent.socialLoginErrorMsg =
-            '現在Googleでのログインは使用できません。後ほどお試しください。'
+        .catch(error => {
+          console.error(error)
+          this.$parent.socialLoginErrorMsg = '現在Googleでのログインは使用できません。後ほどお試しください。'
         })
     },
     userLogin() {
       auth()
         .signInAnonymously()
-        .then((e) => {
+        .then(e => {
           // ログイン成功
           this.$router.push({
-            name: 'index',
+            name: 'index'
           })
           // console.log(e)
         })
-        .catch((error) => {
+        .catch(error => {
           // エラーメッセージ
           const errorCode = error.code
           const errorMessage = error.message
           console.log('エラーメッセージ', errorCode, errorMessage)
         })
-    },
-  },
+    }
+  }
 }
 </script>
 

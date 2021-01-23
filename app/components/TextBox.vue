@@ -40,27 +40,27 @@ import Button from './Button'
 
 export default {
   components: {
-    Button,
+    Button
   },
   props: {
     onPost: {
       type: Function,
-      required: true,
+      required: true
     },
     onGet: {
       type: Function,
-      required: true,
+      required: true
     },
     onChart: {
       type: Function,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       time: 0,
       body: '',
-      canPost: true,
+      canPost: true
     }
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
       try {
         const message = await MessageModel.save({
           time: Number(this.time),
-          body: this.body,
+          body: this.body
         })
         this.onPost(message)
         this.time = 0
@@ -105,8 +105,8 @@ export default {
       }
 
       return vuechartData[0]
-    },
-  },
+    }
+  }
 }
 </script>
 

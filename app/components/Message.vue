@@ -11,17 +11,17 @@ export default {
   props: {
     time: {
       type: Number,
-      required: true,
+      required: true
     },
     body: {
       type: String,
-      required: true,
+      required: true
     },
     date: {
       type: String,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 }
 </script>
 

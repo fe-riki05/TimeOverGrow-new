@@ -1,5 +1,5 @@
 {
-  "name": "TimeOverGrow",
+  "name": "timeovergrow",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -7,15 +7,19 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint:js": "eslint --fix './**/*.js' && prettier --write './**/*.js' ./test --fix",
     "lint": "yarn lint:js",
     "test": "jest"
   },
   "dependencies": {
     "@mdi/js": "^5.9.55",
     "@nuxtjs/axios": "^5.12.5",
+    "chart.js": "^2.9.4",
     "core-js": "^3.8.2",
-    "nuxt": "^2.14.12"
+    "firebase": "^8.2.4",
+    "nuxt": "^2.14.12",
+    "vue-chartjs": "^3.5.1",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",
