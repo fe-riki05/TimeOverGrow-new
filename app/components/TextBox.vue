@@ -103,7 +103,6 @@ export default {
       } catch (error) {
         alert(error.message)
       }
-
       return vuechartData[0]
     }
   }

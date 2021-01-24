@@ -31,15 +31,33 @@ export default {
   },
 
   // ここは削除しても良いかも
-  plugins: ['~/plugins/firebase.js', '~/plugins/firebase.auth.js'],
+  plugins: [
+    '~/plugins/firebase.js',
+    '~/plugins/firebase.auth.js',
+    {
+      src: '@/plugins/plugin',
+    },
+  ],
 
   components: true,
   buildModules: ['@nuxtjs/eslint-module'],
   build: {
     publicPath: '/assets/',
     buildDir: 'nuxt-dist',
+    extend(config, ctx) {
+      config.module.rules.push({
+        enforce: 'pre',
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        exclude: /(node_modules)/,
+        options: {
+          fix: true,
+        },
+      })
+    },
   },
   performance: {
     hints: false,
   },
+  ssr: false,
 }

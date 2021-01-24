@@ -102,6 +102,7 @@ export default {
             this.loginErrorMsg = 'メールアドレスまたはパスワードが間違っています。'
           }
         })
+      console.log(err)
     }
     // login() { //axiosでログイン用のインスタンスにアクセスするメソッドを定義
     //   axios.post( //エンドポイントのURLがログイン用のものを使う

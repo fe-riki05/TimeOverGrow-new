@@ -17,8 +17,9 @@ module.exports = {
     'plugin:nuxt/recommended',
   ],
   plugins: ['prettier'],
-  // add your custom rules here
   rules: {
+    // // jsのインデントは２
+    indent: [2, 2],
     'no-console': 'off',
     // 不要なカッコは消す
     'no-extra-parens': 1,
