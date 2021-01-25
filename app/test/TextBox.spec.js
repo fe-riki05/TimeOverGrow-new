@@ -6,8 +6,8 @@ import TextBox from '@/components/TextBox.vue'
 Vue.use(Vuetify)
 
 describe('Component', () => {
-  it('is a Vue instance', () => {
-    const wrapper = mount(TextBox)
-    expect(wrapper.isVueInstance()).toBeTruthy()
-  })
+	it('is a Vue instance', () => {
+		const wrapper = mount(TextBox)
+		expect(wrapper.isVueInstance()).toBeTruthy()
+	})
 })
