@@ -16,10 +16,10 @@ jobs:
           node-version: '14.15.x'
 
       - name: yarn install
-        run: yarn install
+        run: cd app && yarn install
 
       - name: Run jest test
-        run: yarn test
+        run: cd app && yarn test
 
   build:
     name: Build
@@ -30,10 +30,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install Dependencies
-        run: yarn install
+        run: cd app && yarn install
 
       - name: Build
-        run: yarn run build
+        run: cd app && yarn run build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
