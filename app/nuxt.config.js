@@ -53,7 +53,10 @@ export default {
 				options: {
 					fix: true
 				}
-			})
+      }),
+      config.node = {
+        fs: "empty" 
+      }
 		}
 	},
 	performance: {
