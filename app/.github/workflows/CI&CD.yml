@@ -16,10 +16,10 @@ jobs:
           node-version: '14.15.x'
 
       - name: yarn install
-        run: cd app && yarn install
+        run: yarn install
 
       - name: Run jest test
-        run: cd app && yarn test
+        run: yarn test
 
   build:
     name: Build
@@ -30,16 +30,16 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install Dependencies
-        run: cd app && yarn install
+        run: yarn install
 
       - name: Build
-        run: cd app && yarn run build
+        run: yarn run build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
           name: dist
-          path: dist
+          path: app/dist
 
   deploy:
     name: Deploy
@@ -54,7 +54,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: dist
-          path: dist
+          path: app/dist
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
