@@ -1,5 +1,3 @@
-/* eslint no-unused-expressions: "off" */
-
 import { mount } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
