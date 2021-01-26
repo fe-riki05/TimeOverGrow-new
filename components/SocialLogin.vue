@@ -47,7 +47,6 @@
 	export default {
 		methods: {
 			googleLogin(err) {
-				// eslint-disable-line
 				this.$store
 					.dispatch('signInWithGoogle')
 					.then(() => {

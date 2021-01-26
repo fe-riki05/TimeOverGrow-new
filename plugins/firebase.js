@@ -2,13 +2,13 @@ import firebase from 'firebase'
 // import firebaseAuth from './firebase.auth'
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyDmGnMT66bkyCcGrTYNOWTczIATGwTydmk',
-	authDomain: 'timeovergrow-3e1ca.firebaseapp.com',
-	projectId: 'timeovergrow-3e1ca',
-	storageBucket: 'timeovergrow-3e1ca.appspot.com',
-	messagingSenderId: '219011344413',
-	appId: '1:219011344413:web:bb9edbc8a3ca0c44ffbef4',
-	measurementId: 'G-5KC7H92YQP'
+	apiKey: "AIzaSyAEFHkdyYqCLfQZC_nXAnoNRFbR_kWsvVU",
+	authDomain: "timeovergrow-d76f5.firebaseapp.com",
+	projectId: "timeovergrow-d76f5",
+	storageBucket: "timeovergrow-d76f5.appspot.com",
+	messagingSenderId: "868668025407",
+	appId: "1:868668025407:web:3790913986172449dce68a",
+	measurementId: "G-9W2YX5YWTX"
 }
 
 if (!firebase.apps.length) {
