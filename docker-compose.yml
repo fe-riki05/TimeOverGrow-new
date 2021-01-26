@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./app
+      context: .
     command: yarn run dev
     volumes:
       - ':/app'

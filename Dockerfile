@@ -1,6 +1,6 @@
 FROM node:14.15.1-alpine
 
-ENV HOME=/app \
+ENV HOME=\
     LANG=C.UTF-8 \
     TZ=Asia/Tokyo \
     HOST=0.0.0.0
