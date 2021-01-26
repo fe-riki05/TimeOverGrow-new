@@ -6,6 +6,6 @@ services:
       context: ./app
     command: yarn run dev
     volumes:
-      - "./app:/app"
+      - ':/app'
     ports:
-      - "3000:3000"
+      - '3000:3000'
