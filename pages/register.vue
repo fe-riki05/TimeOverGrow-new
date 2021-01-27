@@ -81,15 +81,11 @@
 </template>
 
 <script>
-	// import Vue from 'vue'
-	// import Vuetify from 'vuetify'
 	import zxcvbn from 'zxcvbn'
-	// import { mapActions, mapState, mapGetters } from 'vuex'
 	import SocialLogin from '../components/SocialLogin.vue'
-	// import MessageModel from '../models/Message'
-	// import { auth } from '../plugins/firebase'
-	// import Header from '../layouts/Header'
+	import { auth } from '../plugins/firebase'
 
+	
 	export default {
 		components: {
 			SocialLogin
@@ -192,8 +188,10 @@
 								this.registerErrorMsg = 'エラーにより登録できませんでした。'
 							}
 						})
+					this.email = "";
+					this.password = "";
 				}
-			}
+			},
 		}
 	}
 </script>

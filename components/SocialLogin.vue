@@ -64,14 +64,11 @@
 				auth()
 					.signInAnonymously()
 					.then(e => {
-						// ログイン成功
 						this.$router.push({
 							name: 'index'
 						})
-						// console.log(e)
 					})
 					.catch(error => {
-						// エラーメッセージ
 						const errorCode = error.code
 						const errorMessage = error.message
 						console.error('エラーメッセージ', errorCode, errorMessage)

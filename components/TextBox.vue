@@ -110,9 +110,6 @@
 </script>
 
 <style scoped>
-	.textbox-container {
-		padding: 0 5vw;
-	}
 	.textbox-input {
 		margin: 1vw;
 		border: 1px solid rgb(161, 161, 161);
@@ -125,7 +122,7 @@
 		padding: 0;
 	}
 	.textbox-button {
-		margin-top: 10px;
+		margin: 10px 0px 10px 10px;
 		text-align: right;
 	}
 </style>
