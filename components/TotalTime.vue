@@ -31,13 +31,12 @@
 <style scoped>
 	.totaltime {
 		text-align: center;
-		padding: 1vw;
 	}
 	.times_text {
 		font-weight: bold;
 	}
 	.times {
 		font-weight: 900;
-		font-size: 3vw;
 	}
+
 </style>

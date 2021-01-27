@@ -104,36 +104,6 @@
 					})
 				console.log(err)
 			}
-			// login() { //axiosでログイン用のインスタンスにアクセスするメソッドを定義
-			//   axios.post( //エンドポイントのURLがログイン用のものを使う
-			//     '/accounts:signUp?key=AIzaSyDmGnMT66bkyCcGrTYNOWTczIATGwTydmk',
-			//     {
-			//       email: this.login_email, //送る情報は新規登録と同じ
-			//       password: this.login_password,
-			//       returnSecureToken: true
-			//     }
-			// 	)
-			// 	.then((response) => {
-			// 		this.login_email = ''
-			// 		this.login_password = ''
-			// 		this.$store.commit('updateIdToken', response.data.idToken) //追記
-			// 		this.$router.push({
-			// 			name: 'index'
-			// 		})
-			//     console.log(response); //返ってきたレスポンスをログに表示
-			// 	})
-			// 	.catch((err) => {
-			// 		if (err.code === 'auth/user-disabled') {
-			// 			this.loginErrorMsg =
-			// 				'このアカウントはロックされています。'
-			// 		} else {
-			// 			this.loginErrorMsg =
-			// 				'メールアドレスまたはパスワードが間違っています。'
-			// 		}
-			// 	});
-			//   this.email = "";
-			//   this.password = "";
-			// }
 		}
 	}
 </script>

@@ -22,8 +22,6 @@
 </template>
 
 <script>
-	// import { mdiAccountPlus } from '@mdi/js'
-
 	export default {
 		name: 'TimeOverGrow',
 		data() {

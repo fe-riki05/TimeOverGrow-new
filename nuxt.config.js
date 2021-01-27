@@ -12,7 +12,6 @@ export default {
 		],
 		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
 	},
-	// css: [],
 	module: {
 		rules: [
 			{
@@ -24,21 +23,14 @@ export default {
 				loader: 'vue-loader'
 			},
 			{
-				// ローダーの対象 // 拡張子 .js の場合
 				test: /\.js$/
 			}
 		]
 	},
-
-	// ここは削除しても良いかも
 	plugins: [
 		'~/plugins/firebase.js',
 		'~/plugins/firebase.auth.js',
-		{
-			src: '@/plugins/plugin'
-		}
 	],
-
 	components: true,
 	buildModules: ['@nuxtjs/eslint-module'],
 	build: {

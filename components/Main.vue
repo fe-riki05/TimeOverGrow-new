@@ -2,10 +2,10 @@
 	<div>
 		<client-only>
 			<v-row class="container d-flex justify-center">
-				<v-col cols="6" sm="6" md="5">
+				<v-col cols="12" sm="6" md="5" class="p-0">
 					<TotalTime :times="times" />
 				</v-col>
-				<v-col v-if="initialLoaded" cols="6" sm="6" md="7">
+				<v-col v-if="initialLoaded" cols="12" sm="6" md="7" class="p-0">
 					<Chart :chart-data="BarChartData" :options="BarChartOptions" />
 				</v-col>
 			</v-row>
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-/* eslint no-sequences: off */
 	import MessageModel from '../models/Message'
 	import TotalTime from './TotalTime'
 	import Chart from './Chart'
@@ -79,7 +78,6 @@
 				if (vuechartData.length === 0) {
 					await vuechartData.push(chartdbtime)
 				}
-				// グラフにセットする
 				this.BarChartData = {
 					labels: ['学習時間'],
 					datasets: [
@@ -88,33 +86,28 @@
 							data: vuechartData,
 							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
 							borderColor: ['rgba(54, 162, 235, 1)'],
-							// borderWidth: [1],
 						},
 					]
 				}
         this.BarChartOptions = {
           responsive: true,
-          maintainAspectRatio: false, // グラフの縦横比を固定するか
+          maintainAspectRatio: false,
           scales: {
-            // x軸に関して
             xAxes: [
               {
                 stacked: true,
-                // ラベルについて
                 scaleLabel: {
                   display: true,
                   labelString: '',
                 }
               }
             ],
-            // y軸に関して
             yAxes: [
               {
-                // 目盛りについて
                 ticks: {
-                  beginAtZero: true, // 0からスタートするか
+                  beginAtZero: true,
                   max: 1000,
-                  stepSize: 100, // 目盛りの間隔
+                  stepSize: 100,
                   callback(label, index, labels) {
                     return label + ' h'
                   }
@@ -122,7 +115,6 @@
               }
             ]
           },
-          // hoverした時に出てくる表示
           tooltips: {
             callbacks: {
               label(tooltipItem, data) {
