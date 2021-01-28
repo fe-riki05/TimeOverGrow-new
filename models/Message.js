@@ -2,7 +2,8 @@ import firebase from 'firebase'
 import { dbMessages } from '../plugins/firebase'
 
 class Message {
-	constructor({ time, body, date }) {
+	constructor({ id, time, body, date }) {
+		this.id = id
 		this.time = time
 		this.body = body
 		this.date = date
@@ -29,7 +30,7 @@ class Message {
 		const docRef = await dbMessages.add(postData)
 		const snapShot = await docRef.get()
 		const data = snapShot.data()
-		const model = this.create(data)
+		const model = this.create(docRef.id, data)
 
 		return model
 	}
@@ -42,12 +43,13 @@ class Message {
 		}
 
 		return collection.docs.map(doc => {
-			return this.create(doc.data())
+			return this.create(doc.id, doc.data())
 		})
 	}
 
-	static create(data) {
+	static create(id, data) {
 		return new Message({
+			id,
 			time: data.time,
 			body: data.body,
 			date: data.date.toDate().toLocaleString()
