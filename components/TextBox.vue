@@ -1,16 +1,16 @@
 <template>
 	<div class="textbox-container">
 		<client-only>
-			<input
-				v-model.trim="time"
-				class="textbox-input"
-				type="number"
-				max="24"
-				min="0.25"
-				step="0.25"
-				placeholder="3"
-			/>時間
-			<p>今日のアウトプット内容</p>
+				<input
+					v-model.trim="time"
+					class="textbox-input"
+					type="number"
+					max="24"
+					min="0.25"
+					step="0.25"
+					placeholder="3"
+				/>時間
+				<p>今日のアウトプット内容</p>
 			<v-textarea
 				v-model.trim="body"
 				class="textbox-area"
@@ -21,8 +21,8 @@
 				rows="1"
 				row-height="100"
 			></v-textarea>
-			<div class="textbox-button">
-				<Button
+			<div class="button">
+				<ButtonPost
 					title="今日の学習内容送信！！！"
 					:on-click="post"
 					:on-get="get"
@@ -36,13 +36,18 @@
 
 <script>
 	import MessageModel from '../models/Message'
-	import Button from './Button'
+	import ButtonPost from './ButtonPost'
+
 
 	export default {
 		components: {
-			Button
+			ButtonPost,
 		},
 		props: {
+			onDelete: {
+				type: Function,
+				required: true
+			},
 			onPost: {
 				type: Function,
 				required: true
@@ -64,6 +69,23 @@
 			}
 		},
 		methods: {
+			async delete() {
+				// this.canPost = false
+				// 	try {
+
+				// 	const message = await MessageModel.save({
+				// 		time: Number(this.time),
+				// 		body: this.body
+				// 	})
+				// 	this.onDelete(message)
+				// 	this.time = 0
+				// 	this.body = ''
+				// } catch (error) {
+				// 	console.error(error.message)
+				// }
+				// this.canPost = true
+			},
+
 			async post() {
 				this.canPost = false
 				try {
@@ -75,7 +97,7 @@
 					this.time = 0
 					this.body = ''
 				} catch (error) {
-					alert(error.message)
+					console.error(error.message)
 				}
 				this.canPost = true
 			},
@@ -86,7 +108,7 @@
 					times += await MessageModel.dbtime()
 					this.onGet(times)
 				} catch (error) {
-					alert(error.message)
+					console.error(error.message)
 				}
 
 				return times
@@ -101,7 +123,7 @@
 					}
 					this.onChart(vuechartData[0])
 				} catch (error) {
-					alert(error.message)
+					console.error(error.message)
 				}
 				return vuechartData[0]
 			}
@@ -114,6 +136,9 @@
 		margin: 1vw;
 		border: 1px solid rgb(161, 161, 161);
 	}
+	p {
+		font-weight: 900;
+	}
 	.textbox-area {
 		width: 100%;
 		resize: none;
@@ -121,7 +146,7 @@
 		border-radius: 5px;
 		padding: 0;
 	}
-	.textbox-button {
+	.button {
 		margin: 10px 0px 10px 10px;
 		text-align: right;
 	}

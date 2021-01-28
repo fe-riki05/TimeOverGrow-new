@@ -9,7 +9,7 @@
 					<Chart :chart-data="BarChartData" :options="BarChartOptions" />
 				</v-col>
 			</v-row>
-			<TextBox :on-post="addMessage" :on-get="addTime" :on-chart="makeData" class="container" />
+			<TextBox :on-delete="deleteMessage" :on-post="addMessage" :on-get="addTime" :on-chart="makeData" class="container" />
 			<Spinner v-if="!initialLoaded" class="container" />
 			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
 			<MessageList :messages="reversedMessages" class="container" />
@@ -66,6 +66,9 @@
 		},
 
 		methods: {
+			deleteMessage(message) {
+				this.messages.slice(message)
+			},
 			addMessage(message) {
 				this.messages.push(message)
 			},
