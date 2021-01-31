@@ -46,33 +46,28 @@
 
 	export default {
 		methods: {
-			googleLogin(err) {
-				this.$store
-					.dispatch('signInWithGoogle')
-					.then(() => {
+			googleLogin() {
+				this.$store.dispatch('signInWithGoogle')
+					try {
 						this.$router.push({
 							name: 'index'
 						})
-					})
-					.catch(err => {
+					} catch(err) {
 						console.error(err)
 						this.$parent.socialLoginErrorMsg = '現在Googleでのログインは使用できません。後ほどお試しください。'
-					})
-				console.log(err)
+					}
 			},
 			userLogin() {
-				auth()
-					.signInAnonymously()
-					.then(e => {
+				auth().signInAnonymously()
+					try {
 						this.$router.push({
 							name: 'index'
 						})
-					})
-					.catch(error => {
+					} catch(error) {
 						const errorCode = error.code
 						const errorMessage = error.message
 						console.error('エラーメッセージ', errorCode, errorMessage)
-					})
+					}
 			}
 		}
 	}

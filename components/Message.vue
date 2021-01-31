@@ -1,6 +1,5 @@
 <template>
 	<v-card class="message">
-		
 		<p class="message-text mb-0">{{ time }}時間</p>
 		<p class="message-text mb-0">{{ body }}</p>
 		<div class="message-date">{{ date }}</div>

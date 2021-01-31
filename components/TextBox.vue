@@ -1,16 +1,28 @@
 <template>
 	<div class="textbox-container">
 		<client-only>
-				<input
-					v-model.trim="time"
-					class="textbox-input"
-					type="number"
-					max="24"
-					min="0.25"
-					step="0.25"
-					placeholder="3"
-				/>時間
-				<p>今日のアウトプット内容</p>
+			<div class="d-flex justify-space-between">
+				<div>
+					<input
+						v-model.trim="time"
+						class="textbox-input"
+						type="number"
+						max="24"
+						min="0.25"
+						step="0.25"
+						placeholder="3"
+					/>時間
+					<p>今日のアウトプット内容</p>
+				</div>
+				<div>
+					<ButtonDelete
+					title="削除"
+					:on-delete="clear"
+					:on-chart="chart"
+					:clickable="canPost"
+					/>
+				</div>
+			</div>
 			<v-textarea
 				v-model.trim="body"
 				class="textbox-area"
@@ -37,11 +49,13 @@
 <script>
 	import MessageModel from '../models/Message'
 	import ButtonPost from './ButtonPost'
+	import ButtonDelete from './ButtonDelete'
 
 
 	export default {
 		components: {
 			ButtonPost,
+			ButtonDelete
 		},
 		props: {
 			onDelete: {
@@ -69,23 +83,16 @@
 			}
 		},
 		methods: {
-			async delete() {
-				// this.canPost = false
-				// 	try {
-
-				// 	const message = await MessageModel.save({
-				// 		time: Number(this.time),
-				// 		body: this.body
-				// 	})
-				// 	this.onDelete(message)
-				// 	this.time = 0
-				// 	this.body = ''
-				// } catch (error) {
-				// 	console.error(error.message)
-				// }
-				// this.canPost = true
+			async clear() {
+				this.canPost = false
+				try {
+					const message = await MessageModel.clear()
+					this.onDelete(message)
+				} catch (error) {
+					console.error(error.message)
+				}
+				this.canPost = true
 			},
-
 			async post() {
 				this.canPost = false
 				try {
@@ -97,11 +104,10 @@
 					this.time = 0
 					this.body = ''
 				} catch (error) {
-					console.error(error.message)
+					alert(error.message)
 				}
 				this.canPost = true
 			},
-
 			async get() {
 				let times = 0
 				try {
