@@ -11,9 +11,10 @@
 <script>
 	import Message from './Message'
 
+
 	export default {
 		components: {
-			Message
+			Message,
 		},
 		props: {
 			messages: {
@@ -33,7 +34,7 @@
 
 						return true
 					})
-				}
+				},
 			}
 		}
 	}

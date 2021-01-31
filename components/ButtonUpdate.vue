@@ -5,11 +5,13 @@
 		outlined
 		plain
 		raised
+		rounded
 		text
+		x-large
 		class="button"
 		:class="{ disabled: !clickable }"
 		:disabled="!clickable"
-		@click="onDelete(), onChart()"
+		@click="onClick(), onGet(), onChart()"
 	>
 		{{ title }}
 	</v-btn>
@@ -20,9 +22,13 @@
 		props: {
 			title: {
 				type: String,
-				default: '削除'
+				default: '今日の学習内容送信！！！'
 			},
-			onDelete: {
+			onClick: {
+				type: Function,
+				required: true
+			},
+			onGet: {
 				type: Function,
 				required: true
 			},
@@ -40,6 +46,6 @@
 
 <style scoped>
 	.disabled {
-    opacity: 0.3;
+		opacity: 0.3;
 	}
 </style>

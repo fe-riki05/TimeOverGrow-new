@@ -19,11 +19,13 @@
 
 <script>
 	import MessageModel from '../models/Message'
+	import { dbMessages } from '../plugins/firebase'
 	import TotalTime from './TotalTime'
 	import Chart from './Chart'
 	import TextBox from './TextBox'
 	import Spinner from './Spinner'
 	import MessageList from './MessageList'
+	
 
 	export default {
 		components: {
@@ -66,8 +68,28 @@
 		},
 
 		methods: {
-			deleteMessage(message) {
-				this.messages.slice(message)
+			async deleteMessage(message) {
+				if (message !== undefined) {
+					try {
+						await this.messages.pop(message)
+						await dbMessages.doc(message).delete()
+						this.times = await MessageModel.dbtime()
+
+						const vuechartData = await this.getChart()
+
+						console.log(this.times);
+						console.log(vuechartData[0]);
+						console.log(this.BarChartData.datasets[0].data[0]);
+
+						this.BarChartData.datasets[0].data[0] = await vuechartData[0]
+
+						console.log(this.BarChartData.datasets[0].data[0]);
+					} catch (error) {
+						console.error(error)
+					}
+				} else {
+					alert('削除する積み上げがありません。。。')
+				}
 			},
 			addMessage(message) {
 				this.messages.push(message)
@@ -132,7 +154,7 @@
 				try {
 					messages = await MessageModel.fetchMessages()
 				} catch (error) {
-					console.error(error.message)
+					alert(error.message)
 				}
 
 				return messages
@@ -142,7 +164,7 @@
 				try {
 					times += await MessageModel.dbtime()
 				} catch (error) {
-					console.error(error.message)
+					alert(error.message)
 				}
 
 				return times

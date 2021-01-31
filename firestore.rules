@@ -5,7 +5,7 @@ service cloud.firestore {
         allow read, write: if request.auth.uid == userId;
     }
     match /messages/{messageId} {
-        allow read: if request.auth.uid == resource.data.uid;
+        allow read, update, delete: if request.auth.uid == resource.data.uid;
         allow write: if request.auth.uid == request.resource.data.uid;
     }
   }
