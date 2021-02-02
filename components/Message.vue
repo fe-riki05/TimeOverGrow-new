@@ -1,6 +1,13 @@
 <template>
 	<v-card class="message">
 		<p class="message-text mb-0">{{ time }}時間</p>
+		<v-chip
+			color="#17204d"
+			text-color="yellow"
+		>
+			<v-icon left>mdi-label</v-icon>
+			{{ tag }}
+		</v-chip>
 		<p class="message-text mb-0">{{ body }}</p>
 		<div class="message-date">{{ date }}</div>
 	</v-card>
@@ -18,6 +25,10 @@
 				required: true
 			},
 			date: {
+				type: String,
+				required: true
+			},
+			tag: {
 				type: String,
 				required: true
 			}

@@ -2,8 +2,15 @@
 	<div class="header">
 		<v-card class="mx-auto overflow-hidden">
 			<v-app-bar color="primary" dark height="100">
-				<v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-				<v-toolbar-title>{{ title }}</v-toolbar-title>
+				<v-toolbar-title>
+					<v-icon>mdi-timer-sand</v-icon>
+					{{ title }}
+				</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<v-btn icon>
+        	<!-- <TagSearch /> -->
+      	</v-btn>
+				<v-app-bar-nav-icon class="float-right" @click="drawer = true"></v-app-bar-nav-icon>
 			</v-app-bar>
 			<v-navigation-drawer v-model="drawer" absolute temporary>
 				<v-list nav dense>
@@ -22,8 +29,13 @@
 </template>
 
 <script>
+// import TagSearch from '../components/TagSearch'
+
+
 	export default {
-		name: 'TimeOverGrow',
+		components: {
+			// TagSearch,
+		},
 		data() {
 			return {
 				title: 'TimeOverGrow',

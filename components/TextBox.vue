@@ -13,6 +13,18 @@
 						placeholder="3"
 					/>時間
 					<p>今日のアウトプット内容</p>
+					<!-- <input
+					  v-model.trim="select"
+            multiple
+            label="Tags"
+            append-icon
+            chips
+            deletable-chips
+            class="tag-input"
+            :search-input.sync="search"
+            @keyup.tab="updateTags"
+            @paste="updateTags"
+					></input> -->
 				</div>
 				<div>
 					<ButtonDelete
@@ -26,7 +38,7 @@
 			<v-textarea
 				v-model.trim="body"
 				class="textbox-area"
-				label="JavaScriptの非同期処理について学んだが、まだまだ理解不足なのでクイズアプリの実装を通して学んでいきたい。"
+				label="JavaScriptの非同期処理(async,await)について学びました。"
 				flat
 				auto-grow
 				outlined
@@ -79,10 +91,19 @@
 			return {
 				time: 0,
 				body: '',
-				canPost: true
+				canPost: true,
+				select: []
 			}
 		},
 		methods: {
+			// updateTags() {
+			// 	this.$nextTick(() => {
+			// 		this.select.push(...this.search.split(","));
+			// 		this.$nextTick(() => {
+			// 			this.search = "";
+			// 		});
+			// 	});
+      // },
 			async clear() {
 				this.canPost = false
 				try {
@@ -98,11 +119,13 @@
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
-						body: this.body
+						body: this.body,
+						tag: this.select
 					})
 					this.onPost(message)
 					this.time = 0
 					this.body = ''
+					this.select = ''
 				} catch (error) {
 					alert(error.message)
 				}

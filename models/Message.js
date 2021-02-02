@@ -2,14 +2,15 @@ import firebase from 'firebase'
 import { dbMessages } from '../plugins/firebase'
 
 class Message {
-	constructor({ id, time, body, date }) {
+	constructor({ id, time, body, date, tag }) {
 		this.id = id
 		this.time = time
 		this.body = body
 		this.date = date
+		this.tag = tag
 	}
 
-	static async save({ time, body }) {
+	static async save({ time, body, tag }) {
 		if (!time) {
 			throw new Error('入力欄が空欄です。')
 		}
@@ -24,7 +25,8 @@ class Message {
 			time,
 			body,
 			date: firebase.firestore.FieldValue.serverTimestamp(),
-			uid
+			uid,
+			tag
 		}
 
 		const docRef = await dbMessages.add(postData)
@@ -66,7 +68,8 @@ class Message {
 			id,
 			time: data.time,
 			body: data.body,
-			date: data.date.toDate().toLocaleString()
+			date: data.date.toDate().toLocaleString(),
+			tag: data.tag
 		})
 	}
 
