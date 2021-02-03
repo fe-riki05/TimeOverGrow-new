@@ -5432,7 +5432,7 @@ eslint-plugin-vue-types@^2.0.0:
   dependencies:
     eslint-rule-composer "^0.3.0"
 
-eslint-plugin-vue@^7.1.0, eslint-plugin-vue@^7.4.1:
+eslint-plugin-vue@^7.1.0:
   version "7.4.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.4.1.tgz#2526ef0c010c218824a89423dbe6ddbe76f04fd6"
   integrity sha512-W/xPNHYIkGJphLUM2UIYYGKbRw3BcDoMIPY9lu1TTa2YLiZoxurddfnmOP+UOVywxb5vi438ejzwvKdZqydtIw==
@@ -5441,6 +5441,16 @@ eslint-plugin-vue@^7.1.0, eslint-plugin-vue@^7.4.1:
     natural-compare "^1.4.0"
     semver "^7.3.2"
     vue-eslint-parser "^7.3.0"
+
+eslint-plugin-vue@^7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.5.0.tgz#cc6d983eb22781fa2440a7573cf39af439bb5725"
+  integrity sha512-QnMMTcyV8PLxBz7QQNAwISSEs6LYk2LJvGlxalXvpCtfKnqo7qcY0aZTIxPe8QOnHd7WCwiMZLOJzg6A03T0Gw==
+  dependencies:
+    eslint-utils "^2.1.0"
+    natural-compare "^1.4.0"
+    semver "^7.3.2"
+    vue-eslint-parser "^7.4.1"
 
 eslint-rule-composer@^0.3.0:
   version "0.3.0"

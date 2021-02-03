@@ -13,18 +13,16 @@
 						placeholder="3"
 					/>時間
 					<p>今日のアウトプット内容</p>
-					<!-- <input
+					<v-combobox
 					  v-model.trim="select"
             multiple
             label="Tags"
             append-icon
             chips
             deletable-chips
-            class="tag-input"
-            :search-input.sync="search"
             @keyup.tab="updateTags"
             @paste="updateTags"
-					></input> -->
+					></v-combobox>
 				</div>
 				<div>
 					<ButtonDelete
@@ -96,14 +94,14 @@
 			}
 		},
 		methods: {
-			// updateTags() {
-			// 	this.$nextTick(() => {
-			// 		this.select.push(...this.search.split(","));
-			// 		this.$nextTick(() => {
-			// 			this.search = "";
-			// 		});
-			// 	});
-      // },
+			updateTags() {
+				this.$nextTick(() => {
+					this.select.push(...this.search.split(","));
+					this.$nextTick(() => {
+						this.search = "";
+					});
+				});
+      },
 			async clear() {
 				this.canPost = false
 				try {

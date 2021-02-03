@@ -2,6 +2,7 @@
 	<v-card class="message">
 		<p class="message-text mb-0">{{ time }}時間</p>
 		<v-chip
+
 			color="#17204d"
 			text-color="yellow"
 		>
@@ -13,7 +14,7 @@
 	</v-card>
 </template>
 
-<script>
+<script>/* eslint-disable */
 	export default {
 		props: {
 			time: {
@@ -29,7 +30,7 @@
 				required: true
 			},
 			tag: {
-				type: String,
+				type: Array,
 				required: true
 			}
 		}

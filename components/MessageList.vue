@@ -1,10 +1,16 @@
 <template>
 	<div class="message-list">
-		<client-only>
+		<!-- <client-only> -->
 			<template v-for="(message, index) in messages">
-				<Message :key="index" :time="message.time" :body="message.body" :date="message.date" :tag="message.tag" />
+				<Message
+					:key="index"
+					:time="message.time"
+					:body="message.body" 
+					:date="message.date"
+					:tag="message.tag"
+				/>
 			</template>
-		</client-only>
+		<!-- </client-only> -->
 	</div>
 </template>
 
@@ -31,17 +37,13 @@
 						if (typeof message.body !== 'string') {
 							return false
 						}
-						if (typeof message.tag !== 'string') {
-							return false
-						}
-
 						return true
 					})
 				},
 			}
 		},
-		mounted: {
+		// mounted() {
 			// console.log(message.tag);
-		}
+		// }
 	}
 </script>
