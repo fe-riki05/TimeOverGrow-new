@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = { /* eslint-disable */ 
 	root: true,
 	env: {
 		node: true,
@@ -12,7 +12,6 @@ module.exports = {
 	extends: [
 		'@nuxtjs',
 		'eslint:recommended',
-		'plugin:vue/recommended',
 		'plugin:vue-types/recommended',
 		'prettier',
 		'prettier/vue',

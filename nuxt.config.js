@@ -54,5 +54,6 @@ export default {
 	performance: {
 		hints: false
 	},
-	ssr: false
+	ssr: false,
+	target: 'server',
 }
