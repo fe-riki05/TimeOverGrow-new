@@ -57,15 +57,18 @@ import MessageModel from '../models/Message'
     	}
 		},
 		methods: {
+			// async getIndex(delateId) {
+			// 	this.delateId = await this.message[this.i].id
+			// },
 			async onDelete() {
 				try {
 					const uid = await auth().currentUser.uid
-					// const id = await (await dbMessages.where('uid', '==', uid).get()).docs[this.i].id
-					const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
+					const id = await (await dbMessages.where('uid', '==', uid).get()).docs[this.i].id
+					// const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
 
 					console.log(uid);
-					console.log(collection);
-					// console.log(id);
+					// console.log(collection);
+					console.log(id);
 					console.log(this.i);
 
 				} catch (error) {
