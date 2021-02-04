@@ -1,20 +1,38 @@
 <template>
 	<v-card class="message">
-		<p class="message-text mb-0">{{ time }}時間</p>
-		<v-chip
+		<div class="d-flex justify-space-between">
+			<div class="d-flex">
+				<p class="message-text mb-0 mr-3">{{ time }}時間</p>
+				<v-chip
+					v-for="(tags, index) in tag" :key="index"
+					color="primary"
+					class="mr-1"
+				>
+					<v-icon left>mdi-check-outline</v-icon>
+					{{ tags }}
+				</v-chip>
+			</div>
+			<v-btn
+				color="success"
+				@click="onDelete()"
+			>
+				<v-icon>
+					mdi-trash-can-outline
+				</v-icon>
+			</v-btn>
+		</div>
 
-			color="#17204d"
-			text-color="yellow"
-		>
-			<v-icon left>mdi-label</v-icon>
-			{{ tag }}
-		</v-chip>
 		<p class="message-text mb-0">{{ body }}</p>
 		<div class="message-date">{{ date }}</div>
 	</v-card>
 </template>
 
-<script>/* eslint-disable */
+<script>
+import firebase, { dbMessages , auth } from '../plugins/firebase'
+import MessageModel from '../models/Message'
+
+
+
 	export default {
 		props: {
 			time: {
@@ -32,6 +50,23 @@
 			tag: {
 				type: Array,
 				required: true
+			}
+		},
+		methods: {
+			// getIndex(index) {
+			// 	this.deleteId = this.tag[index].id
+			// },
+			async onDelete(deleteId) {
+				try {
+					const uid = await auth().currentUser.uid
+					const collection = await dbMessages.where('uid', '==', uid).get()
+					
+					console.log(uid);
+					console.log(collection);
+
+				} catch (error) {
+					console.error(error)
+				}
 			}
 		}
 	}
