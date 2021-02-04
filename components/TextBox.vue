@@ -24,14 +24,14 @@
             @paste="updateTags"
 					></v-combobox>
 				</div>
-				<div>
+				<!-- <div>
 					<ButtonDelete
 					title="削除"
 					:on-delete="clear"
 					:on-chart="chart"
 					:clickable="canPost"
 					/>
-				</div>
+				</div> -->
 			</div>
 			<v-textarea
 				v-model.trim="body"
@@ -59,19 +59,19 @@
 <script>
 	import MessageModel from '../models/Message'
 	import ButtonPost from './ButtonPost'
-	import ButtonDelete from './ButtonDelete'
+	// import ButtonDelete from './ButtonDelete'
 
 
 	export default {
 		components: {
 			ButtonPost,
-			ButtonDelete
+			// ButtonDelete
 		},
 		props: {
-			onDelete: {
-				type: Function,
-				required: true
-			},
+			// onDelete: {
+			// 	type: Function,
+			// 	required: true
+			// },
 			onPost: {
 				type: Function,
 				required: true
@@ -87,7 +87,7 @@
 		},
 		data() {
 			return {
-				time: 0,
+				time: '',
 				body: '',
 				canPost: true,
 				select: []

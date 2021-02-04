@@ -9,7 +9,7 @@
 					<Chart :chart-data="BarChartData" :options="BarChartOptions" />
 				</v-col>
 			</v-row>
-			<TextBox :on-delete="deleteMessage" :on-post="addMessage" :on-get="addTime" :on-chart="makeData" class="container" />
+			<TextBox :on-post="addMessage" :on-get="addTime" :on-chart="makeData" class="container" />
 			<Spinner v-if="!initialLoaded" class="container" />
 			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
 			<MessageList :messages="reversedMessages" class="container" />
@@ -68,29 +68,29 @@
 		},
 
 		methods: {
-			async deleteMessage(message) {
-				if (message !== undefined) {
-					try {
-						await this.messages.pop(message)
-						await dbMessages.doc(message).delete()
-						this.times = await MessageModel.dbtime()
+			// async deleteMessage(message) {
+			// 	if (message !== undefined) {
+			// 		try {
+			// 			await this.messages.pop(message)
+			// 			await dbMessages.doc(message).delete()
+			// 			this.times = await MessageModel.dbtime()
 
-						const vuechartData = await this.getChart()
+			// 			const vuechartData = await this.getChart()
 
-						console.log(this.times);
-						console.log(vuechartData[0]);
-						console.log(this.BarChartData.datasets[0].data[0]);
+			// 			console.log(this.times);
+			// 			console.log(vuechartData[0]);
+			// 			console.log(this.BarChartData.datasets[0].data[0]);
 
-						this.BarChartData.datasets[0].data[0] = await vuechartData[0]
+			// 			this.BarChartData.datasets[0].data[0] = await vuechartData[0]
 
-						console.log(this.BarChartData.datasets[0].data[0]);
-					} catch (error) {
-						console.error(error)
-					}
-				} else {
-					alert('削除する積み上げがありません。。。')
-				}
-			},
+			// 			console.log(this.BarChartData.datasets[0].data[0]);
+			// 		} catch (error) {
+			// 			console.error(error)
+			// 		}
+			// 	} else {
+			// 		alert('削除する積み上げがありません。。。')
+			// 	}
+			// },
 			addMessage(message) {
 				this.messages.push(message)
 			},
