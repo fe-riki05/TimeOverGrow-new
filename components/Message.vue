@@ -50,19 +50,23 @@ import MessageModel from '../models/Message'
 			tag: {
 				type: Array,
 				required: true
-			}
+			},
+			i: {
+      type: Number,
+      required: true
+    	}
 		},
 		methods: {
-			// getIndex(index) {
-			// 	this.deleteId = this.tag[index].id
-			// },
-			async onDelete(deleteId) {
+			async onDelete() {
 				try {
 					const uid = await auth().currentUser.uid
-					const collection = await dbMessages.where('uid', '==', uid).get()
-					
+					// const id = await (await dbMessages.where('uid', '==', uid).get()).docs[this.i].id
+					const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
+
 					console.log(uid);
 					console.log(collection);
+					// console.log(id);
+					console.log(this.i);
 
 				} catch (error) {
 					console.error(error)
