@@ -62,14 +62,17 @@ import MessageModel from '../models/Message'
 			// },
 			async onDelete() {
 				try {
-					const uid = await auth().currentUser.uid
-					const id = await (await dbMessages.where('uid', '==', uid).get()).docs[this.i].id
+					// const uid = await auth().currentUser.uid
+					// const id = await (await dbMessages.where('uid', '==', uid).get()).docs[this.i].id
 					// const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
+					const id = this.i
 
-					console.log(uid);
+
+					console.log(await MessageModel.clear()[id]);
 					// console.log(collection);
+					// console.log(uid);
+					// console.log(id);
 					console.log(id);
-					console.log(this.i);
 
 				} catch (error) {
 					console.error(error)
