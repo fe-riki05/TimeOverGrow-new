@@ -8,6 +8,7 @@
 					:body="message.body" 
 					:date="message.date"
 					:tag="message.tag"
+					:i="index"
 				/>
 			</template>
 		<!-- </client-only> -->
