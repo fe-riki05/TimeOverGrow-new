@@ -62,16 +62,19 @@ import MessageModel from '../models/Message'
 			// },
 			async onDelete() {
 				try {
-					// const uid = await auth().currentUser.uid
-					// const id = await (await dbMessages.where('uid', '==', uid).get()).docs[this.i].id
-					// const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
 					const id = this.i
+					const docId = await MessageModel.clear()
+					if(docId === []) {
+						alert('削除できるデータがありません')
+					}
+					await dbMessages.doc(docId[id]).delete()
 
 
-					console.log(await MessageModel.clear()[id]);
-					// console.log(collection);
-					// console.log(uid);
-					// console.log(id);
+					// console.log(await MessageModel.dbtime() - dbMessages.doc(docId[id]).date())
+					console.log(MessageModel.dbtime());
+
+					console.log(docId[id]);
+					console.log(docId);
 					console.log(id);
 
 				} catch (error) {
