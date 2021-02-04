@@ -45,7 +45,8 @@ class Message {
 			await collection.forEach(doc => {
 				clearId.push(doc.id)
 			})
-				return clearId.pop()
+			console.log(clearId);
+				return clearId
 		} catch (error) {
       console.error(error);
 		}
