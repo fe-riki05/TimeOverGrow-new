@@ -1,16 +1,12 @@
 FROM node:14.15.1-alpine
 
-ENV HOME=\
-    LANG=C.UTF-8 \
-    TZ=Asia/Tokyo \
-    HOST=0.0.0.0
+WORKDIR /usr/src/app
 
-WORKDIR ${HOME}
-
-COPY package*.json ./
+COPY ["package.json", "yarn.lock", "./"]
 
 RUN yarn install
 
 COPY . .
 
-RUN yarn run build
+ENV HOST 0.0.0.0
+EXPOSE 3000
