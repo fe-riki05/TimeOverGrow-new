@@ -44,11 +44,9 @@
 				row-height="100"
 			></v-textarea>
 			<div class="button">
-				<ButtonPost
+				<AddButton
 					title="今日の学習内容送信！！！"
-					:on-post="post"
-					:on-time="times"
-					:on-chart="chart"
+					:on-add="add"
 					:clickable="canPost"
 				/>
 			</div>
@@ -58,13 +56,13 @@
 
 <script>
 	import MessageModel from '../models/Message'
-	import ButtonPost from './ButtonPost'
+	import AddButton from './AddButton'
 	// import ButtonDelete from './ButtonDelete'
 
 
 	export default {
 		components: {
-			ButtonPost,
+			AddButton,
 			// ButtonDelete
 		},
 		props: {
@@ -72,18 +70,10 @@
 			// 	type: Function,
 			// 	required: true
 			// },
-			onPost: {
+			onAdd: {
 				type: Function,
 				required: true
 			},
-			onTime: {
-				type: Function,
-				required: true
-			},
-			onChart: {
-				type: Function,
-				required: true
-			}
 		},
 		data() {
 			return {
@@ -112,48 +102,44 @@
 			// 	}
 			// 	this.canPost = true
 			// },
-			async post() {
+			async add() {				
 				this.canPost = false
+				const vuechartData = []
+				const chartdbtime = await MessageModel.dbtime()
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
 						tag: this.select
 					})
-					this.onPost(message)
+					// メッセージを送る
+					this.onAdd(message)
+
+					// chart図に送る
+					// if (vuechartData.length === 0) {
+					// 	vuechartData.push(chartdbtime)
+					// }
+					// this.onChart(vuechartData[0])
+
+					// 送った後formを空っぽにする
 					this.time = 0
 					this.body = ''
 					this.select = ''
+
 				} catch (error) {
 					alert(error.message)
 				}
 				this.canPost = true
 			},
-			async times() {
-				let times = 0
-				try {
-					times += await MessageModel.dbtime()
-					this.onTime(times)
-				} catch (error) {
-					console.error(error.message)
-				}
+			// async chart() {
 
-				return times
-			},
-
-			async chart() {
-				const vuechartData = []
-				const chartdbtime = await MessageModel.dbtime()
-				try {
-					if (vuechartData.length === 0) {
-						vuechartData.push(chartdbtime)
-					}
-					this.onChart(vuechartData[0])
-				} catch (error) {
-					console.error(error.message)
-				}
-				return vuechartData[0]
-			}
+				// try {
+					
+				// } catch (error) {
+				// 	console.error(error.message)
+				// }
+				
+			// }
 		}
 	}
 </script>

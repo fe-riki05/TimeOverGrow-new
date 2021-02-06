@@ -9,10 +9,10 @@
 					<Chart :chart-data="BarChartData" :options="BarChartOptions" />
 				</v-col>
 			</v-row>
-			<TextBox :on-post="addMessage" :on-time="addTime" :on-chart="makeData" class="container" />
+			<TextBox :on-add="add" class="container" />
 			<Spinner v-if="!initialLoaded" class="container" />
 			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
-			<MessageList :messages="reversedMessages" class="container" @reload="fetchMessages()" />
+			<MessageList :messages="reversedMessages" class="container" />
 		</client-only>
 	</div>
 </template>
@@ -57,20 +57,12 @@
 			await this.makeData()
 		},
 		async created() {
-			// const messages = await this.fetchMessages()
-			// const times = await this.totalTime()
-			// const vuechartData = await this.getChart()
-
-			// this.messages = messages
-			// this.times = times
-			// this.BarChartData.datasets[0].data[0] = vuechartData[0]
-			// this.initialLoaded = true
-			
-			await this.fetchMessages()
+			const messages = await this.fetchMessages()
 			const times = await this.totalTime()
 			const vuechartData = await this.getChart()
 
-			// this.messages = messages
+
+			this.messages = messages
 			this.times = times
 			this.BarChartData.datasets[0].data[0] = vuechartData[0]
 			this.initialLoaded = true
@@ -100,18 +92,17 @@
 			// 		alert('削除する積み上げがありません。。。')
 			// 	}
 			// },
-			addMessage(message) {
+			async add(message) {
 				this.messages.push(message)
-			},
-			addTime(times) {
-				this.times = times
-			},
-			async makeData() {
+				this.times += message.time
+
 				const vuechartData = []
 				const chartdbtime = await MessageModel.dbtime()
+				
 				if (vuechartData.length === 0) {
 					await vuechartData.push(chartdbtime)
 				}
+
 				this.BarChartData = {
 					labels: ['学習時間'],
 					datasets: [
@@ -158,6 +149,9 @@
           }
         }
 			},
+			async makeData() {
+
+			},
 			async fetchMessages() {
 				let messages = []
 				try {
@@ -166,8 +160,7 @@
 					alert(error.message)
 				}
 
-				// return messages
-				this.messages = messages;
+				return messages
 			},
 			async totalTime() {
 				let times = 0
