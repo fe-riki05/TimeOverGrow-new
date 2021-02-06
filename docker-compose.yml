@@ -9,5 +9,6 @@ services:
     command: yarn dev
     volumes:
       - './:/usr/src/app'
+
     ports:
       - '3000:3000'
