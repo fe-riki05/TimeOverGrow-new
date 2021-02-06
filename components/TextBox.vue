@@ -46,8 +46,8 @@
 			<div class="button">
 				<ButtonPost
 					title="今日の学習内容送信！！！"
-					:on-click="post"
-					:on-get="get"
+					:on-post="post"
+					:on-time="times"
 					:on-chart="chart"
 					:clickable="canPost"
 				/>
@@ -76,7 +76,7 @@
 				type: Function,
 				required: true
 			},
-			onGet: {
+			onTime: {
 				type: Function,
 				required: true
 			},
@@ -102,16 +102,16 @@
 					});
 				});
       },
-			async clear() {
-				this.canPost = false
-				try {
-					const message = await MessageModel.clear()
-					this.onDelete(message)
-				} catch (error) {
-					console.error(error.message)
-				}
-				this.canPost = true
-			},
+			// async clear() {
+			// 	this.canPost = false
+			// 	try {
+			// 		const message = await MessageModel.clear()
+			// 		this.onDelete(message)
+			// 	} catch (error) {
+			// 		console.error(error.message)
+			// 	}
+			// 	this.canPost = true
+			// },
 			async post() {
 				this.canPost = false
 				try {
@@ -129,11 +129,11 @@
 				}
 				this.canPost = true
 			},
-			async get() {
+			async times() {
 				let times = 0
 				try {
 					times += await MessageModel.dbtime()
-					this.onGet(times)
+					this.onTime(times)
 				} catch (error) {
 					console.error(error.message)
 				}

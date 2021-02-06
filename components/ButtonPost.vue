@@ -11,7 +11,7 @@
 		class="button"
 		:class="{ disabled: !clickable }"
 		:disabled="!clickable"
-		@click="onClick(), onGet(), onChart()"
+		@click="onPost(), onTime(), onChart()"
 	>
 		{{ title }}
 	</v-btn>
@@ -24,11 +24,11 @@
 				type: String,
 				default: '今日の学習内容送信！！！'
 			},
-			onClick: {
+			onPost: {
 				type: Function,
 				required: true
 			},
-			onGet: {
+			onTime: {
 				type: Function,
 				required: true
 			},

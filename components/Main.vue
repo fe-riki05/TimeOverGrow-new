@@ -9,10 +9,10 @@
 					<Chart :chart-data="BarChartData" :options="BarChartOptions" />
 				</v-col>
 			</v-row>
-			<TextBox :on-post="addMessage" :on-get="addTime" :on-chart="makeData" class="container" />
+			<TextBox :on-post="addMessage" :on-time="addTime" :on-chart="makeData" class="container" />
 			<Spinner v-if="!initialLoaded" class="container" />
 			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
-			<MessageList :messages="reversedMessages" class="container" />
+			<MessageList :messages="reversedMessages" class="container" @reload="fetchMessages()" />
 		</client-only>
 	</div>
 </template>
@@ -57,11 +57,20 @@
 			await this.makeData()
 		},
 		async created() {
-			const messages = await this.fetchMessages()
+			// const messages = await this.fetchMessages()
+			// const times = await this.totalTime()
+			// const vuechartData = await this.getChart()
+
+			// this.messages = messages
+			// this.times = times
+			// this.BarChartData.datasets[0].data[0] = vuechartData[0]
+			// this.initialLoaded = true
+			
+			await this.fetchMessages()
 			const times = await this.totalTime()
 			const vuechartData = await this.getChart()
 
-			this.messages = messages
+			// this.messages = messages
 			this.times = times
 			this.BarChartData.datasets[0].data[0] = vuechartData[0]
 			this.initialLoaded = true
@@ -157,7 +166,8 @@
 					alert(error.message)
 				}
 
-				return messages
+				// return messages
+				this.messages = messages;
 			},
 			async totalTime() {
 				let times = 0

@@ -51,15 +51,25 @@ import MessageModel from '../models/Message'
 				type: Array,
 				required: true
 			},
+			// ここから追加
+			// onDelete: {
+			// 	type: Function,
+			// 	required: true
+			// },
+			// onTime: {
+			// 	type: Function,
+			// 	required: true
+			// },
+			// onChart: {
+			// 	type: Function,
+			// 	required: true
+			// },
 			i: {
       type: Number,
       required: true
     	}
 		},
 		methods: {
-			// async getIndex(delateId) {
-			// 	this.delateId = await this.message[this.i].id
-			// },
 			async onDelete() {
 				try {
 					const id = this.i
@@ -68,15 +78,8 @@ import MessageModel from '../models/Message'
 						alert('削除できるデータがありません')
 					}
 					await dbMessages.doc(docId[id]).delete()
-
-
-					// console.log(await MessageModel.dbtime() - dbMessages.doc(docId[id]).date())
-					console.log(MessageModel.dbtime());
-
-					console.log(docId[id]);
-					console.log(docId);
-					console.log(id);
-
+					console.log(await MessageModel.dbtime());
+					this.$emit('reload'); 
 				} catch (error) {
 					console.error(error)
 				}
