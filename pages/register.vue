@@ -162,12 +162,11 @@
 		methods: {
 			email_register() {
 				if (this.$refs.register_form.validate()) {
-					this.$store
-						.dispatch('signUp', {
+					this.$store.dispatch('signUp', {
 							email: this.register_email,
 							password: this.register_password
-						})
-						.then(() => {
+					})
+						try {
 							this.register_email = ''
 							this.register_password = ''
 							this.$router.push({
@@ -177,17 +176,16 @@
 									dashboard_msg_text: 'アカウントの登録が完了しました。'
 								}
 							})
-						})
-						.catch(err => {
-							console.error(err)
-							if (err.code === 'auth/email-already-in-use') {
+						} catch (error) {
+							console.error(error)
+							if (error.code === 'auth/email-already-in-use') {
 								this.registerErrorMsg = 'このメールアドレスは既に登録されています。'
-							} else if (err.code === 'auth/invalid-email') {
+							} else if (error.code === 'auth/invalid-email') {
 								this.registerErrorMsg = '無効なメールアドレスです。'
 							} else {
 								this.registerErrorMsg = 'エラーにより登録できませんでした。'
 							}
-						})
+						}
 					this.email = "";
 					this.password = "";
 				}

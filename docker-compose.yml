@@ -1,12 +1,14 @@
-version: '3.8'
+version: '3'
 
 services:
-  app:
+  front:
     image: timeovergrow
-    build:
-      context: .
-    command: yarn run dev
+    container_name: 'timeovergrow-front'
+    build: .
+    tty: true
+    command: yarn dev
     volumes:
-      - '.:/.'
+      - './:/usr/src/app'
+
     ports:
       - '3000:3000'

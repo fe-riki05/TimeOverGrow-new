@@ -1,17 +1,16 @@
 <template>
 	<div class="message-list">
-		<!-- <client-only> -->
-			<template v-for="(message, index) in messages">
-				<Message
-					:key="index"
-					:time="message.time"
-					:body="message.body" 
-					:date="message.date"
-					:tag="message.tag"
-					:i="index"
-				/>
-			</template>
-		<!-- </client-only> -->
+		<template v-for="(message, index) in messages">
+			<Message
+				:key="index"
+				:time="message.time"
+				:body="message.body"
+				:date="message.date"
+				:tag="message.tag"
+				:i="index"
+				@reload="reload()"
+			/>
+		</template>
 	</div>
 </template>
 
@@ -43,6 +42,11 @@
 				},
 			}
 		},
+		methods: {
+			reload() {
+				this.$emit('reload'); // Main.vueのreloadで設定した関数の呼び出し
+			}
+  	}
 		// mounted() {
 			// console.log(message.tag);
 		// }
