@@ -1,13 +1,14 @@
-version: "3"
+version: '3'
 
 services:
   front:
     image: timeovergrow
-    container_name: "timeover-front"
+    container_name: 'timeovergrow-front'
     build: .
     tty: true
     command: yarn dev
     volumes:
-      - "./:/usr/src/app"
+      - './:/usr/src/app'
+
     ports:
-      - "3000:3000"
+      - '3000:3000'
