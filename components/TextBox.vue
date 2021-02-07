@@ -116,9 +116,9 @@
 					this.onAdd(message)
 
 					// chart図に送る
-					// if (vuechartData.length === 0) {
-					// 	vuechartData.push(chartdbtime)
-					// }
+					if (vuechartData.length === 0) {
+						vuechartData.push(chartdbtime)
+					}
 					// this.onChart(vuechartData[0])
 
 					// 送った後formを空っぽにする
@@ -126,10 +126,10 @@
 					this.body = ''
 					this.select = ''
 
+					this.canPost = true
 				} catch (error) {
 					alert(error.message)
 				}
-				this.canPost = true
 			},
 			// async chart() {
 

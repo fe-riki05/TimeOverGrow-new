@@ -53,9 +53,9 @@
 				return this.messages.slice().reverse()
 			}
 		},
-		async mounted() {
-			await this.makeData()
-		},
+		// async mounted() {
+		// 	await this.makeData()
+		// },
 		async created() {
 			const messages = await this.fetchMessages()
 			const times = await this.totalTime()
@@ -148,9 +148,6 @@
             }
           }
         }
-			},
-			async makeData() {
-
 			},
 			async fetchMessages() {
 				let messages = []
