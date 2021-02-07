@@ -74,8 +74,8 @@ class Message {
 	}
 
 	static async dbtime() {
-		const uid = firebase.auth().currentUser.uid
 		try {
+			const uid = firebase.auth().currentUser.uid
 			const querySnapshot = await dbMessages.where('uid', '==', uid).get()
 			let totaltime = 0
 			querySnapshot.forEach(postDoc => {

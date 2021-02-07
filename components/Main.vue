@@ -142,19 +142,16 @@
 				this.messages.push(message)
 				this.times += message.time
 				this.BarChartData.datasets[0].data[0] += message.time
-
-				console.log(message.time);
-				console.log(this.BarChartData.datasets[0].data[0]);
 			},
 			async fetchMessages() {
 				let messages = []
 				try {
 					messages = await MessageModel.fetchMessages()
+					return messages
 				} catch (error) {
 					alert(error.message)
 				}
 
-				return messages
 			},
 			async totalTime() {
 				let times = 0
@@ -168,7 +165,8 @@
 			},
 			async getChart() {
 				try {
-					this.BarChartData.datasets[0].data[0] += await MessageModel.dbtime()
+					const time = await MessageModel.dbtime()
+					this.BarChartData.datasets[0].data[0] += time
 					console.log(this.BarChartData.datasets[0].data[0]);
 				} catch (error) {
 					console.error(error.message)
