@@ -47,8 +47,8 @@
 	export default {
 		methods: {
 			googleLogin() {
-				this.$store.dispatch('signInWithGoogle')
-					try {
+				try {
+						this.$store.dispatch('signInWithGoogle')
 						this.$router.push({
 							name: 'index'
 						})
@@ -58,32 +58,18 @@
 					}
 			},
 			userLogin() {
-				auth().signInAnonymously()
-					try {
+				try {
+						auth().signInAnonymously()
 						this.$router.push({
 							name: 'index'
 						})
 					} catch(error) {
-						const errorCode = error.code
-						const errorMessage = error.message
-						console.error('エラーメッセージ', errorCode, errorMessage)
+						// const errorCode = error.code
+						// const errorMessage = error.message
+						console.error('エラーメッセージ')
 					}
 			}
 		}
 	}
 </script>
 
-<style lang="scss" scoped>
-	@mixin social_button($brand-color: #999, $text-color: #fff) {
-		background-color: $brand-color !important;
-		border-color: $brand-color;
-		color: $text-color;
-	}
-	.color-google {
-		@at-root {
-			#{&}__icon > svg {
-				position: absolute;
-			}
-		}
-	}
-</style>

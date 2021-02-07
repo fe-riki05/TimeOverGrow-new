@@ -19,7 +19,7 @@
 
 <script>
 	import MessageModel from '../models/Message'
-	import { dbMessages } from '../plugins/firebase'
+	// import { dbMessages } from '../plugins/firebase'
 	import TotalTime from './TotalTime'
 	import Chart from './Chart'
 	import TextBox from './TextBox'
@@ -144,30 +144,27 @@
 				this.BarChartData.datasets[0].data[0] += message.time
 			},
 			async fetchMessages() {
-				let messages = []
 				try {
+					let messages = []
 					messages = await MessageModel.fetchMessages()
 					return messages
 				} catch (error) {
 					alert(error.message)
 				}
-
 			},
 			async totalTime() {
-				let times = 0
 				try {
+					let times = 0
 					times += await MessageModel.dbtime()
+					return times
 				} catch (error) {
 					alert(error.message)
 				}
-
-				return times
 			},
 			async getChart() {
 				try {
 					const time = await MessageModel.dbtime()
-					this.BarChartData.datasets[0].data[0] += time
-					console.log(this.BarChartData.datasets[0].data[0]);
+					this.BarChartData.datasets[0].data[0] += await time
 				} catch (error) {
 					console.error(error.message)
 				}

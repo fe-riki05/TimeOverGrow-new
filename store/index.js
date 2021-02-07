@@ -17,15 +17,15 @@ export const mutations = {
 }
 
 export const actions = {
-	signUp({ commit }, { email, password }) {
+	signUp({ email, password }) {
 		return auth().createUserWithEmailAndPassword(email, password)
 	},
 
-	signInWithEmail({ commit }, { email, password }) {
+	signInWithEmail({ email, password }) {
 		return auth().signInWithEmailAndPassword(email, password)
 	},
 
-	signInWithGoogle({ commit }) {
+	signInWithGoogle() {
 		return auth().signInWithPopup(new auth.GoogleAuthProvider())
 	},
 

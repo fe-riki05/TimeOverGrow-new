@@ -61,9 +61,9 @@
 </template>
 
 <script>
-	import axios from '../axios-for-auth'
+	// import axios from '../axios-for-auth'
 	import SocialLogin from '../components/SocialLogin.vue'
-	import { auth } from '../plugins/firebase'
+	// import { auth } from '../plugins/firebase'
 
 
 	export default {
@@ -83,7 +83,7 @@
 			}
 		},
 		methods: {
-			email_login(error) {
+			email_login() {
 				this.$store
 					.dispatch('signInWithEmail', {
 						email: this.login_email,
@@ -101,8 +101,8 @@
 						} else {
 							this.loginErrorMsg = 'メールアドレスまたはパスワードが間違っています。'
 						}
+						console.log(error)
 					}
-				console.log(error)
 			}
 		}
 	}

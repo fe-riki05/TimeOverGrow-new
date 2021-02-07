@@ -20,8 +20,6 @@
             append-icon
             chips
             deletable-chips
-            @keyup.tab="updateTags"
-            @paste="updateTags"
 					></v-combobox>
 				</div>
 				<!-- <div>
@@ -84,14 +82,14 @@
 			}
 		},
 		methods: {
-			updateTags() {
-				this.$nextTick(() => {
-					this.select.push(...this.search.split(","));
-					this.$nextTick(() => {
-						this.search = "";
-					});
-				});
-      },
+			// updateTags() {
+			// 	this.$nextTick(() => {
+			// 		this.select.push(...this.search.split(","));
+			// 		this.$nextTick(() => {
+			// 			this.search = "";
+			// 		});
+			// 	});
+      // },
 			// async clear() {
 			// 	this.canPost = false
 			// 	try {
