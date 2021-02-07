@@ -1,5 +1,5 @@
 <template>
-	<v-container to="/">
+	<v-container>
 		<Header />
 		<Main />
 	</v-container>
