@@ -42,79 +42,23 @@
 				index: '',
 				done: false,
 				messages: [],
-				BarChartData: {},
+				vuechartData: [0],
+				// BarChartData: {},
 				options: {},
 				times: 0,
-				initialLoaded: false
-			}
-		},
-		computed: {
-			reversedMessages() {
-				return this.messages.slice().reverse()
-			}
-		},
-		// async mounted() {
-		// 	await this.makeData()
-		// },
-		async created() {
-			const messages = await this.fetchMessages()
-			const times = await this.totalTime()
-			const vuechartData = await this.getChart()
-
-
-			this.messages = messages
-			this.times = times
-			this.BarChartData.datasets[0].data[0] = vuechartData[0]
-			this.initialLoaded = true
-		},
-
-		methods: {
-			// async deleteMessage(message) {
-			// 	if (message !== undefined) {
-			// 		try {
-			// 			await this.messages.pop(message)
-			// 			await dbMessages.doc(message).delete()
-			// 			this.times = await MessageModel.dbtime()
-
-			// 			const vuechartData = await this.getChart()
-
-			// 			console.log(this.times);
-			// 			console.log(vuechartData[0]);
-			// 			console.log(this.BarChartData.datasets[0].data[0]);
-
-			// 			this.BarChartData.datasets[0].data[0] = await vuechartData[0]
-
-			// 			console.log(this.BarChartData.datasets[0].data[0]);
-			// 		} catch (error) {
-			// 			console.error(error)
-			// 		}
-			// 	} else {
-			// 		alert('削除する積み上げがありません。。。')
-			// 	}
-			// },
-			async add(message) {
-				this.messages.push(message)
-				this.times += message.time
-
-				const vuechartData = []
-				const chartdbtime = await MessageModel.dbtime()
-				
-				if (vuechartData.length === 0) {
-					await vuechartData.push(chartdbtime)
-				}
-
-				this.BarChartData = {
+				initialLoaded: false,
+				BarChartData: {
 					labels: ['学習時間'],
 					datasets: [
 						{
 							label: ['学習時間'],
-							data: vuechartData,
+							data: [0],
 							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
 							borderColor: ['rgba(54, 162, 235, 1)'],
 						},
 					]
-				}
-        this.BarChartOptions = {
+				},
+        BarChartOptions: {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
@@ -148,6 +92,59 @@
             }
           }
         }
+			}
+		},
+		computed: {
+			reversedMessages() {
+				return this.messages.slice().reverse()
+			}
+		},
+		// async mounted() {
+		// 	await this.add(this.message)
+		// },
+		async created() {
+			const messages = await this.fetchMessages()
+			const times = await this.totalTime()
+			const vuechartData = await this.getChart()
+
+
+			this.messages = messages
+			this.times = times
+			this.vuechartData[0] = vuechartData[0]
+			this.initialLoaded = true
+		},
+
+		methods: {
+			// async deleteMessage(message) {
+			// 	if (message !== undefined) {
+			// 		try {
+			// 			await this.messages.pop(message)
+			// 			await dbMessages.doc(message).delete()
+			// 			this.times = await MessageModel.dbtime()
+
+			// 			const vuechartData = await this.getChart()
+
+			// 			console.log(this.times);
+			// 			console.log(vuechartData[0]);
+			// 			console.log(this.BarChartData.datasets[0].data[0]);
+
+			// 			this.BarChartData.datasets[0].data[0] = await vuechartData[0]
+
+			// 			console.log(this.BarChartData.datasets[0].data[0]);
+			// 		} catch (error) {
+			// 			console.error(error)
+			// 		}
+			// 	} else {
+			// 		alert('削除する積み上げがありません。。。')
+			// 	}
+			// },
+			add(message) {
+				this.messages.push(message)
+				this.times += message.time
+				this.BarChartData.datasets[0].data[0] += message.time
+
+				console.log(message.time);
+				console.log(this.BarChartData.datasets[0].data[0]);
 			},
 			async fetchMessages() {
 				let messages = []
@@ -170,17 +167,14 @@
 				return times
 			},
 			async getChart() {
-				const vuechartData = []
-				const chartdbtime = await MessageModel.dbtime()
 				try {
-					if (vuechartData.length === 0) {
-						await vuechartData.push(chartdbtime)
-					}
+					this.BarChartData.datasets[0].data[0] += await MessageModel.dbtime()
+					console.log(this.BarChartData.datasets[0].data[0]);
 				} catch (error) {
 					console.error(error.message)
 				}
 
-				return vuechartData
+				return this.BarChartData.datasets[0].data[0]
 			}
 		}
 	}
