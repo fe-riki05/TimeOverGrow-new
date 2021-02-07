@@ -32,33 +32,30 @@
 // import TagSearch from '../components/TagSearch'
 
 
-	export default {
-		components: {
-			// TagSearch,
-		},
-		data() {
-			return {
-				title: 'TimeOverGrow',
-				drawer: false,
-				group: null
-			}
-		},
-		methods: {
-			signOut(err) {
-				this.$store
-					.dispatch('signOut')
-					.then(() => {
-						this.$router.push({
-							name: 'login'
-						})
+export default {
+	components: {
+		// TagSearch,
+	},
+	data() {
+		return {
+			title: 'TimeOverGrow',
+			drawer: false,
+			group: null
+		}
+	},
+	methods: {
+		signOut(err) {
+			this.$store.dispatch('signOut')
+				try {
+					this.$router.push({
+						name: 'login'
 					})
-					.catch(err => {
-						console.error(err.message)
-					})
-				console.log(err)
-			}
+				} catch (error) {
+					console.error(err.message)
+				}
 		}
 	}
+}
 </script>
 
 <style scoped>

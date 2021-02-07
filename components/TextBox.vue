@@ -102,44 +102,26 @@
 			// 	}
 			// 	this.canPost = true
 			// },
-			async add() {				
+			async add() {
 				this.canPost = false
-				const vuechartData = []
-				const chartdbtime = await MessageModel.dbtime()
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
 						tag: this.select
 					})
-					// メッセージを送る
+
 					this.onAdd(message)
 
-					// chart図に送る
-					if (vuechartData.length === 0) {
-						vuechartData.push(chartdbtime)
-					}
-					// this.onChart(vuechartData[0])
-
-					// 送った後formを空っぽにする
 					this.time = 0
 					this.body = ''
 					this.select = ''
 
-					this.canPost = true
 				} catch (error) {
 					alert(error.message)
 				}
+					this.canPost = true
 			},
-			// async chart() {
-
-				// try {
-					
-				// } catch (error) {
-				// 	console.error(error.message)
-				// }
-				
-			// }
 		}
 	}
 </script>
