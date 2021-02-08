@@ -5,7 +5,8 @@
 				<h2 class="text-center subtitle-1 font-weight-bold mb-2">メールアドレスで登録</h2>
 				<v-row>
 					<v-col>
-						<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3"><v-tab to="/login"> ログイン </v-tab>
+						<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
+							<v-tab to="/login"> ログイン </v-tab>
 							<v-tab to="/register">アカウント登録 </v-tab>
 						</v-tabs>
 
@@ -83,9 +84,7 @@
 <script>
 	import zxcvbn from 'zxcvbn'
 	import SocialLogin from '../components/SocialLogin.vue'
-	import { auth } from '../plugins/firebase'
 
-	
 	export default {
 		components: {
 			SocialLogin
@@ -162,11 +161,12 @@
 		methods: {
 			email_register() {
 				if (this.$refs.register_form.validate()) {
-					this.$store.dispatch('signUp', {
+					this.$store
+						.dispatch('signUp', {
 							email: this.register_email,
 							password: this.register_password
-					})
-						try {
+						})
+						.then(() => {
 							this.register_email = ''
 							this.register_password = ''
 							this.$router.push({
@@ -176,20 +176,18 @@
 									dashboard_msg_text: 'アカウントの登録が完了しました。'
 								}
 							})
-						} catch (error) {
-							console.error(error)
-							if (error.code === 'auth/email-already-in-use') {
+						})
+						.catch(err => {
+							if (err.code === 'auth/email-already-in-use') {
 								this.registerErrorMsg = 'このメールアドレスは既に登録されています。'
-							} else if (error.code === 'auth/invalid-email') {
+							} else if (err.code === 'auth/invalid-email') {
 								this.registerErrorMsg = '無効なメールアドレスです。'
 							} else {
 								this.registerErrorMsg = 'エラーにより登録できませんでした。'
 							}
-						}
-					this.email = "";
-					this.password = "";
+						})
 				}
-			},
+			}
 		}
 	}
 </script>

@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vue from 'vue'
+// import Vuex from 'vuex'
 import { auth } from '../plugins/firebase'
 
-Vue.use(Vuex)
+// Vue.use(Vuex)
 
 export const strict = false
 
@@ -17,16 +17,20 @@ export const mutations = {
 }
 
 export const actions = {
-	signUp({ email, password }) {
+	signUp({ commit }, { email, password }) {
 		return auth().createUserWithEmailAndPassword(email, password)
 	},
 
-	signInWithEmail({ email, password }) {
+	signInWithEmail({ commit }, { email, password }) {
 		return auth().signInWithEmailAndPassword(email, password)
 	},
 
-	signInWithGoogle() {
+	signInWithGoogle({ commit }) {
 		return auth().signInWithPopup(new auth.GoogleAuthProvider())
+	},
+
+	signInWithGuest({ commit }) {
+		return auth().signInAnonymously()
 	},
 
 	signOut() {

@@ -25,7 +25,6 @@
 	import TextBox from './TextBox'
 	import Spinner from './Spinner'
 	import MessageList from './MessageList'
-	
 
 	export default {
 		components: {
@@ -54,44 +53,44 @@
 							label: ['学習時間'],
 							data: [0],
 							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)'],
-						},
+							borderColor: ['rgba(54, 162, 235, 1)']
+						}
 					]
 				},
-        BarChartOptions: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            xAxes: [
-              {
-                stacked: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: '',
-                }
-              }
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  max: 1000,
-                  stepSize: 100,
-                  callback(label, index, labels) {
-                    return label + ' h'
-                  }
-                }
-              }
-            ]
-          },
-          tooltips: {
-            callbacks: {
-              label(tooltipItem, data) {
-                return tooltipItem.yLabel + ' h'
-              }
-            }
-          }
-        }
+				BarChartOptions: {
+					responsive: true,
+					maintainAspectRatio: false,
+					scales: {
+						xAxes: [
+							{
+								stacked: true,
+								scaleLabel: {
+									display: true,
+									labelString: ''
+								}
+							}
+						],
+						yAxes: [
+							{
+								ticks: {
+									beginAtZero: true,
+									max: 1000,
+									stepSize: 100,
+									callback(label) {
+										return label + ' h'
+									}
+								}
+							}
+						]
+					},
+					tooltips: {
+						callbacks: {
+							label(tooltipItem) {
+								return tooltipItem.yLabel + ' h'
+							}
+						}
+					}
+				}
 			}
 		},
 		computed: {
@@ -106,7 +105,6 @@
 			const messages = await this.fetchMessages()
 			const times = await this.totalTime()
 			const vuechartData = await this.getChart()
-
 
 			this.messages = messages
 			this.times = times
@@ -164,7 +162,7 @@
 			async getChart() {
 				try {
 					const time = await MessageModel.dbtime()
-					this.BarChartData.datasets[0].data[0] += await time
+					this.BarChartData.datasets[0].data[0] += time
 				} catch (error) {
 					console.error(error.message)
 				}

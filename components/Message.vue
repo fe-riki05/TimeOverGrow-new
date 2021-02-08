@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import firebase, { dbMessages , auth } from '../plugins/firebase'
-import MessageModel from '../models/Message'
+// import firebase, { dbMessages , auth } from '../plugins/firebase'
+// import MessageModel from '../models/Message'
 
 
 
@@ -70,20 +70,20 @@ import MessageModel from '../models/Message'
     	}
 		},
 		methods: {
-			async onDelete() {
-				try {
-					const id = this.i
-					const docId = await MessageModel.clear()
-					if(docId === []) {
-						alert('削除できるデータがありません')
-					}
-					await dbMessages.doc(docId[id]).delete()
-					console.log(await MessageModel.dbtime());
-					this.$emit('reload'); 
-				} catch (error) {
-					console.error(error)
-				}
-			}
+			// async onDelete() {
+			// 	try {
+			// 		const id = this.i
+			// 		const docId = await MessageModel.clear()
+			// 		if(docId === []) {
+			// 			alert('削除できるデータがありません')
+			// 		}
+			// 		await dbMessages.doc(docId[id]).delete()
+			// 		console.log(await MessageModel.dbtime());
+			// 		this.$emit('reload'); 
+			// 	} catch (error) {
+			// 		console.error(error)
+			// 	}
+			// }
 		}
 	}
 </script>

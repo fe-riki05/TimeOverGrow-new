@@ -7,9 +7,7 @@
 					{{ title }}
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
-				<v-btn icon>
-        	<!-- <TagSearch /> -->
-      	</v-btn>
+				<v-btn icon> </v-btn>
 				<v-app-bar-nav-icon class="float-right" @click="drawer = true"></v-app-bar-nav-icon>
 			</v-app-bar>
 			<v-navigation-drawer v-model="drawer" absolute temporary>
@@ -29,33 +27,30 @@
 </template>
 
 <script>
-// import TagSearch from '../components/TagSearch'
-
-
-export default {
-	components: {
-		// TagSearch,
-	},
-	data() {
-		return {
-			title: 'TimeOverGrow',
-			drawer: false,
-			group: null
-		}
-	},
-	methods: {
-		signOut(err) {
-			this.$store.dispatch('signOut')
-				try {
-					this.$router.push({
-						name: 'login'
+	export default {
+		name: 'TimeOverGrow',
+		data() {
+			return {
+				title: 'TimeOverGrow',
+				drawer: false,
+				group: null
+			}
+		},
+		methods: {
+			signOut() {
+				this.$store
+					.dispatch('signOut')
+					.then(() => {
+						this.$router.push({
+							name: 'login'
+						})
 					})
-				} catch (error) {
-					console.error(err.message)
-				}
+					.catch(err => {
+						alert(err.message)
+					})
+			}
 		}
 	}
-}
 </script>
 
 <style scoped>

@@ -13,14 +13,7 @@
 						placeholder="3"
 					/>時間
 					<p>今日のアウトプット内容</p>
-					<v-combobox
-					  v-model.trim="select"
-            multiple
-            label="Tags"
-            append-icon
-            chips
-            deletable-chips
-					></v-combobox>
+					<v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips></v-combobox>
 				</div>
 				<!-- <div>
 					<ButtonDelete
@@ -42,11 +35,7 @@
 				row-height="100"
 			></v-textarea>
 			<div class="button">
-				<AddButton
-					title="今日の学習内容送信！！！"
-					:on-add="add"
-					:clickable="canPost"
-				/>
+				<AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
 			</div>
 		</client-only>
 	</div>
@@ -57,10 +46,9 @@
 	import AddButton from './AddButton'
 	// import ButtonDelete from './ButtonDelete'
 
-
 	export default {
 		components: {
-			AddButton,
+			AddButton
 			// ButtonDelete
 		},
 		props: {
@@ -71,7 +59,7 @@
 			onAdd: {
 				type: Function,
 				required: true
-			},
+			}
 		},
 		data() {
 			return {
@@ -89,7 +77,7 @@
 			// 			this.search = "";
 			// 		});
 			// 	});
-      // },
+			// },
 			// async clear() {
 			// 	this.canPost = false
 			// 	try {
@@ -114,12 +102,11 @@
 					this.time = 0
 					this.body = ''
 					this.select = ''
-
 				} catch (error) {
 					alert(error.message)
 				}
-					this.canPost = true
-			},
+				this.canPost = true
+			}
 		}
 	}
 </script>

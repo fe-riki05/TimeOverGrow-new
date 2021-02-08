@@ -6,7 +6,7 @@
 				<v-row>
 					<v-col>
 						<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
-							<v-tab>ログイン</v-tab>
+							<v-tab to="/login">ログイン</v-tab>
 							<v-tab to="/register">アカウント登録</v-tab>
 						</v-tabs>
 
@@ -65,7 +65,6 @@
 	import SocialLogin from '../components/SocialLogin.vue'
 	// import { auth } from '../plugins/firebase'
 
-
 	export default {
 		components: {
 			SocialLogin
@@ -89,20 +88,20 @@
 						email: this.login_email,
 						password: this.login_password
 					})
-					try {
+					.then(() => {
 						this.login_email = ''
 						this.login_password = ''
 						this.$router.push({
 							name: 'index'
 						})
-					} catch (error) {
-						if (error.code === 'auth/user-disabled') {
+					})
+					.catch(err => {
+						if (err.code === 'auth/user-disabled') {
 							this.loginErrorMsg = 'このアカウントはロックされています。'
 						} else {
 							this.loginErrorMsg = 'メールアドレスまたはパスワードが間違っています。'
 						}
-						console.log(error)
-					}
+					})
 			}
 		}
 	}
