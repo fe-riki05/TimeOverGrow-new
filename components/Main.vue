@@ -19,7 +19,6 @@
 
 <script>
 	import MessageModel from '../models/Message'
-	// import { dbMessages } from '../plugins/firebase'
 	import TotalTime from './TotalTime'
 	import Chart from './Chart'
 	import TextBox from './TextBox'
@@ -42,8 +41,7 @@
 				done: false,
 				messages: [],
 				vuechartData: [0],
-				// BarChartData: {},
-				options: {},
+				// options: {},
 				times: 0,
 				initialLoaded: false,
 				BarChartData: {
@@ -98,9 +96,6 @@
 				return this.messages.slice().reverse()
 			}
 		},
-		// async mounted() {
-		// 	await this.add(this.message)
-		// },
 		async created() {
 			const messages = await this.fetchMessages()
 			const times = await this.totalTime()
@@ -153,7 +148,8 @@
 			async totalTime() {
 				try {
 					let times = 0
-					times += await MessageModel.dbtime()
+					const time = await MessageModel.dbtime()
+					times += time
 					return times
 				} catch (error) {
 					alert(error.message)
@@ -163,11 +159,10 @@
 				try {
 					const time = await MessageModel.dbtime()
 					this.BarChartData.datasets[0].data[0] += time
+					return this.BarChartData.datasets[0].data[0]
 				} catch (error) {
-					console.error(error.message)
+					alert(error.message)
 				}
-
-				return this.BarChartData.datasets[0].data[0]
 			}
 		}
 	}

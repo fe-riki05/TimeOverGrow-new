@@ -41,13 +41,13 @@ class Message {
 	// 	const clearId = []
 	// 	const uid = firebase.auth().currentUser.uid
 	// 	const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
-  //   try {
+	//   try {
 	// 		await collection.forEach(doc => {
 	// 			clearId.push(doc.id)
 	// 		})
 	// 			return clearId
 	// 	} catch (error) {
-  //     console.error(error);
+	//     console.error(error);
 	// 	}
 	// }
 
