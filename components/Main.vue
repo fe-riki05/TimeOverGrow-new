@@ -19,13 +19,11 @@
 
 <script>
 	import MessageModel from '../models/Message'
-	import { dbMessages } from '../plugins/firebase'
 	import TotalTime from './TotalTime'
 	import Chart from './Chart'
 	import TextBox from './TextBox'
 	import Spinner from './Spinner'
 	import MessageList from './MessageList'
-	
 
 	export default {
 		components: {
@@ -43,8 +41,7 @@
 				done: false,
 				messages: [],
 				vuechartData: [0],
-				// BarChartData: {},
-				options: {},
+				// options: {},
 				times: 0,
 				initialLoaded: false,
 				BarChartData: {
@@ -54,44 +51,44 @@
 							label: ['学習時間'],
 							data: [0],
 							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)'],
-						},
+							borderColor: ['rgba(54, 162, 235, 1)']
+						}
 					]
 				},
-        BarChartOptions: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            xAxes: [
-              {
-                stacked: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: '',
-                }
-              }
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  max: 1000,
-                  stepSize: 100,
-                  callback(label, index, labels) {
-                    return label + ' h'
-                  }
-                }
-              }
-            ]
-          },
-          tooltips: {
-            callbacks: {
-              label(tooltipItem, data) {
-                return tooltipItem.yLabel + ' h'
-              }
-            }
-          }
-        }
+				BarChartOptions: {
+					responsive: true,
+					maintainAspectRatio: false,
+					scales: {
+						xAxes: [
+							{
+								stacked: true,
+								scaleLabel: {
+									display: true,
+									labelString: ''
+								}
+							}
+						],
+						yAxes: [
+							{
+								ticks: {
+									beginAtZero: true,
+									max: 1000,
+									stepSize: 100,
+									callback(label) {
+										return label + ' h'
+									}
+								}
+							}
+						]
+					},
+					tooltips: {
+						callbacks: {
+							label(tooltipItem) {
+								return tooltipItem.yLabel + ' h'
+							}
+						}
+					}
+				}
 			}
 		},
 		computed: {
@@ -99,14 +96,10 @@
 				return this.messages.slice().reverse()
 			}
 		},
-		// async mounted() {
-		// 	await this.add(this.message)
-		// },
 		async created() {
 			const messages = await this.fetchMessages()
 			const times = await this.totalTime()
 			const vuechartData = await this.getChart()
-
 
 			this.messages = messages
 			this.times = times
@@ -142,39 +135,34 @@
 				this.messages.push(message)
 				this.times += message.time
 				this.BarChartData.datasets[0].data[0] += message.time
-
-				console.log(message.time);
-				console.log(this.BarChartData.datasets[0].data[0]);
 			},
 			async fetchMessages() {
-				let messages = []
 				try {
+					let messages = []
 					messages = await MessageModel.fetchMessages()
+					return messages
 				} catch (error) {
 					alert(error.message)
 				}
-
-				return messages
 			},
 			async totalTime() {
-				let times = 0
 				try {
-					times += await MessageModel.dbtime()
+					let times = 0
+					const time = await MessageModel.dbtime()
+					times += time
+					return times
 				} catch (error) {
 					alert(error.message)
 				}
-
-				return times
 			},
 			async getChart() {
 				try {
-					this.BarChartData.datasets[0].data[0] += await MessageModel.dbtime()
-					console.log(this.BarChartData.datasets[0].data[0]);
+					const time = await MessageModel.dbtime()
+					this.BarChartData.datasets[0].data[0] += time
+					return this.BarChartData.datasets[0].data[0]
 				} catch (error) {
-					console.error(error.message)
+					alert(error.message)
 				}
-
-				return this.BarChartData.datasets[0].data[0]
 			}
 		}
 	}

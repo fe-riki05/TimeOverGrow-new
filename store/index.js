@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vue from 'vue'
+// import Vuex from 'vuex'
 import { auth } from '../plugins/firebase'
 
-Vue.use(Vuex)
+// Vue.use(Vuex)
 
 export const strict = false
 
@@ -27,6 +27,10 @@ export const actions = {
 
 	signInWithGoogle({ commit }) {
 		return auth().signInWithPopup(new auth.GoogleAuthProvider())
+	},
+
+	signInWithGuest({ commit }) {
+		return auth().signInAnonymously()
 	},
 
 	signOut() {

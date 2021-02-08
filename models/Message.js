@@ -37,19 +37,19 @@ class Message {
 		return model
 	}
 
-	static async clear() {
-		const clearId = []
-		const uid = firebase.auth().currentUser.uid
-		const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
-    try {
-			await collection.forEach(doc => {
-				clearId.push(doc.id)
-			})
-				return clearId
-		} catch (error) {
-      console.error(error);
-		}
-	}
+	// static async clear() {
+	// 	const clearId = []
+	// 	const uid = firebase.auth().currentUser.uid
+	// 	const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get()
+	//   try {
+	// 		await collection.forEach(doc => {
+	// 			clearId.push(doc.id)
+	// 		})
+	// 			return clearId
+	// 	} catch (error) {
+	//     console.error(error);
+	// 	}
+	// }
 
 	static async fetchMessages() {
 		const uid = firebase.auth().currentUser.uid
@@ -74,8 +74,8 @@ class Message {
 	}
 
 	static async dbtime() {
-		const uid = firebase.auth().currentUser.uid
 		try {
+			const uid = firebase.auth().currentUser.uid
 			const querySnapshot = await dbMessages.where('uid', '==', uid).get()
 			let totaltime = 0
 			querySnapshot.forEach(postDoc => {
