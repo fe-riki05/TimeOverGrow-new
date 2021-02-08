@@ -1,9 +1,10 @@
-# <TimeOverGrow>
+# TimeOverGrow
 
-<アプリひとこと説明>
+毎日の学習を継続させる為の3日坊主防止アプリです。
+
 下記ページで公開中です。
 <アプリ URL>
-​
+https://timeovergrow-d76f5.web.app/
 
 ## アプリ概要
 
