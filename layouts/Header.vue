@@ -10,7 +10,7 @@
 				<v-btn icon> </v-btn>
 				<v-app-bar-nav-icon class="float-right" @click="drawer = true"></v-app-bar-nav-icon>
 			</v-app-bar>
-			<v-navigation-drawer v-model="drawer" absolute temporary>
+			<v-navigation-drawer v-model="drawer" absolute temporary right>
 				<v-list nav dense>
 					<v-list-item-group v-model="group" active-class="deep-grey--text text--accent-4">
 						<v-list-item color="grey darken-3" @click="signOut">
