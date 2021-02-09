@@ -104,10 +104,13 @@
 			this.messages = messages
 			this.times = times
 
-			if (this.vuechartData.length === 0) {
-				this.vuechartData.push(vuechartData)
+			if (this.BarChartData.datasets[0].data.length === 0) {
+				this.BarChartData.datasets[0].data.push(vuechartData[0])
 			}
+			console.log(this.BarChartData.datasets[0].data[0])
+			console.log(vuechartData)
 			this.BarChartData.datasets[0].data[0] = vuechartData[0]
+			// this.vuechartData[0] = vuechartData[0]
 			this.initialLoaded = true
 		},
 
@@ -135,19 +138,27 @@
 			// 		alert('削除する積み上げがありません。。。')
 			// 	}
 			// },
-			async add(message) {
+			add(message) {
 				this.messages.push(message)
 				this.times += message.time
 
-				const chartdbtime = await MessageModel.dbtime()
-				if (this.vuechartData.length === 0) {
-					this.vuechartData.push(chartdbtime)
+				const chartdbtime = message.time
+				if (this.BarChartData.datasets[0].data.length === 0) {
+					this.BarChartData.datasets[0].data.push(chartdbtime)
 				}
+
+				console.log(this.BarChartData.datasets[0].data[0])
+				console.log(this.vuechartData[0])
+
+				this.BarChartData.datasets[0].data[0] += chartdbtime
+				this.vuechartData[0] += chartdbtime
+
+				console.log('ここからクリックイベント')
 				console.log(chartdbtime)
 				console.log(this.BarChartData.datasets[0].data[0])
 				console.log(this.vuechartData)
-				this.BarChartData.datasets[0].data[0] = chartdbtime
-				this.vuechartData[0] = chartdbtime
+				console.log(this.vuechartData[0])
+				console.log('ここで終了')
 			},
 			async fetchMessages() {
 				try {
@@ -171,10 +182,19 @@
 			async getChart() {
 				try {
 					const chartdbtime = await MessageModel.dbtime()
-					if (this.BarChartData.datasets[0].data[0] === 0) {
-						this.vuechartData.push(chartdbtime)
+
+					console.log('処理スタート')
+					console.log(chartdbtime)
+
+					if (this.BarChartData.datasets[0].data.length === 0) {
+						this.BarChartData.datasets[0].data.push(chartdbtime)
 					}
+
 					this.vuechartData[0] = chartdbtime
+					this.BarChartData.datasets[0].data[0] = chartdbtime
+
+					console.log(chartdbtime)
+					console.log(this.vuechartData)
 					return this.vuechartData
 				} catch (error) {
 					alert(error.message)
