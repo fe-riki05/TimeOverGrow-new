@@ -40,7 +40,7 @@
 				index: '',
 				done: false,
 				messages: [],
-				vuechartData: [0],
+				vuechartData: [],
 				// options: {},
 				times: 0,
 				initialLoaded: false,
@@ -49,7 +49,7 @@
 					datasets: [
 						{
 							label: ['学習時間'],
-							data: [0],
+							data: [],
 							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
 							borderColor: ['rgba(54, 162, 235, 1)']
 						}
@@ -103,7 +103,11 @@
 
 			this.messages = messages
 			this.times = times
-			this.vuechartData[0] = vuechartData[0]
+
+			if (this.vuechartData.length === 0) {
+				this.vuechartData.push(vuechartData)
+			}
+			this.BarChartData.datasets[0].data[0] = vuechartData[0]
 			this.initialLoaded = true
 		},
 
@@ -131,10 +135,19 @@
 			// 		alert('削除する積み上げがありません。。。')
 			// 	}
 			// },
-			add(message) {
+			async add(message) {
 				this.messages.push(message)
 				this.times += message.time
-				this.BarChartData.datasets[0].data[0] += message.time
+
+				const chartdbtime = await MessageModel.dbtime()
+				if (this.vuechartData.length === 0) {
+					this.vuechartData.push(chartdbtime)
+				}
+				console.log(chartdbtime)
+				console.log(this.BarChartData.datasets[0].data[0])
+				console.log(this.vuechartData)
+				this.BarChartData.datasets[0].data[0] = chartdbtime
+				this.vuechartData[0] = chartdbtime
 			},
 			async fetchMessages() {
 				try {
@@ -157,9 +170,12 @@
 			},
 			async getChart() {
 				try {
-					const time = await MessageModel.dbtime()
-					this.BarChartData.datasets[0].data[0] += time
-					return this.BarChartData.datasets[0].data[0]
+					const chartdbtime = await MessageModel.dbtime()
+					if (this.BarChartData.datasets[0].data[0] === 0) {
+						this.vuechartData.push(chartdbtime)
+					}
+					this.vuechartData[0] = chartdbtime
+					return this.vuechartData
 				} catch (error) {
 					alert(error.message)
 				}

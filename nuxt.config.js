@@ -27,10 +27,7 @@ export default {
 			}
 		]
 	},
-	plugins: [
-		'~/plugins/firebase.js',
-		'~/plugins/firebase.auth.js',
-	],
+	plugins: ['~/plugins/firebase.js', '~/plugins/firebase.auth.js'],
 	components: true,
 	buildModules: ['@nuxtjs/eslint-module'],
 	build: {
@@ -45,15 +42,15 @@ export default {
 				options: {
 					fix: true
 				}
-      }),
-      config.node = {
-        fs: "empty" 
-      }
+			}),
+				(config.node = {
+					fs: 'empty'
+				})
 		}
 	},
 	performance: {
 		hints: false
 	},
 	ssr: false,
-	target: 'server',
+	target: 'server'
 }
