@@ -35,6 +35,7 @@ mdi-check-outline
 	import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
 
+
 	export default {
 		props: {
 			time: {
@@ -67,9 +68,9 @@ mdi-check-outline
 			// 	required: true
 			// },
 			i: {
-				type: Number,
-				required: true
-			}
+      type: Number,
+      required: true
+    	}
 		},
 		methods: {
 			async onDelete() {
