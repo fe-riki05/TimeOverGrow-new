@@ -17,10 +17,9 @@
 <script>
 	import Message from './Message'
 
-
 	export default {
 		components: {
-			Message,
+			Message
 		},
 		props: {
 			messages: {
@@ -39,16 +38,16 @@
 						}
 						return true
 					})
-				},
+				}
 			}
 		},
 		methods: {
 			reload() {
-				this.$emit('reload'); // Main.vueのreloadで設定した関数の呼び出し
+				this.$emit('reload') // Main.vueのreloadで設定した関数の呼び出し
 			}
-  	}
+		}
 		// mounted() {
-			// console.log(message.tag);
+		// console.log(message.tag);
 		// }
 	}
 </script>

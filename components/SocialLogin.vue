@@ -33,7 +33,7 @@
 			</v-card>
 			<v-card>
 				<v-btn block class="mb-2 color text-capitalize" @click="guestLogin">
-					<v-icon class="notranslate v-icon--left theme--light">mdi-account</v-icon>
+					<v-icon class="notranslate v-icon--left theme--light"> mdi-account </v-icon>
 					ゲストログイン
 				</v-btn>
 			</v-card>
@@ -51,7 +51,7 @@
 					.dispatch('signInWithGoogle')
 					.then(() => {
 						this.$router.push({
-								name: 'index'
+							name: 'index'
 						})
 					})
 					.catch(() => {
@@ -63,38 +63,37 @@
 					.dispatch('signInWithGuest')
 					.then(() => {
 						this.$router.push({
-								name: 'index'
+							name: 'index'
 						})
 					})
 					.catch(() => {
-					console.error('現在Guestログインは使用できません。後ほどお試しください。')
-				})
+						console.error('現在Guestログインは使用できません。後ほどお試しください。')
+					})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-@mixin social_button($brand-color: #999,$text-color: #fff){
-    background-color: $brand-color !important;
-    border-color: $brand-color;
-    color: $text-color;
+	@mixin social_button($brand-color: #999, $text-color: #fff) {
+		background-color: $brand-color !important;
+		border-color: $brand-color;
+		color: $text-color;
 
-    @at-root {
-        #{&}__icon {
-            position: absolute;
-            left: 0;
-        }
-    }
-}
+		@at-root {
+			#{&}__icon {
+				position: absolute;
+				left: 0;
+			}
+		}
+	}
 
-.color {
-    @include social_button(#fff, #757575);
-    @at-root {
-        #{&}__icon > svg {
-            position: absolute;
-        }
-    }
-}
+	.color {
+		@include social_button(#fff, #757575);
+		@at-root {
+			#{&}__icon > svg {
+				position: absolute;
+			}
+		}
+	}
 </style>
-

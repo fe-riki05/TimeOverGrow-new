@@ -3,35 +3,28 @@
 		<div class="d-flex justify-space-between">
 			<div class="d-flex">
 				<p class="message-text mb-0 mr-3">{{ time }}時間</p>
-				<v-chip
-					v-for="(tags, index) in tag" :key="index"
-					color="primary"
-					class="mr-1"
-				>
-					<v-icon left>mdi-check-outline</v-icon>
+				<v-chip v-for="(tags, index) in tag" :key="index" color="primary" class="mr-1">
+					<v-icon left> mdi-check-outline </v-icon>
 					{{ tags }}
 				</v-chip>
 			</div>
-			<v-btn
-				color="success"
-				@click="onDelete()"
-			>
-				<v-icon>
-					mdi-trash-can-outline
-				</v-icon>
+			<v-btn color="success" @click="onDelete()">
+				<v-icon> mdi-trash-can-outline </v-icon>
 			</v-btn>
 		</div>
 
-		<p class="message-text mb-0">{{ body }}</p>
-		<div class="message-date">{{ date }}</div>
+		<p class="message-text mb-0">
+			{{ body }}
+		</p>
+		<div class="message-date">
+			{{ date }}
+		</div>
 	</v-card>
 </template>
 
 <script>
-// import firebase, { dbMessages , auth } from '../plugins/firebase'
-// import MessageModel from '../models/Message'
-
-
+	// import firebase, { dbMessages , auth } from '../plugins/firebase'
+	// import MessageModel from '../models/Message'
 
 	export default {
 		props: {
@@ -65,9 +58,9 @@
 			// 	required: true
 			// },
 			i: {
-      type: Number,
-      required: true
-    	}
+				type: Number,
+				required: true
+			}
 		},
 		methods: {
 			// async onDelete() {
@@ -79,7 +72,7 @@
 			// 		}
 			// 		await dbMessages.doc(docId[id]).delete()
 			// 		console.log(await MessageModel.dbtime());
-			// 		this.$emit('reload'); 
+			// 		this.$emit('reload');
 			// 	} catch (error) {
 			// 		console.error(error)
 			// 	}

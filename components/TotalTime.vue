@@ -38,5 +38,4 @@
 	.times {
 		font-weight: 900;
 	}
-
 </style>
