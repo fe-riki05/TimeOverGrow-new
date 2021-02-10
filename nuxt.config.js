@@ -32,7 +32,21 @@ export default {
 	buildModules: ['@nuxtjs/eslint-module'],
 	build: {
 		publicPath: '/assets/',
-		buildDir: 'nuxt-dist'
+		buildDir: 'nuxt-dist',
+		extend(config, ctx) {
+			// Run ESLint on save
+			if (ctx.isDev && ctx.isClient) {
+				config.module.rules.push({
+					enforce: 'pre',
+					test: /\.(js|vue)$/,
+					loader: 'eslint-loader',
+					exclude: /(node_modules)/,
+					options: {
+						fix: true
+					}
+				});
+			}
+		}
 		// extend(config, ctx) {
 		// 	config.module.rules.push({
 		// 		enforce: 'pre',
@@ -53,4 +67,4 @@ export default {
 	},
 	ssr: false,
 	target: 'server'
-}
+};

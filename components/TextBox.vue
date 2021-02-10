@@ -11,9 +11,17 @@
 						min="0.25"
 						step="0.25"
 						placeholder="3"
-					/>時間
+					/>
+					時間
 					<p>今日のアウトプット内容</p>
-					<v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips></v-combobox>
+					<v-combobox
+						v-model.trim="select"
+						multiple
+						label="Tags"
+						append-icon
+						chips
+						deletable-chips
+					/>
 				</div>
 				<!-- <div>
 					<ButtonDelete
@@ -35,15 +43,19 @@
 				row-height="100"
 			></v-textarea>
 			<div class="button">
-				<AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
+				<AddButton
+					title="今日の学習内容送信！！！"
+					:on-add="add"
+					:clickable="canPost"
+				/>
 			</div>
 		</client-only>
 	</div>
 </template>
 
 <script>
-	import MessageModel from '../models/Message'
-	import AddButton from './AddButton'
+	import MessageModel from '../models/Message';
+	import AddButton from './AddButton';
 	// import ButtonDelete from './ButtonDelete'
 
 	export default {
@@ -67,7 +79,7 @@
 				body: '',
 				canPost: true,
 				select: []
-			}
+			};
 		},
 		methods: {
 			// updateTags() {
@@ -89,26 +101,26 @@
 			// 	this.canPost = true
 			// },
 			async add() {
-				this.canPost = false
+				this.canPost = false;
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
 						tag: this.select
-					})
+					});
 
-					this.onAdd(message)
+					this.onAdd(message);
 
-					this.time = 0
-					this.body = ''
-					this.select = ''
+					this.time = 0;
+					this.body = '';
+					this.select = '';
 				} catch (error) {
-					alert(error.message)
+					alert(error.message);
 				}
-				this.canPost = true
+				this.canPost = true;
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped>

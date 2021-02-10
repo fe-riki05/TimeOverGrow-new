@@ -8,19 +8,17 @@
 				:date="message.date"
 				:tag="message.tag"
 				:i="index"
-				@reload="reload()"
 			/>
 		</template>
 	</div>
 </template>
 
 <script>
-	import Message from './Message'
-
+	import Message from './Message';
 
 	export default {
 		components: {
-			Message,
+			Message
 		},
 		props: {
 			messages: {
@@ -29,26 +27,18 @@
 				validator(messages) {
 					return messages.every(message => {
 						if (typeof message.time !== 'number') {
-							return false
+							return false;
 						}
 						if (typeof message.date !== 'string') {
-							return false
+							return false;
 						}
 						if (typeof message.body !== 'string') {
-							return false
+							return false;
 						}
-						return true
-					})
-				},
+						return true;
+					});
+				}
 			}
-		},
-		methods: {
-			reload() {
-				this.$emit('reload'); // Main.vueのreloadで設定した関数の呼び出し
-			}
-  	}
-		// mounted() {
-			// console.log(message.tag);
-		// }
-	}
+		}
+	};
 </script>
