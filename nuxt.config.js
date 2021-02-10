@@ -34,23 +34,38 @@ export default {
 		publicPath: '/assets/',
 		buildDir: 'nuxt-dist',
 		extend(config, ctx) {
-			config.module.rules.push({
-				enforce: 'pre',
-				test: /\.(js|vue)$/,
-				loader: 'eslint-loader',
-				exclude: /(node_modules)/,
-				options: {
-					fix: true
-				}
-			}),
-				(config.node = {
-					fs: 'empty'
-				})
+			// Run ESLint on save
+			if (ctx.isDev && ctx.isClient) {
+				config.module.rules.push({
+					enforce: 'pre',
+					test: /\.(js|vue)$/,
+					loader: 'eslint-loader',
+					exclude: /(node_modules)/,
+					options: {
+						fix: true
+					}
+				});
+			}
 		}
+		// extend(config, ctx) {
+		// 	config.module.rules.push({
+		// 		enforce: 'pre',
+		// 		test: /\.(js|vue)$/,
+		// 		loader: 'eslint-loader',
+		// 		exclude: /(node_modules)/,
+		// 		options: {
+		// 			fix: true
+		// 		}
+		// 	}),
+		// 		(config.node = {
+		// 			fs: 'empty'
+		// 		})
+		// }
+
 	},
 	performance: {
 		hints: false
 	},
 	ssr: false,
 	target: 'server'
-}
+};

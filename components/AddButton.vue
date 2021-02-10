@@ -33,7 +33,7 @@
 				default: true
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped>
