@@ -151,19 +151,7 @@
 				console.log(this.vuechartData[0])
 
 				this.BarChartData.datasets[0].data[0] += chartdbtime
-				// this.vuechartData[0] += chartdbtime
-
-				// もう1度作り直さないといけない。
-				this.BarChartData = {
-					datasets: [
-						{
-							label: ['学習時間'],
-							data: [this.vuechartData[0] + chartdbtime],
-							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)']
-						}
-					]
-				}
+				this.vuechartData[0] += chartdbtime
 
 				console.log('ここからクリックイベント')
 				console.log(chartdbtime)
