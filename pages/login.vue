@@ -7,6 +7,11 @@
 				</h2>
 				<v-row>
 					<v-col>
+<<<<<<< HEAD
+						<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
+							<v-tab to="/login"> ログイン </v-tab>
+							<v-tab to="/register"> アカウント登録 </v-tab>
+=======
 						<v-tabs
 							v-model="tab"
 							background-color="transparent"
@@ -20,6 +25,7 @@
 							<v-tab to="/register">
 アカウント登録
 </v-tab>
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 						</v-tabs>
 
 						<v-row>

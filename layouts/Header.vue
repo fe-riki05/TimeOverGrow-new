@@ -12,10 +12,7 @@
 			</v-app-bar>
 			<v-navigation-drawer v-model="drawer" absolute temporary right>
 				<v-list nav dense>
-					<v-list-item-group
-						v-model="group"
-						active-class="deep-grey--text text--accent-4"
-					>
+					<v-list-item-group v-model="group" active-class="deep-grey--text text--accent-4">
 						<v-list-item color="grey darken-3" @click="signOut">
 							<v-list-item-icon>
 								<v-icon>mdi-arrow-left-bold</v-icon>
@@ -37,7 +34,7 @@
 				title: 'TimeOverGrow',
 				drawer: false,
 				group: null
-			};
+			}
 		},
 		methods: {
 			signOut() {
@@ -46,14 +43,14 @@
 					.then(() => {
 						this.$router.push({
 							name: 'login'
-						});
+						})
 					})
 					.catch(err => {
-						alert(err.message);
-					});
+						alert(err.message)
+					})
 			}
 		}
-	};
+	}
 </script>
 
 <style scoped>

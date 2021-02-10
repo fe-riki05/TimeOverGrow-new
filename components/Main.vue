@@ -11,21 +11,19 @@
 			</v-row>
 			<TextBox :on-add="add" class="container" />
 			<Spinner v-if="!initialLoaded" class="container" />
-			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">
-				毎日の積み上げ0件
-			</p>
+			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
 			<MessageList :messages="reversedMessages" class="container" />
 		</client-only>
 	</div>
 </template>
 
 <script>
-	import MessageModel from '../models/Message';
-	import TotalTime from './TotalTime';
-	import Chart from './Chart';
-	import TextBox from './TextBox';
-	import Spinner from './Spinner';
-	import MessageList from './MessageList';
+	import MessageModel from '../models/Message'
+	import TotalTime from './TotalTime'
+	import Chart from './Chart'
+	import TextBox from './TextBox'
+	import Spinner from './Spinner'
+	import MessageList from './MessageList'
 
 	export default {
 		components: {
@@ -77,7 +75,7 @@
 									max: 1000,
 									stepSize: 100,
 									callback(label) {
-										return label + ' h';
+										return label + ' h'
 									}
 								}
 							}
@@ -86,34 +84,34 @@
 					tooltips: {
 						callbacks: {
 							label(tooltipItem) {
-								return tooltipItem.yLabel + ' h';
+								return tooltipItem.yLabel + ' h'
 							}
 						}
 					}
 				}
-			};
+			}
 		},
 		computed: {
 			reversedMessages() {
-				return this.messages.slice().reverse();
+				return this.messages.slice().reverse()
 			}
 		},
 		async created() {
-			const messages = await this.fetchMessages();
-			const times = await this.totalTime();
-			const vuechartData = await this.getChart();
+			const messages = await this.fetchMessages()
+			const times = await this.totalTime()
+			const vuechartData = await this.getChart()
 
-			this.messages = messages;
-			this.times = times;
+			this.messages = messages
+			this.times = times
 
 			if (this.BarChartData.datasets[0].data.length === 0) {
-				this.BarChartData.datasets[0].data.push(vuechartData[0]);
+				this.BarChartData.datasets[0].data.push(vuechartData[0])
 			}
-			console.log(this.BarChartData.datasets[0].data[0]);
-			console.log(vuechartData);
-			this.BarChartData.datasets[0].data[0] = vuechartData[0];
+			console.log(this.BarChartData.datasets[0].data[0])
+			console.log(vuechartData)
+			this.BarChartData.datasets[0].data[0] = vuechartData[0]
 			// this.vuechartData[0] = vuechartData[0]
-			this.initialLoaded = true;
+			this.initialLoaded = true
 		},
 
 		methods: {
@@ -141,18 +139,18 @@
 			// 	}
 			// },
 			add(message) {
-				this.messages.push(message);
-				this.times += message.time;
+				this.messages.push(message)
+				this.times += message.time
 
-				const chartdbtime = message.time;
+				const chartdbtime = message.time
 				if (this.BarChartData.datasets[0].data.length === 0) {
-					this.BarChartData.datasets[0].data.push(chartdbtime);
+					this.BarChartData.datasets[0].data.push(chartdbtime)
 				}
 
-				console.log(this.BarChartData.datasets[0].data[0]);
-				console.log(this.vuechartData[0]);
+				console.log(this.BarChartData.datasets[0].data[0])
+				console.log(this.vuechartData[0])
 
-				this.BarChartData.datasets[0].data[0] += chartdbtime;
+				this.BarChartData.datasets[0].data[0] += chartdbtime
 				// this.vuechartData[0] += chartdbtime
 
 				// もう1度作り直さないといけない。
@@ -165,57 +163,57 @@
 							borderColor: ['rgba(54, 162, 235, 1)']
 						}
 					]
-				};
+				}
 
-				console.log('ここからクリックイベント');
-				console.log(chartdbtime);
-				console.log(this.BarChartData.datasets[0].data[0]);
-				console.log(this.vuechartData);
-				console.log(this.vuechartData[0]);
-				console.log('ここで終了');
+				console.log('ここからクリックイベント')
+				console.log(chartdbtime)
+				console.log(this.BarChartData.datasets[0].data[0])
+				console.log(this.vuechartData)
+				console.log(this.vuechartData[0])
+				console.log('ここで終了')
 			},
 			async fetchMessages() {
 				try {
-					let messages = [];
-					messages = await MessageModel.fetchMessages();
-					return messages;
+					let messages = []
+					messages = await MessageModel.fetchMessages()
+					return messages
 				} catch (error) {
-					alert(error.message);
+					alert(error.message)
 				}
 			},
 			async totalTime() {
 				try {
-					let times = 0;
-					const time = await MessageModel.dbtime();
-					times += time;
-					return times;
+					let times = 0
+					const time = await MessageModel.dbtime()
+					times += time
+					return times
 				} catch (error) {
-					alert(error.message);
+					alert(error.message)
 				}
 			},
 			async getChart() {
 				try {
-					const chartdbtime = await MessageModel.dbtime();
+					const chartdbtime = await MessageModel.dbtime()
 
-					console.log('処理スタート');
-					console.log(chartdbtime);
+					console.log('処理スタート')
+					console.log(chartdbtime)
 
 					if (this.BarChartData.datasets[0].data.length === 0) {
-						this.BarChartData.datasets[0].data.push(chartdbtime);
+						this.BarChartData.datasets[0].data.push(chartdbtime)
 					}
 
-					this.vuechartData[0] = chartdbtime;
-					this.BarChartData.datasets[0].data[0] = chartdbtime;
+					this.vuechartData[0] = chartdbtime
+					this.BarChartData.datasets[0].data[0] = chartdbtime
 
-					console.log(chartdbtime);
-					console.log(this.vuechartData);
-					return this.vuechartData;
+					console.log(chartdbtime)
+					console.log(this.vuechartData)
+					return this.vuechartData
 				} catch (error) {
-					alert(error.message);
+					alert(error.message)
 				}
 			}
 		}
-	};
+	}
 </script>
 
 <style scoped>

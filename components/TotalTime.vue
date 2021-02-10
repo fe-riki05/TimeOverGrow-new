@@ -4,9 +4,7 @@
 			<v-card max-width="374" style="margin: 0 auto">
 				<v-img height="350" :src="image_src" />
 				<div class="totaltime">
-					<p class="times_text">
-これまでのトータル学習時間は
-</p>
+					<p class="times_text">これまでのトータル学習時間は</p>
 					<span class="times">{{ times }}時間</span>
 				</div>
 			</v-card>
@@ -25,9 +23,9 @@
 		data() {
 			return {
 				image_src: require('@/assets/Upgrade.png')
-			};
+			}
 		}
-	};
+	}
 </script>
 
 <style scoped>

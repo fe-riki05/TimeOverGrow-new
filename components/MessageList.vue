@@ -14,7 +14,11 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+	import Message from './Message'
+=======
 	import Message from './Message';
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 
 	export default {
 		components: {
@@ -35,10 +39,27 @@
 						if (typeof message.body !== 'string') {
 							return false;
 						}
+<<<<<<< HEAD
+						return true
+					})
+				}
+			}
+		},
+		methods: {
+			reload() {
+				this.$emit('reload') // Main.vueのreloadで設定した関数の呼び出し
+			}
+		}
+		// mounted() {
+		// console.log(message.tag);
+		// }
+	}
+=======
 						return true;
 					});
 				}
 			}
 		}
 	};
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 </script>

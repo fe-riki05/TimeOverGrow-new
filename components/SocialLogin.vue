@@ -37,9 +37,13 @@
 			</v-card>
 			<v-card>
 				<v-btn block class="mb-2 color text-capitalize" @click="guestLogin">
+<<<<<<< HEAD
+					<v-icon class="notranslate v-icon--left theme--light"> mdi-account </v-icon>
+=======
 					<v-icon class="notranslate v-icon--left theme--light">
 						mdi-account
 					</v-icon>
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 					ゲストログイン
 				</v-btn>
 			</v-card>
@@ -56,7 +60,11 @@
 					.then(() => {
 						this.$router.push({
 							name: 'index'
+<<<<<<< HEAD
+						})
+=======
 						});
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 					})
 					.catch(() => {
 						console.error(
@@ -70,6 +78,13 @@
 					.then(() => {
 						this.$router.push({
 							name: 'index'
+<<<<<<< HEAD
+						})
+					})
+					.catch(() => {
+						console.error('現在Guestログインは使用できません。後ほどお試しください。')
+					})
+=======
 						});
 					})
 					.catch(() => {
@@ -77,6 +92,7 @@
 							'現在Guestログインは使用できません。後ほどお試しください。'
 						);
 					});
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 			}
 		}
 	};
