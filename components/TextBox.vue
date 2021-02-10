@@ -11,9 +11,10 @@
 						min="0.25"
 						step="0.25"
 						placeholder="3"
-					/>時間
+					/>
+					時間
 					<p>今日のアウトプット内容</p>
-					<v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips></v-combobox>
+					<v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips />
 				</div>
 				<!-- <div>
 					<ButtonDelete

@@ -2,7 +2,7 @@
 	<div>
 		<client-only>
 			<v-card max-width="374" style="margin: 0 auto">
-				<v-img height="350" :src="image_src"></v-img>
+				<v-img height="350" :src="image_src" />
 				<div class="totaltime">
 					<p class="times_text">これまでのトータル学習時間は</p>
 					<span class="times">{{ times }}時間</span>

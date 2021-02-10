@@ -8,14 +8,17 @@
 				:date="message.date"
 				:tag="message.tag"
 				:i="index"
-				@reload="reload()"
 			/>
 		</template>
 	</div>
 </template>
 
 <script>
+<<<<<<< HEAD
 	import Message from './Message'
+=======
+	import Message from './Message';
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 
 	export default {
 		components: {
@@ -28,14 +31,15 @@
 				validator(messages) {
 					return messages.every(message => {
 						if (typeof message.time !== 'number') {
-							return false
+							return false;
 						}
 						if (typeof message.date !== 'string') {
-							return false
+							return false;
 						}
 						if (typeof message.body !== 'string') {
-							return false
+							return false;
 						}
+<<<<<<< HEAD
 						return true
 					})
 				}
@@ -50,4 +54,12 @@
 		// console.log(message.tag);
 		// }
 	}
+=======
+						return true;
+					});
+				}
+			}
+		}
+	};
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 </script>

@@ -35,11 +35,11 @@
 				default: true
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped>
 	.disabled {
-    opacity: 0.3;
+		opacity: 0.3;
 	}
 </style>

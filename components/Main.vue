@@ -40,7 +40,7 @@
 				index: '',
 				done: false,
 				messages: [],
-				vuechartData: [0],
+				vuechartData: [],
 				// options: {},
 				times: 0,
 				initialLoaded: false,
@@ -49,7 +49,7 @@
 					datasets: [
 						{
 							label: ['学習時間'],
-							data: [0],
+							data: [],
 							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
 							borderColor: ['rgba(54, 162, 235, 1)']
 						}
@@ -103,7 +103,14 @@
 
 			this.messages = messages
 			this.times = times
-			this.vuechartData[0] = vuechartData[0]
+
+			if (this.BarChartData.datasets[0].data.length === 0) {
+				this.BarChartData.datasets[0].data.push(vuechartData[0])
+			}
+			console.log(this.BarChartData.datasets[0].data[0])
+			console.log(vuechartData)
+			this.BarChartData.datasets[0].data[0] = vuechartData[0]
+			// this.vuechartData[0] = vuechartData[0]
 			this.initialLoaded = true
 		},
 
@@ -134,7 +141,36 @@
 			add(message) {
 				this.messages.push(message)
 				this.times += message.time
-				this.BarChartData.datasets[0].data[0] += message.time
+
+				const chartdbtime = message.time
+				if (this.BarChartData.datasets[0].data.length === 0) {
+					this.BarChartData.datasets[0].data.push(chartdbtime)
+				}
+
+				console.log(this.BarChartData.datasets[0].data[0])
+				console.log(this.vuechartData[0])
+
+				this.BarChartData.datasets[0].data[0] += chartdbtime
+				// this.vuechartData[0] += chartdbtime
+
+				// もう1度作り直さないといけない。
+				this.BarChartData = {
+					datasets: [
+						{
+							label: ['学習時間'],
+							data: [this.vuechartData[0] + chartdbtime],
+							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+							borderColor: ['rgba(54, 162, 235, 1)']
+						}
+					]
+				}
+
+				console.log('ここからクリックイベント')
+				console.log(chartdbtime)
+				console.log(this.BarChartData.datasets[0].data[0])
+				console.log(this.vuechartData)
+				console.log(this.vuechartData[0])
+				console.log('ここで終了')
 			},
 			async fetchMessages() {
 				try {
@@ -157,9 +193,21 @@
 			},
 			async getChart() {
 				try {
-					const time = await MessageModel.dbtime()
-					this.BarChartData.datasets[0].data[0] += time
-					return this.BarChartData.datasets[0].data[0]
+					const chartdbtime = await MessageModel.dbtime()
+
+					console.log('処理スタート')
+					console.log(chartdbtime)
+
+					if (this.BarChartData.datasets[0].data.length === 0) {
+						this.BarChartData.datasets[0].data.push(chartdbtime)
+					}
+
+					this.vuechartData[0] = chartdbtime
+					this.BarChartData.datasets[0].data[0] = chartdbtime
+
+					console.log(chartdbtime)
+					console.log(this.vuechartData)
+					return this.vuechartData
 				} catch (error) {
 					alert(error.message)
 				}

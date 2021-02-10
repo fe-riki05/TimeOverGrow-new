@@ -4,7 +4,11 @@
 			<v-card>
 				<v-btn block class="color text-capitalize mb-2" @click="googleLogin">
 					<span class="color-google__icon v-icon notranslate v-icon--left">
-						<svg enable-background="new 0 0 46 46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+						<svg
+							enable-background="new 0 0 46 46"
+							viewBox="0 0 46 46"
+							xmlns="http://www.w3.org/2000/svg"
+						>
 							<g transform="translate(14 14)">
 								<g clip-rule="evenodd" fill-rule="evenodd">
 									<path
@@ -33,7 +37,13 @@
 			</v-card>
 			<v-card>
 				<v-btn block class="mb-2 color text-capitalize" @click="guestLogin">
+<<<<<<< HEAD
 					<v-icon class="notranslate v-icon--left theme--light"> mdi-account </v-icon>
+=======
+					<v-icon class="notranslate v-icon--left theme--light">
+						mdi-account
+					</v-icon>
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 					ゲストログイン
 				</v-btn>
 			</v-card>
@@ -42,8 +52,6 @@
 </template>
 
 <script>
-	import { auth } from '../plugins/firebase.js'
-
 	export default {
 		methods: {
 			googleLogin() {
@@ -52,11 +60,17 @@
 					.then(() => {
 						this.$router.push({
 							name: 'index'
+<<<<<<< HEAD
 						})
+=======
+						});
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 					})
 					.catch(() => {
-						console.error('現在Googleでのログインは使用できません。後ほどお試しください。')
-					})
+						console.error(
+							'現在Googleでのログインは使用できません。後ほどお試しください。'
+						);
+					});
 			},
 			guestLogin() {
 				this.$store
@@ -64,14 +78,24 @@
 					.then(() => {
 						this.$router.push({
 							name: 'index'
+<<<<<<< HEAD
 						})
 					})
 					.catch(() => {
 						console.error('現在Guestログインは使用できません。後ほどお試しください。')
 					})
+=======
+						});
+					})
+					.catch(() => {
+						console.error(
+							'現在Guestログインは使用できません。後ほどお試しください。'
+						);
+					});
+>>>>>>> ca57608e26590f317a528f326b62ecf182f82cb2
 			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss" scoped>

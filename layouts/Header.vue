@@ -6,11 +6,11 @@
 					<v-icon>mdi-timer-sand</v-icon>
 					{{ title }}
 				</v-toolbar-title>
-				<v-spacer></v-spacer>
-				<v-btn icon> </v-btn>
-				<v-app-bar-nav-icon class="float-right" @click="drawer = true"></v-app-bar-nav-icon>
+				<v-spacer />
+				<v-btn icon />
+				<v-app-bar-nav-icon class="float-right" @click="drawer = true" />
 			</v-app-bar>
-			<v-navigation-drawer v-model="drawer" absolute temporary>
+			<v-navigation-drawer v-model="drawer" absolute temporary right>
 				<v-list nav dense>
 					<v-list-item-group v-model="group" active-class="deep-grey--text text--accent-4">
 						<v-list-item color="grey darken-3" @click="signOut">
