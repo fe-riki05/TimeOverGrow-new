@@ -1,22 +1,29 @@
 <template>
-	<div class="textbox-container">
-		<client-only>
-			<div class="d-flex justify-space-between">
-				<div>
-					<input
-						v-model.trim="time"
-						class="textbox-input"
-						type="number"
-						max="24"
-						min="0.25"
-						step="0.25"
-						placeholder="3"
-					/>
-					時間
-					<p>今日のアウトプット内容</p>
-					<v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips />
-				</div>
-				<!-- <div>
+  <div class="textbox-container">
+    <client-only>
+      <div class="d-flex justify-space-between">
+        <div>
+          <input
+            v-model.trim="time"
+            class="textbox-input"
+            type="number"
+            max="24"
+            min="0.25"
+            step="0.25"
+            placeholder="3"
+          >
+          時間
+          <p>今日のアウトプット内容</p>
+          <v-combobox
+            v-model.trim="select"
+            multiple
+            label="Tags"
+            append-icon
+            chips
+            deletable-chips
+          />
+        </div>
+        <!-- <div>
 					<ButtonDelete
 					title="削除"
 					:on-delete="clear"
@@ -24,27 +31,27 @@
 					:clickable="canPost"
 					/>
 				</div> -->
-			</div>
-			<v-textarea
-				v-model.trim="body"
-				class="textbox-area"
-				label="JavaScriptの非同期処理(async,await)について学びました。"
-				flat
-				auto-grow
-				outlined
-				rows="1"
-				row-height="100"
-			></v-textarea>
-			<div class="button">
-				<AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
-			</div>
-		</client-only>
-	</div>
+      </div>
+      <v-textarea
+        v-model.trim="body"
+        class="textbox-area"
+        label="JavaScriptの非同期処理(async,await)について学びました。"
+        flat
+        auto-grow
+        outlined
+        rows="1"
+        row-height="100"
+      />
+      <div class="button">
+        <AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
+      </div>
+    </client-only>
+  </div>
 </template>
 
 <script>
-	import MessageModel from '../models/Message'
-	import AddButton from './AddButton'
+	import MessageModel from '../models/Message';
+	import AddButton from './AddButton';
 	// import ButtonDelete from './ButtonDelete'
 
 	export default {
@@ -68,7 +75,7 @@
 				body: '',
 				canPost: true,
 				select: []
-			}
+			};
 		},
 		methods: {
 			// updateTags() {
@@ -90,26 +97,26 @@
 			// 	this.canPost = true
 			// },
 			async add() {
-				this.canPost = false
+				this.canPost = false;
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
 						tag: this.select
-					})
+					});
 
-					this.onAdd(message)
+					this.onAdd(message);
 
-					this.time = 0
-					this.body = ''
-					this.select = ''
+					this.time = 0;
+					this.body = '';
+					this.select = '';
 				} catch (error) {
-					alert(error.message)
+					alert(error.message);
 				}
-				this.canPost = true
+				this.canPost = true;
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped>

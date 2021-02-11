@@ -1,20 +1,22 @@
 <template>
-	<div>
-		<client-only>
-			<v-row class="container d-flex justify-center">
-				<v-col cols="12" sm="6" md="5" class="p-0">
-					<TotalTime :times="times" />
-				</v-col>
-				<v-col v-if="initialLoaded" cols="12" sm="6" md="7" class="p-0">
-					<Chart :chart-data="BarChartData" :options="BarChartOptions" />
-				</v-col>
-			</v-row>
-			<TextBox :on-add="add" class="container" />
-			<Spinner v-if="!initialLoaded" class="container" />
-			<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">毎日の積み上げ0件</p>
-			<MessageList :messages="reversedMessages" class="container" />
-		</client-only>
-	</div>
+  <div>
+    <client-only>
+      <v-row class="container d-flex justify-center">
+        <v-col cols="12" sm="6" md="5" class="p-0">
+          <TotalTime :times="times" />
+        </v-col>
+        <v-col v-if="initialLoaded" cols="12" sm="6" md="7" class="p-0">
+          <Chart :chart-data="BarChartData" :options="BarChartOptions" />
+        </v-col>
+      </v-row>
+      <TextBox :on-add="add" class="container" />
+      <Spinner v-if="!initialLoaded" class="container" />
+      <p v-else-if="initialLoaded && messages.length === 0" class="no-messages">
+        毎日の積み上げ0件
+      </p>
+      <MessageList :messages="reversedMessages" class="container" />
+    </client-only>
+  </div>
 </template>
 
 <script>

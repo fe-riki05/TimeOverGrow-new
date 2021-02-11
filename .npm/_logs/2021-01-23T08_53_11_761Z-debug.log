@@ -1,0 +1,26 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   '/app/.nuxt/client.js'
+1 verbose cli ]
+2 info using npm@6.14.8
+3 info using node@v14.15.1
+4 verbose config Skipping project config: /app/.npmrc. (matches userconfig)
+5 verbose npm-session bf50557bae06e6cd
+6 silly install loadCurrentTree
+7 silly install readLocalPackageData
+8 silly fetchPackageMetaData error for file:/app/.nuxt/client.js Could not install ".nuxt/client.js" as it is not a directory and is not a file with a name ending in .tgz, .tar.gz or .tar
+9 timing stage:rollbackFailedOptional Completed in 1ms
+10 timing stage:runTopLevelLifecycles Completed in 10290ms
+11 verbose stack Error: ENOTDIR: not a directory, open '/app/.nuxt/client.js/package.json'
+12 verbose cwd /app
+13 verbose Linux 4.19.121-linuxkit
+14 verbose argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "--save" "/app/.nuxt/client.js"
+15 verbose node v14.15.1
+16 verbose npm  v6.14.8
+17 error code ENOLOCAL
+18 error Could not install ".nuxt/client.js" as it is not a directory and is not a file with a name ending in .tgz, .tar.gz or .tar
+19 verbose exit [ 1, true ]
