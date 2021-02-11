@@ -14,6 +14,13 @@
     "_name": "_5a1b3c1a"
   },
   {
+    "name": "top",
+    "path": "/top",
+    "component": "/usr/src/app/pages/top.vue",
+    "chunkName": "pages/top",
+    "_name": "_0e80b435"
+  },
+  {
     "name": "index",
     "path": "/",
     "component": "/usr/src/app/pages/index.vue",
