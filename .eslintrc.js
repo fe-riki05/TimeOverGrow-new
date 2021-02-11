@@ -15,14 +15,14 @@ module.exports = {
 		'plugin:vue/recommended',
 		'plugin:nuxt/recommended'
 	],
-	plugis: [
+	plugins: [
 		'prettier'
 	],
 	rules: {
-		'prettier/prettier': [
-			'error',{
+		// 'prettier/prettier': [
+		// 	'error',{
 				'semi': 'off',
-				// 'vue/html-indent': ['off', 2],
+				'vue/html-indent': ['off', 2],
 				'no-console': 0, // console.log();OK
 				'no-unused-vars': 'off', // 使っていない変数あってもOK
 				// 'vue/html-self-closing': 'off', // imgタグのようにタグが１つで完結してもOK
@@ -34,7 +34,7 @@ module.exports = {
 				// 		multiline: 'always'
 				// 	}
 				// ]
-			}
-		]
+		// 	}
+		// ]
 	}
 };

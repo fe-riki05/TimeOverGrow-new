@@ -1,0 +1,74 @@
+{
+  "AddButton": {
+    "description": "Auto imported from /components/AddButton.vue"
+  },
+  "LazyAddButton": {
+    "description": "Auto imported from /components/AddButton.vue"
+  },
+  "ButtonDelete": {
+    "description": "Auto imported from /components/ButtonDelete.vue"
+  },
+  "LazyButtonDelete": {
+    "description": "Auto imported from /components/ButtonDelete.vue"
+  },
+  "ButtonUpdate": {
+    "description": "Auto imported from /components/ButtonUpdate.vue"
+  },
+  "LazyButtonUpdate": {
+    "description": "Auto imported from /components/ButtonUpdate.vue"
+  },
+  "Chart": {
+    "description": "Auto imported from /components/Chart.vue"
+  },
+  "LazyChart": {
+    "description": "Auto imported from /components/Chart.vue"
+  },
+  "Main": {
+    "description": "Auto imported from /components/Main.vue"
+  },
+  "LazyMain": {
+    "description": "Auto imported from /components/Main.vue"
+  },
+  "Message": {
+    "description": "Auto imported from /components/Message.vue"
+  },
+  "LazyMessage": {
+    "description": "Auto imported from /components/Message.vue"
+  },
+  "MessageList": {
+    "description": "Auto imported from /components/MessageList.vue"
+  },
+  "LazyMessageList": {
+    "description": "Auto imported from /components/MessageList.vue"
+  },
+  "SocialLogin": {
+    "description": "Auto imported from /components/SocialLogin.vue"
+  },
+  "LazySocialLogin": {
+    "description": "Auto imported from /components/SocialLogin.vue"
+  },
+  "Spinner": {
+    "description": "Auto imported from /components/Spinner.vue"
+  },
+  "LazySpinner": {
+    "description": "Auto imported from /components/Spinner.vue"
+  },
+  "TagSearch": {
+    "description": "Auto imported from /components/TagSearch.vue"
+  },
+  "LazyTagSearch": {
+    "description": "Auto imported from /components/TagSearch.vue"
+  },
+  "TextBox": {
+    "description": "Auto imported from /components/TextBox.vue"
+  },
+  "LazyTextBox": {
+    "description": "Auto imported from /components/TextBox.vue"
+  },
+  "TotalTime": {
+    "description": "Auto imported from /components/TotalTime.vue"
+  },
+  "LazyTotalTime": {
+    "description": "Auto imported from /components/TotalTime.vue"
+  }
+}

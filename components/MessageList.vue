@@ -1,16 +1,16 @@
 <template>
-	<div class="message-list">
-		<template v-for="(message, index) in messages">
-			<Message
-				:key="index"
-				:time="message.time"
-				:body="message.body"
-				:date="message.date"
-				:tag="message.tag"
-				:i="index"
-			/>
-		</template>
-	</div>
+  <div class="message-list">
+    <template v-for="(message, index) in messages">
+      <Message
+        :key="index"
+        :time="message.time"
+        :body="message.body"
+        :date="message.date"
+        :tag="message.tag"
+        :i="index"
+      />
+    </template>
+  </div>
 </template>
 
 <script>
