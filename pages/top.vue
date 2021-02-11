@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-img />
+    <div class="header" />
+    <nuxt-link to="/top" />
+    <!-- <v-img /> -->
   </div>
 </template>
 
@@ -8,4 +10,9 @@
   export default {};
 </script>
 
-<style></style>
+<style>
+  .header {
+    height: 100px;
+    background: #000;
+  }
+</style>
