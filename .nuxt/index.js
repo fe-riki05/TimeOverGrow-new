@@ -13,8 +13,8 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_plugin_08283616 from 'nuxt_plugin_plugin_08283616' // Source: ./components/plugin.js (mode: 'all')
-import nuxt_plugin_plugin_42bab598 from 'nuxt_plugin_plugin_42bab598' // Source: ./vuetify/plugin.js (mode: 'all')
+import nuxt_plugin_plugin_3c6525e0 from 'nuxt_plugin_plugin_3c6525e0' // Source: ./components/plugin.js (mode: 'all')
+import nuxt_plugin_plugin_20d6ea0e from 'nuxt_plugin_plugin_20d6ea0e' // Source: ./vuetify/plugin.js (mode: 'all')
 import nuxt_plugin_firebase_34d6f55a from 'nuxt_plugin_firebase_34d6f55a' // Source: ../plugins/firebase.js (mode: 'all')
 import nuxt_plugin_firebaseauth_3bb295de from 'nuxt_plugin_firebaseauth_3bb295de' // Source: ../plugins/firebase.auth.js (mode: 'all')
 
@@ -202,12 +202,12 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
-  if (typeof nuxt_plugin_plugin_08283616 === 'function') {
-    await nuxt_plugin_plugin_08283616(app.context, inject)
+  if (typeof nuxt_plugin_plugin_3c6525e0 === 'function') {
+    await nuxt_plugin_plugin_3c6525e0(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_plugin_42bab598 === 'function') {
-    await nuxt_plugin_plugin_42bab598(app.context, inject)
+  if (typeof nuxt_plugin_plugin_20d6ea0e === 'function') {
+    await nuxt_plugin_plugin_20d6ea0e(app.context, inject)
   }
 
   if (typeof nuxt_plugin_firebase_34d6f55a === 'function') {
