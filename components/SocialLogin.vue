@@ -54,6 +54,13 @@
 					.catch(() => {
 						console.error('現在Googleでのログインは使用できません。後ほどお試しください。')
 					})
+			},
+			guestLogin() {
+				this.$store.dispatch('signInWithGuest').then(() => {
+					this.$router.push({
+						name: 'index'
+					})
+				})
 			}
 		}
 	}
