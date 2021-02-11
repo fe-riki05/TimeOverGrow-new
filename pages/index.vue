@@ -1,8 +1,8 @@
 <template>
-	<v-container>
-		<Header />
-		<Main />
-	</v-container>
+  <v-container>
+    <Header />
+    <Main />
+  </v-container>
 </template>
 
 <script>

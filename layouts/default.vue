@@ -1,17 +1,17 @@
 <template>
-	<client-only>
-		<v-app>
-			<v-container>
-				<v-row wrap justify="center" align="center">
-					<v-main>
-						<v-container>
-							<Nuxt />
-						</v-container>
-					</v-main>
-				</v-row>
-			</v-container>
-		</v-app>
-	</client-only>
+  <client-only>
+    <v-app>
+      <v-container>
+        <v-row wrap justify="center" align="center">
+          <v-main>
+            <v-container>
+              <Nuxt />
+            </v-container>
+          </v-main>
+        </v-row>
+      </v-container>
+    </v-app>
+  </client-only>
 </template>
 
 <style>

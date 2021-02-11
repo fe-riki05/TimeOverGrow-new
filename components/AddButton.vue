@@ -1,20 +1,20 @@
 <template>
-	<v-btn
-		elevation="7"
-		large
-		outlined
-		plain
-		raised
-		rounded
-		text
-		x-large
-		class="button"
-		:class="{ disabled: !clickable }"
-		:disabled="!clickable"
-		@click="onAdd()"
-	>
-		{{ title }}
-	</v-btn>
+  <v-btn
+    elevation="7"
+    large
+    outlined
+    plain
+    raised
+    rounded
+    text
+    x-large
+    class="button"
+    :class="{ disabled: !clickable }"
+    :disabled="!clickable"
+    @click="onAdd()"
+  >
+    {{ title }}
+  </v-btn>
 </template>
 
 <script>
