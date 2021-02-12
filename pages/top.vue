@@ -1,18 +1,30 @@
 <template>
-  <div>
-    <div class="header" />
-    <nuxt-link to="/top" />
-    <!-- <v-img /> -->
-  </div>
+	<v-app>
+		<div class="header">
+			<div class="auth text-right mt-4 mr-5">
+				<nuxt-link to="/register" class="auth__register">
+新規登録
+</nuxt-link>
+				<nuxt-link to="/login" class="auth__login">
+ログイン
+</nuxt-link>
+			</div>
+			<nuxt-link to="/top" />
+			<!-- <v-img /> -->
+		</div>
+	</v-app>
 </template>
 
 <script>
-  export default {};
+	export default {};
 </script>
 
-<style>
-  .header {
-    height: 100px;
-    background: #000;
-  }
+<style scoped>
+	.header {
+		height: 100px;
+		background: #3b90e9;
+	}
+
+	.auth {
+	}
 </style>

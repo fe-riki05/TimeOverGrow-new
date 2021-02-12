@@ -1,92 +1,94 @@
 <template>
-	<v-container>
-		<v-row justify="center">
-			<v-col cols="12" sm="8" md="6">
-				<h2 class="text-center subtitle-1 font-weight-bold mb-2">
+	<v-app>
+		<v-container>
+			<v-row justify="center">
+				<v-col cols="12" sm="8" md="6">
+					<h2 class="text-center subtitle-1 font-weight-bold mb-2">
 メールアドレスで登録
 </h2>
-				<v-row>
-					<v-col>
-						<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
-							<v-tab to="/login">
+					<v-row>
+						<v-col>
+							<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
+								<v-tab to="/login">
 ログイン
 </v-tab>
-							<v-tab to="/register">
+								<v-tab to="/register">
 アカウント登録
 </v-tab>
-						</v-tabs>
+							</v-tabs>
 
-						<v-row>
-							<v-col sm="12">
-								<v-card flat>
-									<v-card-text class="pa-0">
-										<v-form ref="register_form" v-model="register_valid" lazy-validation>
-											<v-text-field
-												v-model="register_email"
-												label="メールアドレス"
-												:rules="emailRules"
-												required
-												validate-on-blur
-											/>
+							<v-row>
+								<v-col sm="12">
+									<v-card flat>
+										<v-card-text class="pa-0">
+											<v-form ref="register_form" v-model="register_valid" lazy-validation>
+												<v-text-field
+													v-model="register_email"
+													label="メールアドレス"
+													:rules="emailRules"
+													required
+													validate-on-blur
+												/>
 
-											<v-text-field
-												ref="register_password"
-												v-model="register_password"
-												label="パスワード"
-												required
-												:append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
-												:type="show_registerPassword ? 'text' : 'password'"
-												:rules="register_passwordRules"
-												validate-on-blur
-												loading
-												@click:append="show_registerPassword = !show_registerPassword"
-											>
-												<template #progress>
-													<v-progress-linear :value="score.value" :color="score.color" absolute height="2" />
-												</template>
-											</v-text-field>
-											<v-text-field
-												v-model="register_password_again"
-												label="パスワード（確認）"
-												required
-												:append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
-												:type="show_registerPassword ? 'text' : 'password'"
-												validate-on-blur
-												:rules="register_passwordAgainRules"
-												@click:append="show_registerPassword = !show_registerPassword"
-											/>
+												<v-text-field
+													ref="register_password"
+													v-model="register_password"
+													label="パスワード"
+													required
+													:append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
+													:type="show_registerPassword ? 'text' : 'password'"
+													:rules="register_passwordRules"
+													validate-on-blur
+													loading
+													@click:append="show_registerPassword = !show_registerPassword"
+												>
+													<template #progress>
+														<v-progress-linear :value="score.value" :color="score.color" absolute height="2" />
+													</template>
+												</v-text-field>
+												<v-text-field
+													v-model="register_password_again"
+													label="パスワード（確認）"
+													required
+													:append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
+													:type="show_registerPassword ? 'text' : 'password'"
+													validate-on-blur
+													:rules="register_passwordAgainRules"
+													@click:append="show_registerPassword = !show_registerPassword"
+												/>
 
-											<v-alert v-if="registerErrorMsg" dense text type="error">
-												{{ registerErrorMsg }}
-											</v-alert>
+												<v-alert v-if="registerErrorMsg" dense text type="error">
+													{{ registerErrorMsg }}
+												</v-alert>
 
-											<v-btn
-												:disabled="!register_valid"
-												color="blue darken-3"
-												class="mr-4 white--text"
-												@click="email_register()"
-											>
-												登録
-											</v-btn>
-										</v-form>
-									</v-card-text>
-								</v-card>
-							</v-col>
-						</v-row>
-						<v-divider class="my-8" />
-						<v-row>
-							<v-col sm="12">
-								<h2 class="text-center subtitle-1 font-weight-bold mb-2">
+												<v-btn
+													:disabled="!register_valid"
+													color="blue darken-3"
+													class="mr-4 white--text"
+													@click="email_register()"
+												>
+													登録
+												</v-btn>
+											</v-form>
+										</v-card-text>
+									</v-card>
+								</v-col>
+							</v-row>
+							<v-divider class="my-8" />
+							<v-row>
+								<v-col sm="12">
+									<h2 class="text-center subtitle-1 font-weight-bold mb-2">
 その他のアカウントでログイン
 </h2>
-							</v-col>
-						</v-row>
-						<SocialLogin />
-					</v-col>
-				</v-row>
-			</v-col>
-		</v-row>
-	</v-container>
+								</v-col>
+							</v-row>
+							<SocialLogin />
+						</v-col>
+					</v-row>
+				</v-col>
+			</v-row>
+		</v-container>
+	</v-app>
 </template>
 
 <script>
