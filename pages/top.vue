@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<div class="header">
-			<div class="auth">
+			<div class="auth text-right mt-4 mr-5">
 				<nuxt-link to="/register" class="auth__register">
 新規登録
 </nuxt-link>
