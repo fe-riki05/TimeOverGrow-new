@@ -1,9 +1,11 @@
 <template>
-	<v-row wrap justify="center" align="center">
-		<v-main>
-			<Nuxt />
-		</v-main>
-	</v-row>
+	<v-app>
+		<v-row wrap justify="center" align="center">
+			<v-main>
+				<Nuxt />
+			</v-main>
+		</v-row>
+	</v-app>
 </template>
 
 <style>
