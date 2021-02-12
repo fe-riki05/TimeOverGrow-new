@@ -5,17 +5,17 @@
   "LazyAddButton": {
     "description": "Auto imported from /components/AddButton.vue"
   },
+  "Button": {
+    "description": "Auto imported from /components/Button.vue"
+  },
+  "LazyButton": {
+    "description": "Auto imported from /components/Button.vue"
+  },
   "ButtonDelete": {
     "description": "Auto imported from /components/ButtonDelete.vue"
   },
   "LazyButtonDelete": {
     "description": "Auto imported from /components/ButtonDelete.vue"
-  },
-  "ButtonUpdate": {
-    "description": "Auto imported from /components/ButtonUpdate.vue"
-  },
-  "LazyButtonUpdate": {
-    "description": "Auto imported from /components/ButtonUpdate.vue"
   },
   "Chart": {
     "description": "Auto imported from /components/Chart.vue"
@@ -52,12 +52,6 @@
   },
   "LazySpinner": {
     "description": "Auto imported from /components/Spinner.vue"
-  },
-  "TagSearch": {
-    "description": "Auto imported from /components/TagSearch.vue"
-  },
-  "LazyTagSearch": {
-    "description": "Auto imported from /components/TagSearch.vue"
   },
   "TextBox": {
     "description": "Auto imported from /components/TextBox.vue"

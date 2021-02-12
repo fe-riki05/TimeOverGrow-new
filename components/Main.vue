@@ -1,8 +1,6 @@
 <template>
 	<v-app>
-		<!-- <div> -->
-		<!-- <client-only> -->
-		<v-content>
+		<v-main>
 			<v-container>
 				<v-row class="container d-flex justify-center">
 					<v-col cols="12" sm="6" md="5" class="p-0">
@@ -15,13 +13,14 @@
 				<TextBox :on-add="add" class="container" />
 				<Spinner v-if="!initialLoaded" class="container" />
 				<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">
-毎日の積み上げ0件
+投稿が0件です！！！
 </p>
 				<MessageList :messages="reversedMessages" class="container" />
+				<Button :on-click="hogeFunc">
+hogehoge
+</Button>
 			</v-container>
-		</v-content>
-		<!-- </client-only> -->
-		<!-- </div> -->
+		</v-main>
 	</v-app>
 </template>
 
@@ -32,6 +31,7 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
+	import Button from './Button';
 
 	export default {
 		components: {
@@ -39,7 +39,8 @@
 			Chart,
 			TextBox,
 			Spinner,
-			MessageList
+			MessageList,
+			Button
 		},
 		data() {
 			return {
@@ -219,6 +220,9 @@
 				} catch (error) {
 					alert(error.message);
 				}
+			},
+			hogeFunc() {
+				console.log('hogehoge');
 			}
 		}
 	};
@@ -228,6 +232,7 @@
 	.no-messages {
 		text-align: center;
 	}
+
 	.container {
 		max-width: 1300px;
 		margin: 0 auto;

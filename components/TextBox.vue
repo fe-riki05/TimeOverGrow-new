@@ -1,29 +1,29 @@
 <template>
-  <div class="textbox-container">
-    <client-only>
-      <div class="d-flex justify-space-between">
-        <div>
-          <input
-            v-model.trim="time"
-            class="textbox-input"
-            type="number"
-            max="24"
-            min="0.25"
-            step="0.25"
-            placeholder="3"
-          >
-          時間
-          <p>今日のアウトプット内容</p>
-          <v-combobox
-            v-model.trim="select"
-            multiple
-            label="Tags"
-            append-icon
-            chips
-            deletable-chips
-          />
-        </div>
-        <!-- <div>
+	<div class="textbox-container">
+		<client-only>
+			<div class="d-flex justify-space-between">
+				<div>
+					<input
+						v-model.trim="time"
+						class="textbox-input"
+						type="number"
+						max="24"
+						min="0.25"
+						step="0.25"
+						placeholder="3"
+					>
+					時間
+					<p>今日のアウトプット内容</p>
+					<v-combobox
+v-model.trim="select"
+multiple
+label="Tags"
+append-icon
+chips
+deletable-chips
+/>
+				</div>
+				<!-- <div>
 					<ButtonDelete
 					title="削除"
 					:on-delete="clear"
@@ -31,22 +31,22 @@
 					:clickable="canPost"
 					/>
 				</div> -->
-      </div>
-      <v-textarea
-        v-model.trim="body"
-        class="textbox-area"
-        label="JavaScriptの非同期処理(async,await)について学びました。"
-        flat
-        auto-grow
-        outlined
-        rows="1"
-        row-height="100"
-      />
-      <div class="button">
-        <AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
-      </div>
-    </client-only>
-  </div>
+			</div>
+			<v-textarea
+				v-model.trim="body"
+				class="textbox-area"
+				label="JavaScriptの非同期処理(async,await)について学びました。"
+				flat
+				auto-grow
+				outlined
+				rows="1"
+				row-height="100"
+			/>
+			<div class="button">
+				<AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
+			</div>
+		</client-only>
+	</div>
 </template>
 
 <script>
