@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 // 保存時、ESlint を自動整形
 {
 	"editor.codeActionsOnSave": {
@@ -14,6 +13,3 @@
 // 	"editor.formatOnSave": true,
 // 	"eslint.autoFixOnSave": true
 // }
-=======
-{}
->>>>>>> Stashed changes

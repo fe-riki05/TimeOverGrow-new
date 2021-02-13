@@ -1,8 +1,4 @@
 export default {
-	router: {
-		middleware: 'authenticated'
-	},
-	modules: ['@nuxtjs/vuetify'],
 	head: {
 		title: 'time-over-grow',
 		meta: [
@@ -12,6 +8,13 @@ export default {
 		],
 		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
 	},
+	router: {
+		middleware: 'authenticated'
+	},
+	// css: [
+	// 	'modern-css-reset'
+	// ],
+	modules: ['@nuxtjs/vuetify'],
 	module: {
 		rules: [
 			{
@@ -47,20 +50,6 @@ export default {
 				});
 			}
 		}
-		// extend(config, ctx) {
-		// 	config.module.rules.push({
-		// 		enforce: 'pre',
-		// 		test: /\.(js|vue)$/,
-		// 		loader: 'eslint-loader',
-		// 		exclude: /(node_modules)/,
-		// 		options: {
-		// 			fix: true
-		// 		}
-		// 	}),
-		// 		(config.node = {
-		// 			fs: 'empty'
-		// 		})
-		// }
 	},
 	performance: {
 		hints: false

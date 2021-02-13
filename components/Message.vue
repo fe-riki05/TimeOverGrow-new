@@ -1,29 +1,29 @@
 <template>
-  <v-card class="message">
-    <div class="d-flex justify-space-between">
-      <div class="d-flex">
-        <p class="message-text mb-0 mr-3">
-          {{ time }}時間
-        </p>
-        <v-chip v-for="(tags, index) in tag" :key="index" color="primary" class="mr-1">
-          <v-icon left>
-            mdi-check-outline
-          </v-icon>
-          {{ tags }}
-        </v-chip>
-      </div>
-      <v-btn color="success" @click="onDelete()">
-        <v-icon> mdi-trash-can-outline </v-icon>
-      </v-btn>
-    </div>
+	<v-card class="message">
+		<div class="d-flex justify-space-between">
+			<div class="d-flex">
+				<p class="message-text mb-0 mr-3">
+{{ time }}時間
+</p>
+				<v-chip v-for="(tags, index) in tag" :key="index" color="primary" class="mr-1">
+					<v-icon left>
+mdi-check-outline
+</v-icon>
+					{{ tags }}
+				</v-chip>
+			</div>
+			<v-btn color="success" @click="onDelete()">
+				<v-icon> mdi-trash-can-outline </v-icon>
+			</v-btn>
+		</div>
 
-    <p class="message-text mb-0">
-      {{ body }}
-    </p>
-    <div class="message-date">
-      {{ date }}
-    </div>
-  </v-card>
+		<p class="message-text mb-0">
+			{{ body }}
+		</p>
+		<div class="message-date">
+			{{ date }}
+		</div>
+	</v-card>
 </template>
 
 <script>
@@ -82,7 +82,7 @@
 			// 	}
 			// }
 		}
-	}
+	};
 </script>
 
 <style scoped>
