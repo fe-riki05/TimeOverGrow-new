@@ -10,15 +10,12 @@
 						<Chart :chart-data="BarChartData" :options="BarChartOptions" />
 					</v-col>
 				</v-row>
-				<TextBox :on-add="add" class="container" />
+				<TextBox :on-click="add" class="container" />
 				<Spinner v-if="!initialLoaded" class="container" />
 				<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">
 投稿が0件です！！！
 </p>
-				<MessageList :messages="reversedMessages" class="container" />
-				<Button :on-click="hogeFunc">
-hogehoge
-</Button>
+				<MessageList :messages="reversedMessages" class="container" @pop="clear" />
 			</v-container>
 		</v-main>
 	</v-app>
@@ -26,12 +23,12 @@ hogehoge
 
 <script>
 	import MessageModel from '../models/Message';
+	import { dbMessages } from '../plugins/firebase';
 	import TotalTime from './TotalTime';
 	import Chart from './Chart';
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
-	import Button from './Button';
 
 
 	export default {
@@ -40,8 +37,7 @@ hogehoge
 			Chart,
 			TextBox,
 			Spinner,
-			MessageList,
-			Button
+			MessageList
 		},
 		data() {
 			return {
@@ -110,21 +106,38 @@ hogehoge
 			const messages = await this.fetchMessages();
 			const times = await this.totalTime();
 			const vuechartData = await this.getChart();
-
 			this.messages = messages;
 			this.times = times;
-
 			if (this.BarChartData.datasets[0].data.length === 0) {
 				this.BarChartData.datasets[0].data.push(vuechartData[0]);
 			}
-			console.log(this.BarChartData.datasets[0].data[0]);
-			console.log(vuechartData);
 			this.BarChartData.datasets[0].data[0] = vuechartData[0];
-			// this.vuechartData[0] = vuechartData[0]
 			this.initialLoaded = true;
 		},
 
 		methods: {
+			add(message) {
+				this.messages.push(message);
+				this.times += message.time;
+
+				const chartdbtime = message.time;
+				if (this.BarChartData.datasets[0].data.length === 0) {
+					this.BarChartData.datasets[0].data.push(chartdbtime);
+				}
+
+				this.BarChartData.datasets[0].data[0] += chartdbtime;
+				// もう1度作り直さないといけない。
+				this.BarChartData = {
+					datasets: [
+						{
+							label: ['学習時間'],
+							data: [(this.vuechartData[0] += chartdbtime)],
+							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+							borderColor: ['rgba(54, 162, 235, 1)']
+						}
+					]
+				};
+			},
 			// async deleteMessage(message) {
 			// 	if (message !== undefined) {
 			// 		try {
@@ -148,39 +161,25 @@ hogehoge
 			// 		alert('削除する積み上げがありません。。。')
 			// 	}
 			// },
-			add(message) {
-				this.messages.push(message);
-				this.times += message.time;
-
-				const chartdbtime = message.time;
-				if (this.BarChartData.datasets[0].data.length === 0) {
-					this.BarChartData.datasets[0].data.push(chartdbtime);
-				}
-
-				console.log(this.BarChartData.datasets[0].data[0]);
-				console.log(this.vuechartData[0]);
-
-				this.BarChartData.datasets[0].data[0] += chartdbtime;
-				// this.vuechartData[0] += chartdbtime
-
-				// もう1度作り直さないといけない。
-				this.BarChartData = {
-					datasets: [
-						{
-							label: ['学習時間'],
-							data: [this.vuechartData[0] + chartdbtime],
-							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)']
-						}
-					]
-				};
-
-				console.log('ここからクリックイベント');
-				console.log(chartdbtime);
-				console.log(this.BarChartData.datasets[0].data[0]);
-				console.log(this.vuechartData);
-				console.log(this.vuechartData[0]);
-				console.log('ここで終了');
+			async clear() {
+				await this.fetchMessages();
+				// if (message !== undefined) {
+				// 	try {
+				// 		await this.messages.pop(message);
+				// 		await dbMessages.doc(message).delete();
+				// 		this.times = await MessageModel.dbtime();
+				// 		const vuechartData = await this.getChart();
+				// 		console.log(this.times);
+				// 		console.log(vuechartData[0]);
+				// 		console.log(this.BarChartData.datasets[0].data[0]);
+				// 		this.BarChartData.datasets[0].data[0] = await vuechartData[0];
+				// 		console.log(this.BarChartData.datasets[0].data[0]);
+				// 	} catch (error) {
+				// 		console.error(error);
+				// 	}
+				// } else {
+				// 	alert('削除する積み上げがありません。。。');
+				// }
 			},
 			async fetchMessages() {
 				try {
@@ -204,26 +203,15 @@ hogehoge
 			async getChart() {
 				try {
 					const chartdbtime = await MessageModel.dbtime();
-
-					console.log('処理スタート');
-					console.log(chartdbtime);
-
 					if (this.BarChartData.datasets[0].data.length === 0) {
 						this.BarChartData.datasets[0].data.push(chartdbtime);
 					}
-
 					this.vuechartData[0] = chartdbtime;
 					this.BarChartData.datasets[0].data[0] = chartdbtime;
-
-					console.log(chartdbtime);
-					console.log(this.vuechartData);
 					return this.vuechartData;
 				} catch (error) {
 					alert(error.message);
 				}
-			},
-			hogeFunc() {
-				console.log('hogehoge');
 			}
 		}
 	};

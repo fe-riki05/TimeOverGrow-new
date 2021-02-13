@@ -43,7 +43,9 @@ deletable-chips
 				row-height="100"
 			/>
 			<div class="button">
-				<AddButton title="今日の学習内容送信！！！" :on-add="add" :clickable="canPost" />
+				<Button :on-click="add">
+今日の学習内容送信！！！
+</Button>
 			</div>
 		</client-only>
 	</div>
@@ -51,20 +53,18 @@ deletable-chips
 
 <script>
 	import MessageModel from '../models/Message';
-	import AddButton from './AddButton';
-	// import ButtonDelete from './ButtonDelete'
+	import Button from './Button';
 
 	export default {
 		components: {
-			AddButton
-			// ButtonDelete
+			Button
 		},
 		props: {
 			// onDelete: {
 			// 	type: Function,
 			// 	required: true
 			// },
-			onAdd: {
+			onClick: {
 				type: Function,
 				required: true
 			}
@@ -105,7 +105,7 @@ deletable-chips
 						tag: this.select
 					});
 
-					this.onAdd(message);
+					this.onClick(message);
 
 					this.time = 0;
 					this.body = '';

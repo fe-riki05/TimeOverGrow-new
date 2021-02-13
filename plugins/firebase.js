@@ -1,6 +1,5 @@
 import firebase from 'firebase';
 
-/* eslint-disable no-unused-vars */
 const firebaseConfig = {
 	apiKey: 'AIzaSyAEFHkdyYqCLfQZC_nXAnoNRFbR_kWsvVU',
 	authDomain: 'timeovergrow-d76f5.firebaseapp.com',
@@ -21,4 +20,3 @@ export const dbMessages = db.collection('messages');
 export const auth = firebase.auth;
 export default firebase;
 
-/* eslint-enable no-unused-vars */
