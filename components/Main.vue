@@ -137,48 +137,20 @@
 					]
 				};
 			},
-			// async deleteMessage(message) {
-			// 	if (message !== undefined) {
-			// 		try {
-			// 			await this.messages.pop(message)
-			// 			await dbMessages.doc(message).delete()
-			// 			this.times = await MessageModel.dbtime()
-
-			// 			const vuechartData = await this.getChart()
-
-			// 			console.log(this.times);
-			// 			console.log(vuechartData[0]);
-			// 			console.log(this.BarChartData.datasets[0].data[0]);
-
-			// 			this.BarChartData.datasets[0].data[0] = await vuechartData[0]
-
-			// 			console.log(this.BarChartData.datasets[0].data[0]);
-			// 		} catch (error) {
-			// 			console.error(error)
-			// 		}
-			// 	} else {
-			// 		alert('削除する積み上げがありません。。。')
-			// 	}
-			// },
 			async clear() {
-				await this.fetchMessages();
-				// if (message !== undefined) {
-				// 	try {
-				// 		await this.messages.pop(message);
-				// 		await dbMessages.doc(message).delete();
-				// 		this.times = await MessageModel.dbtime();
-				// 		const vuechartData = await this.getChart();
-				// 		console.log(this.times);
-				// 		console.log(vuechartData[0]);
-				// 		console.log(this.BarChartData.datasets[0].data[0]);
-				// 		this.BarChartData.datasets[0].data[0] = await vuechartData[0];
-				// 		console.log(this.BarChartData.datasets[0].data[0]);
-				// 	} catch (error) {
-				// 		console.error(error);
-				// 	}
-				// } else {
-				// 	alert('削除する積み上げがありません。。。');
-				// }
+				this.messages = await this.fetchMessages();
+				this.times = await this.totalTime();
+				this.vuechartData[0] = await MessageModel.dbtime();
+				this.BarChartData = {
+					datasets: [
+						{
+							label: ['学習時間'],
+							data: [this.vuechartData[0]],
+							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+							borderColor: ['rgba(54, 162, 235, 1)']
+						}
+					]
+				};
 			},
 			async fetchMessages() {
 				try {
