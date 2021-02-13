@@ -75,16 +75,20 @@ mdi-check-outline
 				try {
 					const id = this.i;
 					const docId = await MessageModel.clear();
+
+					console.log(id);
+					console.log(docId);
+
 					if (docId === []) {
 						alert('削除できるデータがありません');
 					} else if (docId !== []) {
 						await dbMessages.doc(docId[id]).delete();
 					}
-					await MessageModel.fetchMessages();
+					// await MessageModel.fetchMessages();
+					this.$emit('clear');
 				} catch (error) {
 					console.error(error);
 				}
-				this.$emit('clear');
 			}
 		}
 	};

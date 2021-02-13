@@ -43,7 +43,7 @@ class Message {
 		const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get();
 		try {
 			collection.forEach(doc => {
-				clearId.push(doc.id);
+				clearId.unshift(doc.id);
 			});
 			return clearId;
 		} catch (error) {
