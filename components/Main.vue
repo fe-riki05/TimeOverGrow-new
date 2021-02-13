@@ -33,6 +33,7 @@ hogehoge
 	import MessageList from './MessageList';
 	import Button from './Button';
 
+
 	export default {
 		components: {
 			TotalTime,
