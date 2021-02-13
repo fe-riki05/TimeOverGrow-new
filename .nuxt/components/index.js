@@ -1,6 +1,4 @@
-export { default as AddButton } from '../../components/AddButton.vue'
 export { default as Button } from '../../components/Button.vue'
-export { default as ButtonDelete } from '../../components/ButtonDelete.vue'
 export { default as Chart } from '../../components/Chart.vue'
 export { default as Main } from '../../components/Main.vue'
 export { default as Message } from '../../components/Message.vue'
@@ -10,9 +8,7 @@ export { default as Spinner } from '../../components/Spinner.vue'
 export { default as TextBox } from '../../components/TextBox.vue'
 export { default as TotalTime } from '../../components/TotalTime.vue'
 
-export const LazyAddButton = import('../../components/AddButton.vue' /* webpackChunkName: "components/add-button" */).then(c => c.default || c)
 export const LazyButton = import('../../components/Button.vue' /* webpackChunkName: "components/button" */).then(c => c.default || c)
-export const LazyButtonDelete = import('../../components/ButtonDelete.vue' /* webpackChunkName: "components/button-delete" */).then(c => c.default || c)
 export const LazyChart = import('../../components/Chart.vue' /* webpackChunkName: "components/chart" */).then(c => c.default || c)
 export const LazyMain = import('../../components/Main.vue' /* webpackChunkName: "components/main" */).then(c => c.default || c)
 export const LazyMessage = import('../../components/Message.vue' /* webpackChunkName: "components/message" */).then(c => c.default || c)

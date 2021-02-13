@@ -8,6 +8,7 @@
 				:date="message.date"
 				:tag="message.tag"
 				:i="index"
+				@clear="clear"
 			/>
 		</template>
 	</div>
@@ -41,12 +42,9 @@
 			}
 		},
 		methods: {
-			reload() {
-				this.$emit('reload'); // Main.vueのreloadで設定した関数の呼び出し
+			clear() {
+				this.$emit('pop');
 			}
 		}
-		// mounted() {
-		// console.log(message.tag);
-		// }
 	};
 </script>

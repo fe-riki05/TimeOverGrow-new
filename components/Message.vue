@@ -12,9 +12,9 @@ mdi-check-outline
 					{{ tags }}
 				</v-chip>
 			</div>
-			<v-btn color="success" @click="onDelete()">
+			<Button :on-click="clear" color="success">
 				<v-icon> mdi-trash-can-outline </v-icon>
-			</v-btn>
+			</Button>
 		</div>
 
 		<p class="message-text mb-0">
@@ -27,10 +27,14 @@ mdi-check-outline
 </template>
 
 <script>
-	// import firebase, { dbMessages , auth } from '../plugins/firebase'
-	// import MessageModel from '../models/Message'
+	import MessageModel from '../models/Message';
+	import { dbMessages } from '../plugins/firebase';
+	import Button from './Button';
 
 	export default {
+		components: {
+			Button
+		},
 		props: {
 			time: {
 				type: Number,
@@ -49,7 +53,7 @@ mdi-check-outline
 				required: true
 			},
 			// ここから削除機能
-			// onDelete: {
+			// onClick: {
 			// 	type: Function,
 			// 	required: true
 			// },
@@ -67,20 +71,21 @@ mdi-check-outline
 			}
 		},
 		methods: {
-			// async onDelete() {
-			// 	try {
-			// 		const id = this.i
-			// 		const docId = await MessageModel.clear()
-			// 		if(docId === []) {
-			// 			alert('削除できるデータがありません')
-			// 		}
-			// 		await dbMessages.doc(docId[id]).delete()
-			// 		console.log(await MessageModel.dbtime());
-			// 		this.$emit('reload');
-			// 	} catch (error) {
-			// 		console.error(error)
-			// 	}
-			// }
+			async clear() {
+				try {
+					const id = this.i;
+					const docId = await MessageModel.clear();
+					if (docId === []) {
+						alert('削除できるデータがありません');
+					} else if (docId !== []) {
+						await dbMessages.doc(docId[id]).delete();
+					}
+					await MessageModel.fetchMessages();
+				} catch (error) {
+					console.error(error);
+				}
+				this.$emit('clear');
+			}
 		}
 	};
 </script>
