@@ -1,8 +1,4 @@
-// import Vue from 'vue'
-// import Vuex from 'vuex'
 import { auth } from '../plugins/firebase';
-
-// Vue.use(Vuex)
 
 export const strict = false;
 

@@ -179,10 +179,7 @@
 				});
 			}
 		},
-		created() {
-			// this.item.color = MessageModel.postData.data.tag;
-			// console.log(MessageModel);
-		},
+		created() {},
 		methods: {
 			// updateTags() {
 			// 	this.$nextTick(() => {
@@ -204,7 +201,9 @@
 			// },
 			async add() {
 				this.canPost = false;
+
 				console.log(this.select);
+
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),

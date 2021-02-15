@@ -58,7 +58,7 @@
 	}
 	.arrow span {
 		display: block;
-		width: 130px;
+		width: 150px;
 		height: 2px;
 		background-color: #000;
 		position: relative;
