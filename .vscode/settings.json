@@ -6,10 +6,3 @@
 	// Vetur のコード整形と Prettier がバッティングしないように無効化
 	"vetur.format.enable": false
 }
-// {
-// 	"editor.codeActionsOnSave": {
-// 		"source.fixAll.eslint": true
-// 	},
-// 	"editor.formatOnSave": true,
-// 	"eslint.autoFixOnSave": true
-// }

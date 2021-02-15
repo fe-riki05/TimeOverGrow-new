@@ -1,51 +1,91 @@
 <template>
+	<!-- eslint-disable -->
 	<div class="textbox-container">
 		<client-only>
 			<div class="d-flex justify-space-between">
 				<div>
-					<input
-						v-model.trim="time"
-						class="textbox-input"
-						type="number"
-						max="24"
-						min="0.25"
-						step="0.25"
-						placeholder="3"
-					>
-					時間
 					<p>今日のアウトプット内容</p>
-					<v-combobox
-v-model.trim="select"
-multiple
-label="Tags"
-append-icon
-chips
-deletable-chips
-/>
+					<input v-model.trim="time" class="textbox-input" type="number" max="24" min="0" step="0.5" placeholder="3" />
+					時間
+					<!-- <v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips /> -->
+					<v-container fluid class="pl-0">
+						<v-combobox
+							v-model="select"
+							multiple
+							outlined
+							:filter="filter"
+							:hide-no-data="!search"
+							:items="items"
+							:search-input.sync="search"
+							hide-selected
+							label="タグを入力してください。"
+							multiple
+							small-chips
+							solo
+						>
+							<template #no-data>
+								<v-list-item>
+									<span class="subheading">制作</span>
+									<v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>
+										{{ search }}
+									</v-chip>
+								</v-list-item>
+							</template>
+							<template #selection="{ attrs, item, parent, selected }">
+								<v-chip
+									v-if="item === Object(item)"
+									v-bind="attrs"
+									:color="`${item.color} lighten-3`"
+									:input-value="selected"
+									label
+									small
+								>
+									<span class="pr-2">
+										{{ item.text }}
+									</span>
+									<v-icon small @click="parent.selectItem(item)">mdi-close</v-icon>
+								</v-chip>
+							</template>
+							<template #item="{ index, item }">
+								<v-text-field
+									v-if="editing === item"
+									v-model="editing.text"
+									autofocus
+									flat
+									background-color="transparent"
+									hide-details
+									solo
+									@keyup.enter="edit(index, item)"
+								></v-text-field>
+								<v-chip v-else :color="`${item.color} lighten-3`" dark label small>
+									{{ item.text }}
+								</v-chip>
+								<v-spacer></v-spacer>
+								<v-list-item-action @click.stop>
+									<v-btn icon @click.stop.prevent="edit(index, item)">
+										<v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
+									</v-btn>
+								</v-list-item-action>
+							</template>
+						</v-combobox>
+					</v-container>
 				</div>
-				<!-- <div>
-					<ButtonDelete
-					title="削除"
-					:on-delete="clear"
-					:on-chart="chart"
-					:clickable="canPost"
-					/>
-				</div> -->
 			</div>
 			<v-textarea
 				v-model.trim="body"
 				class="textbox-area"
-				label="JavaScriptの非同期処理(async,await)について学びました。"
+				label="JSの非同期処理(async,await)について学びました。"
 				flat
 				auto-grow
 				outlined
 				rows="1"
 				row-height="100"
+				max-width="100px"
 			/>
 			<div class="button">
 				<Button :on-click="add">
-今日の学習内容送信！！！
-</Button>
+					<v-icon color="success"> mdi-send </v-icon>
+				</Button>
 			</div>
 		</client-only>
 	</div>
@@ -60,10 +100,6 @@ deletable-chips
 			Button
 		},
 		props: {
-			// onDelete: {
-			// 	type: Function,
-			// 	required: true
-			// },
 			onClick: {
 				type: Function,
 				required: true
@@ -74,8 +110,78 @@ deletable-chips
 				time: '',
 				body: '',
 				canPost: true,
-				select: []
+				tag: {},
+				select: [],
+				activator: null,
+				attach: null,
+				colors: ['purple', 'indigo', 'blue', 'green', 'red', 'orange'],
+				editing: null,
+				index: -1,
+				items: [
+					{ header: 'タグを選択するか作成して下さい。' },
+					{
+						color: [],
+						text: []
+					}
+					// {
+					// 	color: 'purple',
+					// 	text: 'HTML'
+					// },
+					// {
+					// 	color: 'indigo',
+					// 	text: 'CSS'
+					// },
+					// {
+					// 	color: 'blue',
+					// 	text: 'JavaScript'
+					// },
+					// {
+					// 	color: 'green',
+					// 	text: 'Vue.js'
+					// },
+					// {
+					// 	color: 'red',
+					// 	text: 'React.js'
+					// },
+					// {
+					// 	color: 'orange',
+					// 	text: 'TypeScript'
+					// }
+				],
+				nonce: 1,
+				menu: false,
+				// model: [
+				// 	{
+				// 		text: 'Foo',
+				// 		color: 'blue'
+				// 	}
+				// ],
+				x: 0,
+				search: null,
+				y: 0
 			};
+		},
+		watch: {
+			model(val, prev) {
+				if (val.length === prev.length) return;
+
+				this.model = val.map(v => {
+					if (typeof v === 'string') {
+						v = {
+							text: v,
+							color: this.colors[this.nonce - 1]
+						};
+						this.items.push(v);
+						this.nonce++;
+					}
+
+					return v;
+				});
+			}
+		},
+		created() {
+			// this.item.color = MessageModel.postData.data.tag;
+			// console.log(MessageModel);
 		},
 		methods: {
 			// updateTags() {
@@ -98,15 +204,14 @@ deletable-chips
 			// },
 			async add() {
 				this.canPost = false;
+				console.log(this.select);
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
 						tag: this.select
 					});
-
 					this.onClick(message);
-
 					this.time = 0;
 					this.body = '';
 					this.select = '';
@@ -114,6 +219,25 @@ deletable-chips
 					alert(error.message);
 				}
 				this.canPost = true;
+			},
+			edit(index, item) {
+				if (!this.editing) {
+					this.editing = item;
+					this.index = index;
+				} else {
+					this.editing = null;
+					this.index = -1;
+				}
+			},
+			filter(item, queryText, itemText) {
+				if (item.header) return false;
+
+				const hasValue = val => (val != null ? val : '');
+
+				const text = hasValue(itemText);
+				const query = hasValue(queryText);
+
+				return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1;
 			}
 		}
 	};
@@ -121,21 +245,25 @@ deletable-chips
 
 <style scoped>
 	.textbox-input {
-		margin: 1vw;
+		margin: 0;
+		padding: 0;
 		border: 1px solid rgb(161, 161, 161);
 	}
 	p {
 		font-weight: 900;
+		font-size: 25px;
 	}
 	.textbox-area {
-		width: 100%;
+		max-width: 80%;
 		resize: none;
 		background: white;
 		border-radius: 5px;
 		padding: 0;
+		margin: 0;
 	}
 	.button {
-		margin: 10px 0px 10px 10px;
+		margin-right: 50px;
 		text-align: right;
+		padding: 10px;
 	}
 </style>

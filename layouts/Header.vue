@@ -1,14 +1,13 @@
 <template>
 	<v-app>
 		<div class="header">
-			<v-card class="mx-auto overflow-hidden">
-				<v-app-bar color="primary" dark height="100">
+			<v-card class="overflow-hidden">
+				<v-app-bar color="#70c2fd" height="100">
 					<v-toolbar-title>
 						<v-icon>mdi-timer-sand</v-icon>
 						{{ title }}
 					</v-toolbar-title>
 					<v-spacer />
-					<v-btn icon />
 					<v-app-bar-nav-icon class="float-right" @click="drawer = true" />
 				</v-app-bar>
 				<v-navigation-drawer v-model="drawer" absolute temporary right>
@@ -55,7 +54,7 @@
 	};
 </script>
 
-<style scoped>
+<style>
 	h1 {
 		margin: 0 auto;
 	}

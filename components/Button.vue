@@ -1,5 +1,5 @@
 <template>
-	<v-btn class="button" :type="type" :disabled="!clickable" @click="handleClick">
+	<v-btn class="button" outlined :type="type" :disabled="!clickable" @click="handleClick">
 		<slot />
 	</v-btn>
 </template>
@@ -40,3 +40,9 @@
 		}
 	};
 </script>
+
+<style scoped>
+	.button {
+		padding: 5px;
+	}
+</style>
