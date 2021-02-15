@@ -11,11 +11,11 @@ service cloud.firestore {
     //     allow read, write: if request.auth.uid == userId;
     // }
     match /posts/{postId} {
-        allow read;
+        allow read: if request.auth.uid == userId;
         allow create, update, delete: if request.auth.uid == resource.data.uid;
         }
     match /users/{userId} {
-    		allow read;
+    		allow read: if request.auth.uid == userId;
         allow create, update, delete: if request.auth.uid == resource.data.uid;
     		}
     match /messages/{messageId} {

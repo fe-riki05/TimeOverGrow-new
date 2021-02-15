@@ -19,4 +19,3 @@ export const dbMessages = db.collection('messages');
 
 export const auth = firebase.auth;
 export default firebase;
-

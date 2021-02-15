@@ -1,21 +1,28 @@
 <template>
 	<v-app>
 		<v-main>
-			<v-container>
-				<v-row class="container d-flex justify-center">
-					<v-col cols="12" sm="6" md="5" class="p-0">
+			<v-container class="d-flex justify-space-around content">
+				<v-row cols="5" sm="5" md="4" class="container">
+					<v-col class="item text-center">
 						<TotalTime :times="times" />
 					</v-col>
-					<v-col v-if="initialLoaded" cols="12" sm="6" md="7" class="p-0">
-						<Chart :chart-data="BarChartData" :options="BarChartOptions" />
+					<v-col v-if="initialLoaded" class="item">
+						<v-card :elevation="10" class="mt-5 p-5">
+							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="m-2" />
+						</v-card>
 					</v-col>
 				</v-row>
-				<TextBox :on-click="add" class="container" />
-				<Spinner v-if="!initialLoaded" class="container" />
-				<p v-else-if="initialLoaded && messages.length === 0" class="no-messages">
-投稿が0件です！！！
-</p>
-				<MessageList :messages="reversedMessages" class="container" @pop="clear" />
+
+				<v-row cols="7" sm="7" md="6" class="container mt-0">
+					<v-col class="item">
+						<v-card :elevation="10" class="pt-3 pl-5">
+							<TextBox :on-click="add" class="container" />
+							<Spinner v-if="!initialLoaded" class="container" />
+							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
+						</v-card>
+						<MessageList :messages="reversedMessages" @pop="clear" @update="edit" />
+					</v-col>
+				</v-row>
 			</v-container>
 		</v-main>
 	</v-app>
@@ -23,7 +30,6 @@
 
 <script>
 	import MessageModel from '../models/Message';
-	import { dbMessages } from '../plugins/firebase';
 	import TotalTime from './TotalTime';
 	import Chart from './Chart';
 	import TextBox from './TextBox';
@@ -47,7 +53,6 @@
 				done: false,
 				messages: [],
 				vuechartData: [],
-				// options: {},
 				times: 0,
 				initialLoaded: false,
 				BarChartData: {
@@ -153,6 +158,9 @@
 					]
 				};
 			},
+			edit() {
+				console.log('Main.vueのeditです。');
+			},
 			async fetchMessages() {
 				try {
 					let messages = [];
@@ -190,12 +198,15 @@
 </script>
 
 <style scoped>
-	.no-messages {
-		text-align: center;
-	}
-
 	.container {
 		max-width: 1300px;
+		margin: 0 30px;
+		padding: 0;
+	}
+	.content {
 		margin: 0 auto;
+	}
+	.item {
+		padding: 0;
 	}
 </style>

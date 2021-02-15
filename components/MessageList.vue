@@ -9,6 +9,7 @@
 				:tag="message.tag"
 				:i="index"
 				@clear="clear"
+				@edit="edit"
 			/>
 		</template>
 	</div>
@@ -44,7 +45,16 @@
 		methods: {
 			clear() {
 				this.$emit('pop');
+			},
+			edit() {
+				this.$emit('update');
 			}
 		}
 	};
 </script>
+
+<style scoped>
+	.message-list {
+		margin: 0;
+	}
+</style>

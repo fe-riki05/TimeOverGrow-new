@@ -33,9 +33,7 @@
 			</v-card>
 			<v-card>
 				<v-btn block class="mb-2 color text-capitalize" @click="guestLogin">
-					<v-icon class="notranslate v-icon--left theme--light">
-mdi-account
-</v-icon>ゲストログイン
+					<v-icon class="notranslate v-icon--left theme--light"> mdi-account </v-icon>ゲストログイン
 				</v-btn>
 			</v-card>
 		</v-col>
