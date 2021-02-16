@@ -92,6 +92,8 @@
 </template>
 
 <script>
+	import firebase from '../plugins/firebase';
+	import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
 	import Button from './Button';
 
@@ -110,7 +112,7 @@
 				time: '',
 				body: '',
 				canPost: true,
-				tag: {},
+				// tag: {},
 				select: [],
 				activator: null,
 				attach: null,
@@ -179,9 +181,20 @@
 				});
 			}
 		},
-		created() {
-			// this.item.color = MessageModel.postData.data.tag;
-			// console.log(MessageModel);
+		async created() {
+			try {
+				const color = [];
+				const uid = firebase.auth().currentUser.uid;
+				const snapShot = await dbMessages.where('uid', '==', uid).get();
+				console.log(snapShot.docs);
+				dbMessages.forEach(doc => {
+					color.push(doc.data().tag.color);
+					// this.item[1].text.push(doc.data().tag.text);
+				});
+			} catch (error) {
+				console.error(error);
+			}
+			console.log(this.items[1]);
 		},
 		methods: {
 			// updateTags() {
@@ -204,7 +217,9 @@
 			// },
 			async add() {
 				this.canPost = false;
+
 				console.log(this.select);
+
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
