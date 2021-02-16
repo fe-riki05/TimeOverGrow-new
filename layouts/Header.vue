@@ -69,6 +69,9 @@
 	.link {
 		text-decoration: none;
 	}
+	.link:link {
+		color: none;
+	}
 	.title {
 		font-size: 35px;
 	}

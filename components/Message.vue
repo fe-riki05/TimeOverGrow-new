@@ -59,7 +59,7 @@
 				required: true
 			},
 			tag: {
-				type: Object,
+				type: Array,
 				required: true
 			},
 			i: {
@@ -104,9 +104,6 @@
 		padding: 20px;
 		margin: 0;
 	}
-	/* .message:hover {
-		background-color: #eee;
-	} */
 	.message-date {
 		font-size: 0.8em;
 		color: #777;
