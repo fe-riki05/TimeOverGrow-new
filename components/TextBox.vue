@@ -92,8 +92,8 @@
 </template>
 
 <script>
-	import firebase from '../plugins/firebase';
-	import { dbMessages } from '../plugins/firebase';
+	// import firebase from '../plugins/firebase';
+	// import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
 	import Button from './Button';
 
@@ -121,43 +121,43 @@
 				index: -1,
 				items: [
 					{ header: 'タグを選択するか作成して下さい。' },
-					{
-						color: [],
-						text: []
-					}
 					// {
-					// 	color: 'purple',
-					// 	text: 'HTML'
-					// },
-					// {
-					// 	color: 'indigo',
-					// 	text: 'CSS'
-					// },
-					// {
-					// 	color: 'blue',
-					// 	text: 'JavaScript'
-					// },
-					// {
-					// 	color: 'green',
-					// 	text: 'Vue.js'
-					// },
-					// {
-					// 	color: 'red',
-					// 	text: 'React.js'
-					// },
-					// {
-					// 	color: 'orange',
-					// 	text: 'TypeScript'
+					// 	color: [],
+					// 	text: []
 					// }
+					{
+						color: 'purple',
+						text: 'HTML'
+					},
+					{
+						color: 'indigo',
+						text: 'CSS'
+					},
+					{
+						color: 'blue',
+						text: 'JavaScript'
+					},
+					{
+						color: 'green',
+						text: 'Vue.js'
+					},
+					{
+						color: 'red',
+						text: 'React.js'
+					},
+					{
+						color: 'orange',
+						text: 'TypeScript'
+					}
 				],
 				nonce: 1,
 				menu: false,
-				// model: [
-				// 	{
-				// 		text: 'Foo',
-				// 		color: 'blue'
-				// 	}
-				// ],
+				model: [
+					{
+						text: 'Foo',
+						color: 'blue'
+					}
+				],
 				x: 0,
 				search: null,
 				y: 0
@@ -181,21 +181,31 @@
 				});
 			}
 		},
-		async created() {
-			try {
-				const color = [];
-				const uid = firebase.auth().currentUser.uid;
-				const snapShot = await dbMessages.where('uid', '==', uid).get();
-				console.log(snapShot.docs);
-				dbMessages.forEach(doc => {
-					color.push(doc.data().tag.color);
-					// this.item[1].text.push(doc.data().tag.text);
-				});
-			} catch (error) {
-				console.error(error);
-			}
-			console.log(this.items[1]);
-		},
+		// async created() {
+		// 	try {
+		// 		// const tag = {};
+		// 		const color = [];
+		// 		const text = [];
+		// 		const uid = firebase.auth().currentUser.uid;
+		// 		const docRef = await dbMessages.where('uid', '==', uid).orderBy('date').get();
+
+		// 		docRef.forEach(doc => {
+		// 			color.push(doc.data().tag.color);
+		// 			text.push(doc.data().tag.text);
+		// 		});
+
+		// 		console.log(color);
+		// 		console.log(text);
+
+		// 		this.items[1].color = color;
+		// 		this.items[1].text = text;
+
+		// 		console.log(this.items[1].color);
+		// 		console.log(this.items[1].text);
+		// 	} catch (error) {
+		// 		console.error(error);
+		// 	}
+		// },
 		methods: {
 			// updateTags() {
 			// 	this.$nextTick(() => {
@@ -204,16 +214,6 @@
 			// 			this.search = "";
 			// 		});
 			// 	});
-			// },
-			// async clear() {
-			// 	this.canPost = false
-			// 	try {
-			// 		const message = await MessageModel.clear()
-			// 		this.onDelete(message)
-			// 	} catch (error) {
-			// 		console.error(error.message)
-			// 	}
-			// 	this.canPost = true
 			// },
 			async add() {
 				this.canPost = false;
