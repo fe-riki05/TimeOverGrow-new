@@ -10,7 +10,7 @@ class Message {
 		this.tag = tag;
 	}
 
-	static async save({ time, body }) {
+	static async save({ time, body, tag }) {
 		if (!time) {
 			throw new Error('入力欄が空欄です。');
 		}
@@ -26,10 +26,11 @@ class Message {
 			body,
 			date: firebase.firestore.FieldValue.serverTimestamp(),
 			uid,
-			tag: {
-				color: ['purple', 'indigo', 'blue', 'green', 'red', 'orange'],
-				text: ['HTML', 'CSS', 'JavaScript', 'Vue.js', 'React.js', 'TypeScript']
-			}
+			tag
+			// : {
+			// 	color: ['purple', 'indigo', 'blue', 'green', 'red', 'orange'],
+			// 	text: ['HTML', 'CSS', 'JavaScript', 'Vue.js', 'React.js', 'TypeScript']
+			// }
 		};
 
 		const docRef = await dbMessages.add(postData);
