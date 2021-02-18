@@ -94,11 +94,8 @@
 </template>
 
 <script>
-	import firebase from '../plugins/firebase';
-	// import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
 	import TagModel from '../models/Tag';
-	import { dbTags } from '../plugins/firebase';
 	import Button from './Button';
 
 	export default {
@@ -117,62 +114,26 @@
 				body: '',
 				canPost: true,
 				// tag: {},
-				select: [],
+				// select: [],
 				activator: null,
 				attach: null,
-				colors: ['purple', 'indigo', 'blue', 'green', 'red', 'orange'],
+				colors: [],
 				editing: null,
 				index: -1,
-				items: [
-					{ header: 'タグを選択するか作成して下さい。' }
-					// {
-					// 	color: '',
-					// 	text: ''
-					// }
-
-					// {
-					// 	color: 'purple',
-					// 	text: 'HTML'
-					// },
-					// {
-					// 	color: 'indigo',
-					// 	text: 'CSS'
-					// },
-					// {
-					// 	color: 'blue',
-					// 	text: 'JavaScript'
-					// },
-					// {
-					// 	color: 'green',
-					// 	text: 'Vue.js'
-					// },
-					// {
-					// 	color: 'red',
-					// 	text: 'React.js'
-					// },
-					// {
-					// 	color: 'orange',
-					// 	text: 'TypeScript'
-					// }
-				],
+				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				nonce: 1,
 				menu: false,
-				// model: [
-				// 	{
-				// 		text: 'Foo',
-				// 		color: 'blue'
-				// 	}
-				// ],
+				select: [],
 				x: 0,
 				search: null,
 				y: 0
 			};
 		},
 		watch: {
-			model(val, prev) {
+			select(val, prev) {
 				if (val.length === prev.length) return;
 
-				this.model = val.map(v => {
+				this.select = val.map(v => {
 					if (typeof v === 'string') {
 						v = {
 							text: v,
@@ -186,46 +147,20 @@
 				});
 			}
 		},
-		async mounted() {
+		async created() {
 			try {
-				// const color = [];
-				// const text = [];
-				// const docRef = await dbTags.get();
-				// console.log(docRef.doc.data());
-
-				// docRef.forEach(doc => {
-				// 	color.push(doc.data().color);
-				// color.push(doc.data().text);
-				// });
-
-				// console.log(color);
-				// console.log(text);
-
 				const tag = await TagModel.save();
-				console.log(tag);
+				this.colors = tag.color;
+				for (let i = 0; i < tag.color.length; i++) {
+					let tags = {
+						color: '',
+						text: ''
+					};
+					tags.color = tag.color[i];
+					tags.text = tag.text[i];
 
-				// const color = [];
-				// const text = [];
-				const uid = firebase.auth().currentUser.uid;
-				const docRef = await dbTags.where('uid', '==', uid).get();
-
-				console.log(docRef);
-
-				// tag.color.forEach(doc => {
-				// 	this.items.push({ doc.data().color });
-				// text.push(doc.data().text);
-				// });
-
-				console.log(this.items);
-
-				// console.log(color);
-				// console.log(text);
-
-				// this.items[1].color = color;
-				// this.items[1].text = text;
-
-				// console.log(this.items[1].color);
-				// console.log(this.items[1].text);
+					this.items.push(tags);
+				}
 			} catch (error) {
 				console.error(error);
 			}
@@ -241,9 +176,6 @@
 			// },
 			async add() {
 				this.canPost = false;
-
-				console.log(this.select);
-
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
