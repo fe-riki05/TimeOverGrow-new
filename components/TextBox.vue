@@ -23,7 +23,7 @@
 							small-chips
 							solo
 						>
-							<template #no-data>
+							<template v-slot:no-data>
 								<v-list-item>
 									<span class="subheading">制作</span>
 									<v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>
@@ -31,7 +31,7 @@
 									</v-chip>
 								</v-list-item>
 							</template>
-							<template #selection="{ attrs, item, parent, selected }">
+							<template v-slot:selection="{ attrs, item, parent, selected }">
 								<v-chip
 									v-if="item === Object(item)"
 									v-bind="attrs"
@@ -46,7 +46,7 @@
 									<v-icon small @click="parent.selectItem(item)">mdi-close</v-icon>
 								</v-chip>
 							</template>
-							<template #item="{ index, item }">
+							<template v-slot:item="{ index, item }">
 								<v-text-field
 									v-if="editing === item"
 									v-model="editing.text"
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-	// import firebase from '../plugins/firebase';
+	import { dbTags } from '../plugins/firebase';
 	// import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
 	import Button from './Button';
@@ -121,43 +121,43 @@
 				index: -1,
 				items: [
 					{ header: 'タグを選択するか作成して下さい。' },
-					// {
-					// 	color: [],
-					// 	text: []
-					// }
 					{
-						color: 'purple',
-						text: 'HTML'
-					},
-					{
-						color: 'indigo',
-						text: 'CSS'
-					},
-					{
-						color: 'blue',
-						text: 'JavaScript'
-					},
-					{
-						color: 'green',
-						text: 'Vue.js'
-					},
-					{
-						color: 'red',
-						text: 'React.js'
-					},
-					{
-						color: 'orange',
-						text: 'TypeScript'
+						color: '',
+						text: ''
 					}
+					// {
+					// 	color: 'purple',
+					// 	text: 'HTML'
+					// },
+					// {
+					// 	color: 'indigo',
+					// 	text: 'CSS'
+					// },
+					// {
+					// 	color: 'blue',
+					// 	text: 'JavaScript'
+					// },
+					// {
+					// 	color: 'green',
+					// 	text: 'Vue.js'
+					// },
+					// {
+					// 	color: 'red',
+					// 	text: 'React.js'
+					// },
+					// {
+					// 	color: 'orange',
+					// 	text: 'TypeScript'
+					// }
 				],
 				nonce: 1,
 				menu: false,
-				model: [
-					{
-						text: 'Foo',
-						color: 'blue'
-					}
-				],
+				// model: [
+				// 	{
+				// 		text: 'Foo',
+				// 		color: 'blue'
+				// 	}
+				// ],
 				x: 0,
 				search: null,
 				y: 0
@@ -181,31 +181,43 @@
 				});
 			}
 		},
-		// async created() {
-		// 	try {
-		// 		// const tag = {};
-		// 		const color = [];
-		// 		const text = [];
-		// 		const uid = firebase.auth().currentUser.uid;
-		// 		const docRef = await dbMessages.where('uid', '==', uid).orderBy('date').get();
+		async created() {
+			try {
+				const color = [];
+				// const text = [];
+				const docRef = await dbTags.get();
+				console.log(docRef.doc.data());
 
-		// 		docRef.forEach(doc => {
-		// 			color.push(doc.data().tag.color);
-		// 			text.push(doc.data().tag.text);
-		// 		});
+				docRef.forEach(doc => {
+					color.push(doc.data().color);
+					// color.push(doc.data().text);
+				});
 
-		// 		console.log(color);
-		// 		console.log(text);
+				console.log(color);
+				// console.log(text);
 
-		// 		this.items[1].color = color;
-		// 		this.items[1].text = text;
+				// const color = [];
+				// const text = [];
+				// const uid = firebase.auth().currentUser.uid;
+				// const docRef = await dbMessages.where('uid', '==', uid).orderBy('date').get();
 
-		// 		console.log(this.items[1].color);
-		// 		console.log(this.items[1].text);
-		// 	} catch (error) {
-		// 		console.error(error);
-		// 	}
-		// },
+				// docRef.forEach(doc => {
+				// 	color.push(doc.data().tag.color);
+				// 	text.push(doc.data().tag.text);
+				// });
+
+				// console.log(color);
+				// console.log(text);
+
+				// this.items[1].color = color;
+				// this.items[1].text = text;
+
+				// console.log(this.items[1].color);
+				// console.log(this.items[1].text);
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		methods: {
 			// updateTags() {
 			// 	this.$nextTick(() => {

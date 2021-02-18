@@ -40,7 +40,6 @@
 
 <script>
 	export default {
-		name: 'TimeOverGrow',
 		data() {
 			return {
 				title: 'TimeOverGrow',
@@ -68,6 +67,7 @@
 <style>
 	.link {
 		text-decoration: none;
+		color: inherit;
 	}
 	.link:link {
 		color: none;
