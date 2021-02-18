@@ -11,14 +11,16 @@
 					<v-container fluid class="pl-0">
 						<v-combobox
 							v-model="select"
-							multiple
-							outlined
 							:filter="filter"
 							:hide-no-data="!search"
 							:items="items"
 							:search-input.sync="search"
-							hide-selected
 							label="タグを入力してください。"
+							hide-selected
+							outlined
+							append-icon
+							chips
+							deletable-chips
 							multiple
 							small-chips
 							solo
@@ -92,9 +94,11 @@
 </template>
 
 <script>
-	import { dbTags } from '../plugins/firebase';
+	import firebase from '../plugins/firebase';
 	// import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
+	import TagModel from '../models/Tag';
+	import { dbTags } from '../plugins/firebase';
 	import Button from './Button';
 
 	export default {
@@ -120,11 +124,12 @@
 				editing: null,
 				index: -1,
 				items: [
-					{ header: 'タグを選択するか作成して下さい。' },
-					{
-						color: '',
-						text: ''
-					}
+					{ header: 'タグを選択するか作成して下さい。' }
+					// {
+					// 	color: '',
+					// 	text: ''
+					// }
+
 					// {
 					// 	color: 'purple',
 					// 	text: 'HTML'
@@ -181,30 +186,37 @@
 				});
 			}
 		},
-		async created() {
+		async mounted() {
 			try {
-				const color = [];
+				// const color = [];
 				// const text = [];
-				const docRef = await dbTags.get();
-				console.log(docRef.doc.data());
+				// const docRef = await dbTags.get();
+				// console.log(docRef.doc.data());
 
-				docRef.forEach(doc => {
-					color.push(doc.data().color);
-					// color.push(doc.data().text);
-				});
+				// docRef.forEach(doc => {
+				// 	color.push(doc.data().color);
+				// color.push(doc.data().text);
+				// });
 
-				console.log(color);
+				// console.log(color);
 				// console.log(text);
+
+				const tag = await TagModel.save();
+				console.log(tag);
 
 				// const color = [];
 				// const text = [];
-				// const uid = firebase.auth().currentUser.uid;
-				// const docRef = await dbMessages.where('uid', '==', uid).orderBy('date').get();
+				const uid = firebase.auth().currentUser.uid;
+				const docRef = await dbTags.where('uid', '==', uid).get();
 
-				// docRef.forEach(doc => {
-				// 	color.push(doc.data().tag.color);
-				// 	text.push(doc.data().tag.text);
+				console.log(docRef);
+
+				// tag.color.forEach(doc => {
+				// 	this.items.push({ doc.data().color });
+				// text.push(doc.data().text);
 				// });
+
+				console.log(this.items);
 
 				// console.log(color);
 				// console.log(text);
