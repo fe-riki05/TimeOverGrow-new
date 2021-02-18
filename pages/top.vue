@@ -1,10 +1,10 @@
 <template>
 	<v-app>
 		<div class="header">
-			<div class="auth text-right mt-4 mr-5">
-				<nuxt-link to="/register" class="auth__register"> 新規登録 </nuxt-link>
+			<v-btn text absolute right class="auth text-right">
+				<!-- <nuxt-link to="/register" class="auth__register"> 新規登録 </nuxt-link> -->
 				<nuxt-link to="/login" class="auth__login"> ログイン </nuxt-link>
-			</div>
+			</v-btn>
 			<nuxt-link to="/top" />
 			<!-- <v-img /> -->
 		</div>
@@ -18,6 +18,10 @@
 <style scoped>
 	.header {
 		height: 100px;
-		background: #3b90e9;
+		background: #70c2fd;
+	}
+	.auth {
+		text-decoration: none;
+		color: inherit;
 	}
 </style>
