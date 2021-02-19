@@ -113,8 +113,6 @@
 				time: '',
 				body: '',
 				canPost: true,
-				// tag: {},
-				// select: [],
 				activator: null,
 				attach: null,
 				colors: [],
@@ -133,11 +131,16 @@
 			select(val, prev) {
 				if (val.length === prev.length) return;
 
+				console.log(typeof val);
+				console.log(val);
+
+				// Array(val);
+
 				this.select = val.map(v => {
 					if (typeof v === 'string') {
 						v = {
-							text: v,
-							color: this.colors[this.nonce - 1]
+							color: this.colors[this.nonce - 1],
+							text: v
 						};
 						this.items.push(v);
 						this.nonce++;
@@ -145,22 +148,39 @@
 
 					return v;
 				});
+
+				console.log(val);
+				console.log(prev);
 			}
 		},
 		async created() {
 			try {
 				const tag = await TagModel.save();
 				this.colors = tag.color;
+
+				console.log(tag.color);
+				console.log(this.colors);
+
 				for (let i = 0; i < tag.color.length; i++) {
 					let tags = {
 						color: '',
 						text: ''
 					};
+
 					tags.color = tag.color[i];
 					tags.text = tag.text[i];
-
 					this.items.push(tags);
 				}
+				// for (let i = 0; i < tag.color.length; i++) {
+				// 	let tags = {
+				// 		color: [],
+				// 		text: []
+				// 	};
+
+				// tags.color.push(tag.color[i]);
+				// tags.text.push(tag.text[i]);
+				// 	this.items.push(tags);
+				// }
 			} catch (error) {
 				console.error(error);
 			}
