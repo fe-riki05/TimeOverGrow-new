@@ -11,14 +11,16 @@
 					<v-container fluid class="pl-0">
 						<v-combobox
 							v-model="select"
-							multiple
-							outlined
 							:filter="filter"
 							:hide-no-data="!search"
 							:items="items"
 							:search-input.sync="search"
-							hide-selected
 							label="タグを入力してください。"
+							hide-selected
+							outlined
+							append-icon
+							chips
+							deletable-chips
 							multiple
 							small-chips
 							solo
@@ -92,9 +94,8 @@
 </template>
 
 <script>
-	import { dbTags } from '../plugins/firebase';
-	// import { dbMessages } from '../plugins/firebase';
 	import MessageModel from '../models/Message';
+	import TagModel from '../models/Tag';
 	import Button from './Button';
 
 	export default {
@@ -112,66 +113,34 @@
 				time: '',
 				body: '',
 				canPost: true,
-				// tag: {},
-				select: [],
 				activator: null,
 				attach: null,
-				colors: ['purple', 'indigo', 'blue', 'green', 'red', 'orange'],
+				colors: [],
 				editing: null,
 				index: -1,
-				items: [
-					{ header: 'タグを選択するか作成して下さい。' },
-					{
-						color: '',
-						text: ''
-					}
-					// {
-					// 	color: 'purple',
-					// 	text: 'HTML'
-					// },
-					// {
-					// 	color: 'indigo',
-					// 	text: 'CSS'
-					// },
-					// {
-					// 	color: 'blue',
-					// 	text: 'JavaScript'
-					// },
-					// {
-					// 	color: 'green',
-					// 	text: 'Vue.js'
-					// },
-					// {
-					// 	color: 'red',
-					// 	text: 'React.js'
-					// },
-					// {
-					// 	color: 'orange',
-					// 	text: 'TypeScript'
-					// }
-				],
+				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				nonce: 1,
 				menu: false,
-				// model: [
-				// 	{
-				// 		text: 'Foo',
-				// 		color: 'blue'
-				// 	}
-				// ],
+				select: [],
 				x: 0,
 				search: null,
 				y: 0
 			};
 		},
 		watch: {
-			model(val, prev) {
+			select(val, prev) {
 				if (val.length === prev.length) return;
 
-				this.model = val.map(v => {
+				console.log(typeof val);
+				console.log(val);
+
+				// Array(val);
+
+				this.select = val.map(v => {
 					if (typeof v === 'string') {
 						v = {
-							text: v,
-							color: this.colors[this.nonce - 1]
+							color: this.colors[this.nonce - 1],
+							text: v
 						};
 						this.items.push(v);
 						this.nonce++;
@@ -179,41 +148,39 @@
 
 					return v;
 				});
+
+				console.log(val);
+				console.log(prev);
 			}
 		},
 		async created() {
 			try {
-				const color = [];
-				// const text = [];
-				const docRef = await dbTags.get();
-				console.log(docRef.doc.data());
+				const tag = await TagModel.save();
+				this.colors = tag.color;
 
-				docRef.forEach(doc => {
-					color.push(doc.data().color);
-					// color.push(doc.data().text);
-				});
+				console.log(tag.color);
+				console.log(this.colors);
 
-				console.log(color);
-				// console.log(text);
+				for (let i = 0; i < tag.color.length; i++) {
+					let tags = {
+						color: '',
+						text: ''
+					};
 
-				// const color = [];
-				// const text = [];
-				// const uid = firebase.auth().currentUser.uid;
-				// const docRef = await dbMessages.where('uid', '==', uid).orderBy('date').get();
+					tags.color = tag.color[i];
+					tags.text = tag.text[i];
+					this.items.push(tags);
+				}
+				// for (let i = 0; i < tag.color.length; i++) {
+				// 	let tags = {
+				// 		color: [],
+				// 		text: []
+				// 	};
 
-				// docRef.forEach(doc => {
-				// 	color.push(doc.data().tag.color);
-				// 	text.push(doc.data().tag.text);
-				// });
-
-				// console.log(color);
-				// console.log(text);
-
-				// this.items[1].color = color;
-				// this.items[1].text = text;
-
-				// console.log(this.items[1].color);
-				// console.log(this.items[1].text);
+				// tags.color.push(tag.color[i]);
+				// tags.text.push(tag.text[i]);
+				// 	this.items.push(tags);
+				// }
 			} catch (error) {
 				console.error(error);
 			}
@@ -229,9 +196,6 @@
 			// },
 			async add() {
 				this.canPost = false;
-
-				console.log(this.select);
-
 				try {
 					const message = await MessageModel.save({
 						time: Number(this.time),
