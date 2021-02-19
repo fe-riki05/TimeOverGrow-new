@@ -130,37 +130,24 @@
 		watch: {
 			select(val, prev) {
 				if (val.length === prev.length) return;
-
-				console.log(typeof val);
-				console.log(val);
-
-				// Array(val);
-
-				this.select = val.map(v => {
-					if (typeof v === 'string') {
-						v = {
+				this.select = Array.prototype.map.call(Object(val), value => {
+					if (typeof value === 'string') {
+						value = {
 							color: this.colors[this.nonce - 1],
-							text: v
+							text: value
 						};
-						this.items.push(v);
+						this.items.push(value);
 						this.nonce++;
 					}
-
-					return v;
+					console.log(value);
+					return value;
 				});
-
-				console.log(val);
-				console.log(prev);
 			}
 		},
 		async created() {
 			try {
 				const tag = await TagModel.save();
 				this.colors = tag.color;
-
-				console.log(tag.color);
-				console.log(this.colors);
-
 				for (let i = 0; i < tag.color.length; i++) {
 					let tags = {
 						color: '',
@@ -171,16 +158,6 @@
 					tags.text = tag.text[i];
 					this.items.push(tags);
 				}
-				// for (let i = 0; i < tag.color.length; i++) {
-				// 	let tags = {
-				// 		color: [],
-				// 		text: []
-				// 	};
-
-				// tags.color.push(tag.color[i]);
-				// tags.text.push(tag.text[i]);
-				// 	this.items.push(tags);
-				// }
 			} catch (error) {
 				console.error(error);
 			}

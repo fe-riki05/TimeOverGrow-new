@@ -38,7 +38,7 @@ module.exports = {
 				// 'vue/html-self-closing': 'off', // imgタグのようにタグが１つで完結してもOK
 				// 'space-in-parens': [2, 'never'],
 				// 'vue/max-attributes-per-line': 'off',
-				indent: [2, 'tab'],
+				// indent: [2, 'tab'],
 				'vue/no-lone-template': [
 					'error',
 					{
