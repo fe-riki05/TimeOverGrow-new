@@ -17,6 +17,7 @@ if (!firebase.apps.length) {
 export const db = firebase.firestore();
 export const dbMessages = db.collection('messages');
 export const dbTags = db.collection('tags');
+// export const userTags = db.collection('tags').where('uid', '==', uid).get()
 
 export const auth = firebase.auth;
 export default firebase;

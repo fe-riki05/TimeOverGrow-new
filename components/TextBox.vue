@@ -7,7 +7,6 @@
 					<p>今日のアウトプット内容</p>
 					<input v-model.trim="time" class="textbox-input" type="number" max="24" min="0" step="0.5" placeholder="3" />
 					時間
-					<!-- <v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips /> -->
 					<v-container fluid class="pl-0">
 						<v-combobox
 							v-model="select"
@@ -96,6 +95,7 @@
 <script>
 	import MessageModel from '../models/Message';
 	import TagModel from '../models/Tag';
+	import firebase, { dbTags } from '../plugins/firebase';
 	import Button from './Button';
 
 	export default {
@@ -115,7 +115,7 @@
 				canPost: true,
 				activator: null,
 				attach: null,
-				colors: [],
+				colors: ['purple', 'indigo', 'blue', 'green', 'red', 'orange', 'cyan', 'teal', 'lime', 'navy'],
 				editing: null,
 				index: -1,
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
@@ -139,25 +139,14 @@
 						this.items.push(value);
 						this.nonce++;
 					}
-					console.log(value);
 					return value;
 				});
 			}
 		},
 		async created() {
 			try {
-				const tag = await TagModel.save();
-				this.colors = tag.color;
-				for (let i = 0; i < tag.color.length; i++) {
-					let tags = {
-						color: '',
-						text: ''
-					};
-
-					tags.color = tag.color[i];
-					tags.text = tag.text[i];
-					this.items.push(tags);
-				}
+				const tags = await TagModel.get();
+				this.items = tags;
 			} catch (error) {
 				console.error(error);
 			}
@@ -174,6 +163,16 @@
 			async add() {
 				this.canPost = false;
 				try {
+					const uid = firebase.auth().currentUser.uid;
+					this.select.forEach(async element => {
+						console.log(element);
+						// 入力したtagのデータ()
+						const params = Object.assign(element, { uid: uid });
+						console.log(params);
+						// uidと紐付けを行う。
+						await dbTags.add(params);
+					});
+					console.log(this.select);
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
@@ -188,13 +187,26 @@
 				}
 				this.canPost = true;
 			},
-			edit(index, item) {
+			async edit(index, item) {
 				if (!this.editing) {
+					console.log(index);
+					console.log(item);
+					console.log(this.index);
+					console.log(this.editing);
+
+					// await dbTags.set({ text: item.text }, { merge: true });
+					// console.log(dbTags.set({ text: item.text }, { merge: true }));
+
 					this.editing = item;
+					item = this.editing;
+					// this.editingに格納後、itemをFirestoreから削除する
+					// const uid = firebase.auth().currentUser.uid;
+					// const userTags = await dbTags.where('uid', '==', uid).get();
+					// console.log(userTags);
 					this.index = index;
 				} else {
 					this.editing = null;
-					this.index = -1;
+					// this.index = -1;
 				}
 			},
 			filter(item, queryText, itemText) {
