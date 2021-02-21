@@ -15,7 +15,7 @@
 				</v-chip>
 			</div>
 			<div class="d-flex">
-				<Button :on-click="edit" small class="color btn ml-2">
+				<Button small class="color btn ml-2" :on-click="edit">
 					<v-icon> mdi-lead-pencil </v-icon>
 				</Button>
 				<Button :on-click="clear" class="color btn ml-2">
@@ -23,7 +23,6 @@
 				</Button>
 			</div>
 		</div>
-
 		<p class="message-text mb-0 mr-3">
 			<span>今日の学習時間は</span><span style="text-decoration: underline">{{ time }}時間</span>
 		</p>
@@ -71,15 +70,18 @@
 			async clear() {
 				try {
 					const id = this.i;
-					const docId = await MessageModel.clear();
-					await dbMessages.doc(docId[id]).delete();
+					const docIds = await MessageModel.clear();
+					await dbMessages.doc(docIds[id]).delete();
 					this.$emit('clear');
 				} catch (error) {
 					console.error(error);
 				}
 			},
-			edit() {
-				this.$emit('edit');
+			async edit() {
+				const id = this.i;
+				const docIds = await MessageModel.clear();
+				const docId = dbMessages.doc(docIds[id]).id;
+				this.$emit('edit', docId);
 			}
 		}
 	};

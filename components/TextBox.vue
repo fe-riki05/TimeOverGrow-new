@@ -5,7 +5,7 @@
 			<div class="d-flex justify-space-between">
 				<div>
 					<p>今日のアウトプット内容</p>
-					<input v-model.trim="time" class="textbox-input" type="number" max="24" min="0" step="0.5" placeholder="3" />
+					<input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
 					時間
 					<v-container fluid class="pl-0">
 						<v-combobox
@@ -84,8 +84,9 @@
 				max-width="100px"
 			/>
 			<div class="button">
-				<Button :on-click="add">
-					<v-icon color="success"> mdi-send </v-icon>
+				<Button :on-click.stop="add">
+					<v-icon color="#70c2fd"> mdi-send </v-icon>
+					<slot />
 				</Button>
 			</div>
 		</client-only>
@@ -107,6 +108,10 @@
 				type: Function,
 				required: true
 			}
+			// time: {
+			// 	type: Number,
+			// 	default: 0
+			// }
 		},
 		data() {
 			return {
@@ -168,14 +173,13 @@
 						const params = Object.assign(element, { uid: uid });
 						await dbTags.add(params);
 					});
-					console.log(this.select);
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
 						tag: this.select
 					});
 					this.onClick(message);
-					this.time = 0;
+					this.time = '';
 					this.body = '';
 					this.select = '';
 				} catch (error) {
@@ -214,8 +218,9 @@
 <style scoped>
 	.textbox-input {
 		margin: 0;
-		padding: 0;
+		padding: 3px 10px;
 		border: 1px solid rgb(161, 161, 161);
+		-webkit-appearance: none;
 	}
 	p {
 		font-weight: 900;
@@ -233,5 +238,6 @@
 		margin-right: 50px;
 		text-align: right;
 		padding: 10px;
+		color: #70c2fd;
 	}
 </style>

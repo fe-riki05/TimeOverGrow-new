@@ -3,10 +3,8 @@
 		<v-main>
 			<v-container class="d-flex justify-space-around content">
 				<v-row cols="5" sm="5" md="4" class="container">
-					<v-col class="item text-center">
+					<v-col v-if="initialLoaded" class="item text-center">
 						<TotalTime :times="times" />
-					</v-col>
-					<v-col v-if="initialLoaded" class="item">
 						<v-card :elevation="10" class="mt-5 p-5">
 							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="m-2" />
 						</v-card>
@@ -25,6 +23,21 @@
 				</v-row>
 			</v-container>
 		</v-main>
+		<!-- dialogの設定 -->
+		<v-row justify="center">
+			<v-dialog v-model="dialog" persistent max-width="600">
+				<v-card>
+					<TextBox :on-click="add" :time="editTime" class="container"
+						><v-btn color="green darken-1" text @click="dialog = false">更新する</v-btn>
+					</TextBox>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+		</v-row>
+		<!-- ここまで -->
 	</v-app>
 </template>
 
@@ -35,6 +48,7 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
+	import { dbMessages } from '../plugins/firebase';
 
 	export default {
 		components: {
@@ -46,12 +60,14 @@
 		},
 		data() {
 			return {
+				dialog: false,
 				num: 0,
 				name: '',
 				index: '',
 				done: false,
 				messages: [],
 				vuechartData: [],
+				editTime: 0,
 				times: 0,
 				initialLoaded: false,
 				BarChartData: {
@@ -157,8 +173,12 @@
 					]
 				};
 			},
-			edit() {
-				console.log('Main.vueのeditです。');
+			async edit(docId) {
+				this.dialog = true;
+				const editId = await dbMessages.doc(docId).get();
+				const editData = editId.data();
+				console.log(editData.time);
+				this.editTime = editData.time;
 			},
 			async fetchMessages() {
 				try {

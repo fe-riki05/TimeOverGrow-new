@@ -4,6 +4,7 @@ import { normalizeURL, decode } from '@nuxt/ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
+const _0578a4cc = () => interopDefault(import('../pages/editPost.vue' /* webpackChunkName: "pages/editPost" */))
 const _57062649 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
 const _5a1b3c1a = () => interopDefault(import('../pages/register.vue' /* webpackChunkName: "pages/register" */))
 const _0e80b435 = () => interopDefault(import('../pages/top.vue' /* webpackChunkName: "pages/top" */))
@@ -26,6 +27,10 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
+    path: "/editPost",
+    component: _0578a4cc,
+    name: "editPost"
+  }, {
     path: "/login",
     component: _57062649,
     name: "login"

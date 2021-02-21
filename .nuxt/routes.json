@@ -1,5 +1,12 @@
 [
   {
+    "name": "editPost",
+    "path": "/editPost",
+    "component": "/usr/src/app/pages/editPost.vue",
+    "chunkName": "pages/editPost",
+    "_name": "_0578a4cc"
+  },
+  {
     "name": "login",
     "path": "/login",
     "component": "/usr/src/app/pages/login.vue",

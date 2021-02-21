@@ -46,8 +46,8 @@
 			clear() {
 				this.$emit('pop');
 			},
-			edit() {
-				this.$emit('update');
+			edit(docId) {
+				this.$emit('update', docId);
 			}
 		}
 	};
