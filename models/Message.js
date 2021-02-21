@@ -27,10 +27,6 @@ class Message {
 			date: firebase.firestore.FieldValue.serverTimestamp(),
 			uid,
 			tag
-			// : {
-			// 	color: ['purple', 'indigo', 'blue', 'green', 'red', 'orange'],
-			// 	text: ['HTML', 'CSS', 'JavaScript', 'Vue.js', 'React.js', 'TypeScript']
-			// }
 		};
 
 		const docRef = await dbMessages.add(postData);

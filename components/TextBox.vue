@@ -165,11 +165,7 @@
 				try {
 					const uid = firebase.auth().currentUser.uid;
 					this.select.forEach(async element => {
-						// console.log(element);
-						// 入力したtagのデータ()
 						const params = Object.assign(element, { uid: uid });
-						// console.log(params);
-						// uidと紐付けを行う。
 						await dbTags.add(params);
 					});
 					console.log(this.select);
@@ -189,19 +185,12 @@
 			},
 			async edit(index, item) {
 				if (!this.editing) {
-					// console.log(index);
-					// console.log(item); // クリックした部分のtext,colorのオブジェクト
-					// console.log(this.index);
-					// console.log(this.editing);
-
-					// const a = await dbTags.doc().set({ text: item.text }, { merge: true });
-					// console.log(a);
-
+					// ここで編集前のデータ削除
+					const editBefore = await dbTags.where('text', '==', item.text).get();
+					editBefore.docs.forEach(doc => {
+						dbTags.doc(doc.id).delete();
+					});
 					this.editing = item;
-					// this.editingに格納後、itemをFirestoreから削除する
-					// const uid = firebase.auth().currentUser.uid;
-					// const userTags = await dbTags.where('uid', '==', uid).get();
-					// console.log(userTags);
 					this.index = index;
 				} else {
 					this.editing = null;
