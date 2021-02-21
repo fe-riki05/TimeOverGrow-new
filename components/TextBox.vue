@@ -107,15 +107,15 @@
 			onClick: {
 				type: Function,
 				required: true
+			},
+			time: {
+				type: Number,
+				default: 0
 			}
-			// time: {
-			// 	type: Number,
-			// 	default: 0
-			// }
 		},
 		data() {
 			return {
-				time: '',
+				// time: '',
 				body: '',
 				canPost: true,
 				activator: null,
@@ -179,7 +179,7 @@
 						tag: this.select
 					});
 					this.onClick(message);
-					this.time = '';
+					// this.time = '';
 					this.body = '';
 					this.select = '';
 				} catch (error) {
