@@ -7,7 +7,6 @@
 					<p>今日のアウトプット内容</p>
 					<input v-model.trim="time" class="textbox-input" type="number" max="24" min="0" step="0.5" placeholder="3" />
 					時間
-					<!-- <v-combobox v-model.trim="select" multiple label="Tags" append-icon chips deletable-chips /> -->
 					<v-container fluid class="pl-0">
 						<v-combobox
 							v-model="select"
@@ -96,6 +95,7 @@
 <script>
 	import MessageModel from '../models/Message';
 	import TagModel from '../models/Tag';
+	import firebase, { dbTags } from '../plugins/firebase';
 	import Button from './Button';
 
 	export default {
@@ -115,7 +115,7 @@
 				canPost: true,
 				activator: null,
 				attach: null,
-				colors: [],
+				colors: ['blue', 'orange', 'cyan', 'purple', 'indigo', 'green', 'red', 'teal', 'lime', 'navy'],
 				editing: null,
 				index: -1,
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
@@ -130,57 +130,23 @@
 		watch: {
 			select(val, prev) {
 				if (val.length === prev.length) return;
-
-				console.log(typeof val);
-				console.log(val);
-
-				// Array(val);
-
-				this.select = val.map(v => {
-					if (typeof v === 'string') {
-						v = {
+				this.select = Array.prototype.map.call(Object(val), value => {
+					if (typeof value === 'string') {
+						value = {
 							color: this.colors[this.nonce - 1],
-							text: v
+							text: value
 						};
-						this.items.push(v);
+						this.items.push(value);
 						this.nonce++;
 					}
-
-					return v;
+					return value;
 				});
-
-				console.log(val);
-				console.log(prev);
 			}
 		},
 		async created() {
 			try {
-				const tag = await TagModel.save();
-				this.colors = tag.color;
-
-				console.log(tag.color);
-				console.log(this.colors);
-
-				for (let i = 0; i < tag.color.length; i++) {
-					let tags = {
-						color: '',
-						text: ''
-					};
-
-					tags.color = tag.color[i];
-					tags.text = tag.text[i];
-					this.items.push(tags);
-				}
-				// for (let i = 0; i < tag.color.length; i++) {
-				// 	let tags = {
-				// 		color: [],
-				// 		text: []
-				// 	};
-
-				// tags.color.push(tag.color[i]);
-				// tags.text.push(tag.text[i]);
-				// 	this.items.push(tags);
-				// }
+				const tags = await TagModel.get();
+				this.items = tags;
 			} catch (error) {
 				console.error(error);
 			}
@@ -197,6 +163,12 @@
 			async add() {
 				this.canPost = false;
 				try {
+					const uid = firebase.auth().currentUser.uid;
+					this.select.forEach(async element => {
+						const params = Object.assign(element, { uid: uid });
+						await dbTags.add(params);
+					});
+					console.log(this.select);
 					const message = await MessageModel.save({
 						time: Number(this.time),
 						body: this.body,
@@ -211,8 +183,13 @@
 				}
 				this.canPost = true;
 			},
-			edit(index, item) {
+			async edit(index, item) {
 				if (!this.editing) {
+					// ここで編集前のデータ削除
+					const editBefore = await dbTags.where('text', '==', item.text).get();
+					editBefore.docs.forEach(doc => {
+						dbTags.doc(doc.id).delete();
+					});
 					this.editing = item;
 					this.index = index;
 				} else {
