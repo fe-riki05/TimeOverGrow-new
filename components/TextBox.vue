@@ -115,7 +115,7 @@
 				canPost: true,
 				activator: null,
 				attach: null,
-				colors: ['purple', 'indigo', 'blue', 'green', 'red', 'orange', 'cyan', 'teal', 'lime', 'navy'],
+				colors: ['blue', 'orange', 'cyan', 'purple', 'indigo', 'green', 'red', 'teal', 'lime', 'navy'],
 				editing: null,
 				index: -1,
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
@@ -165,10 +165,10 @@
 				try {
 					const uid = firebase.auth().currentUser.uid;
 					this.select.forEach(async element => {
-						console.log(element);
+						// console.log(element);
 						// 入力したtagのデータ()
 						const params = Object.assign(element, { uid: uid });
-						console.log(params);
+						// console.log(params);
 						// uidと紐付けを行う。
 						await dbTags.add(params);
 					});
@@ -189,16 +189,15 @@
 			},
 			async edit(index, item) {
 				if (!this.editing) {
-					console.log(index);
-					console.log(item);
-					console.log(this.index);
-					console.log(this.editing);
+					// console.log(index);
+					// console.log(item); // クリックした部分のtext,colorのオブジェクト
+					// console.log(this.index);
+					// console.log(this.editing);
 
-					// await dbTags.set({ text: item.text }, { merge: true });
-					// console.log(dbTags.set({ text: item.text }, { merge: true }));
+					// const a = await dbTags.doc().set({ text: item.text }, { merge: true });
+					// console.log(a);
 
 					this.editing = item;
-					item = this.editing;
 					// this.editingに格納後、itemをFirestoreから削除する
 					// const uid = firebase.auth().currentUser.uid;
 					// const userTags = await dbTags.where('uid', '==', uid).get();
@@ -206,7 +205,7 @@
 					this.index = index;
 				} else {
 					this.editing = null;
-					// this.index = -1;
+					this.index = -1;
 				}
 			},
 			filter(item, queryText, itemText) {
