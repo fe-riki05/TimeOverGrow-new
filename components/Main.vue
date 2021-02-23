@@ -27,8 +27,8 @@
 		<v-row justify="center">
 			<v-dialog v-model="dialog" persistent max-width="600">
 				<v-card>
-					<TextBox :on-click="add" :time="editTime" class="container"
-						><v-btn color="green darken-1" text @click="dialog = false">更新する</v-btn>
+					<TextBox :value="editTime" :on-click="add" class="container" @input="editTime = $event">
+						<v-btn color="green darken-1" text @click="dialog = false">更新する</v-btn>
 					</TextBox>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -134,7 +134,6 @@
 			this.BarChartData.datasets[0].data[0] = vuechartData[0];
 			this.initialLoaded = true;
 		},
-
 		methods: {
 			add(message) {
 				this.messages.push(message);
@@ -173,12 +172,13 @@
 					]
 				};
 			},
+			// ここで選択した投稿IDを取得し、timeを入力。
 			async edit(docId) {
 				this.dialog = true;
 				const editId = await dbMessages.doc(docId).get();
 				const editData = editId.data();
 				console.log(editData.time);
-				this.editTime = editData.time;
+				this.editTime = Number(editData.time);
 			},
 			async fetchMessages() {
 				try {

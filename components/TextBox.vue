@@ -5,7 +5,7 @@
 			<div class="d-flex justify-space-between">
 				<div>
 					<p>今日のアウトプット内容</p>
-					<input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
+					<input :value="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
 					時間
 					<v-container fluid class="pl-0">
 						<v-combobox
@@ -108,13 +108,18 @@
 				type: Function,
 				required: true
 			},
-			time: {
+			value: {
 				type: Number,
 				default: 0
 			}
+			// editId: {
+			// 	type: Function,
+			// 	required: true
+			// }
 		},
 		data() {
 			return {
+				// edittime: this.time,
 				// time: '',
 				body: '',
 				canPost: true,
@@ -131,6 +136,16 @@
 				search: null,
 				y: 0
 			};
+		},
+		computed: {
+			time: {
+				get() {
+					return this.value;
+				},
+				set(value) {
+					this.$emit('input', value);
+				}
+			}
 		},
 		watch: {
 			select(val, prev) {
@@ -157,6 +172,9 @@
 			}
 		},
 		methods: {
+			// updateTime() {
+			// 	this.$emit('updateTime', this.value);
+			// },
 			// updateTags() {
 			// 	this.$nextTick(() => {
 			// 		this.select.push(...this.search.split(","));
@@ -171,6 +189,11 @@
 					const uid = firebase.auth().currentUser.uid;
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
+						// console.log(params.text);
+						// console.log(this.select);
+						// if (dbTags.where('color', '==', params.color).where('text', '==', params.text)) {
+						// 	return;
+						// }
 						await dbTags.add(params);
 					});
 					const message = await MessageModel.save({
