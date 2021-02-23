@@ -112,7 +112,7 @@
 				type: Number,
 				default: 0
 			}
-			// editId: {
+			// updateTime: {
 			// 	type: Function,
 			// 	required: true
 			// }
@@ -172,6 +172,13 @@
 			}
 		},
 		methods: {
+			// async updateTime(docId) {
+			// 	this.dialog = true;
+			// 	const editId = await dbMessages.doc(docId).get();
+			// 	const editData = editId.data();
+			// 	console.log(editData.time);
+			// 	this.editTime = Number(editData.time);
+			// },
 			// updateTime() {
 			// 	this.$emit('updateTime', this.value);
 			// },

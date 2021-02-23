@@ -18,7 +18,7 @@
 							<Spinner v-if="!initialLoaded" class="container" />
 							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
 						</v-card>
-						<MessageList :messages="reversedMessages" @pop="clear" @update="edit" />
+						<MessageList :messages="reversedMessages" @pop="clear" @update="update" />
 					</v-col>
 				</v-row>
 			</v-container>
@@ -173,7 +173,7 @@
 				};
 			},
 			// ここで選択した投稿IDを取得し、timeを入力。
-			async edit(docId) {
+			async update(docId) {
 				this.dialog = true;
 				const editId = await dbMessages.doc(docId).get();
 				const editData = editId.data();
