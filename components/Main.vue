@@ -10,7 +10,6 @@
 						</v-card>
 					</v-col>
 				</v-row>
-
 				<v-row cols="7" sm="7" md="6" class="container mt-0">
 					<v-col class="item">
 						<v-card :elevation="10" class="pt-3 pl-5">
@@ -18,7 +17,7 @@
 							<Spinner v-if="!initialLoaded" class="container" />
 							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
 						</v-card>
-						<MessageList :messages="reversedMessages" @pop="clear" @update="update" />
+						<MessageList :messages="reversedMessages" @pop="clear" @update="updated" />
 					</v-col>
 				</v-row>
 			</v-container>
@@ -27,9 +26,9 @@
 		<v-row justify="center">
 			<v-dialog v-model="dialog" persistent max-width="600">
 				<v-card>
-					<TextBox :value="editTime" :on-click="add" class="container" @input="editTime = $event">
+					<PostEdit :updated-time="updatedTime" :updated-body="updatedBody" class="container">
 						<v-btn color="green darken-1" text @click="dialog = false">更新する</v-btn>
-					</TextBox>
+					</PostEdit>
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
@@ -48,6 +47,7 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
+	import PostEdit from '../pages/PostEdit';
 	import { dbMessages } from '../plugins/firebase';
 
 	export default {
@@ -56,7 +56,8 @@
 			Chart,
 			TextBox,
 			Spinner,
-			MessageList
+			MessageList,
+			PostEdit
 		},
 		data() {
 			return {
@@ -67,7 +68,8 @@
 				done: false,
 				messages: [],
 				vuechartData: [],
-				editTime: 0,
+				updatedTime: 0,
+				updatedBody: '',
 				times: 0,
 				initialLoaded: false,
 				BarChartData: {
@@ -173,12 +175,13 @@
 				};
 			},
 			// ここで選択した投稿IDを取得し、timeを入力。
-			async update(docId) {
+			async updated(docId) {
 				this.dialog = true;
 				const editId = await dbMessages.doc(docId).get();
 				const editData = editId.data();
-				console.log(editData.time);
-				this.editTime = Number(editData.time);
+				console.log(editData);
+				this.updatedTime = Number(editData.time);
+				this.updatedBody = editData.body;
 			},
 			async fetchMessages() {
 				try {

@@ -5,7 +5,8 @@
 			<div class="d-flex justify-space-between">
 				<div>
 					<p>今日のアウトプット内容</p>
-					<input :value="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
+					<input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
+					<!-- <input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" /> -->
 					時間
 					<v-container fluid class="pl-0">
 						<v-combobox
@@ -107,12 +108,16 @@
 			onClick: {
 				type: Function,
 				required: true
-			},
-			value: {
-				type: Number,
-				default: 0
 			}
-			// updateTime: {
+			// dialog: {
+			// 	type: Boolean,
+			// 	default: false
+			// }
+			// value: {
+			// 	type: Number,
+			// 	default: 0
+			// },
+			// update: {
 			// 	type: Function,
 			// 	required: true
 			// }
@@ -120,7 +125,7 @@
 		data() {
 			return {
 				// edittime: this.time,
-				// time: '',
+				time: '',
 				body: '',
 				canPost: true,
 				activator: null,
@@ -137,16 +142,16 @@
 				y: 0
 			};
 		},
-		computed: {
-			time: {
-				get() {
-					return this.value;
-				},
-				set(value) {
-					this.$emit('input', value);
-				}
-			}
-		},
+		// computed: {
+		// 	time: {
+		// 		get() {
+		// 			return this.value;
+		// 		},
+		// 		set(value) {
+		// 			this.$emit('input', value);
+		// 		}
+		// 	}
+		// },
 		watch: {
 			select(val, prev) {
 				if (val.length === prev.length) return;
@@ -172,15 +177,20 @@
 			}
 		},
 		methods: {
-			// async updateTime(docId) {
+			// updated(docId) {
+			// 	this.update(docId);
+			// },
+			// async updated(docId) {
 			// 	this.dialog = true;
 			// 	const editId = await dbMessages.doc(docId).get();
 			// 	const editData = editId.data();
 			// 	console.log(editData.time);
-			// 	this.editTime = Number(editData.time);
+			// 	this.updatedTime = Number(editData.time);
 			// },
 			// updateTime() {
-			// 	this.$emit('updateTime', this.value);
+			// 	if (this.dialog === true) {
+			// 		this.$emit('updateTime', this.$event.target.value);
+			// 	}
 			// },
 			// updateTags() {
 			// 	this.$nextTick(() => {
@@ -209,7 +219,7 @@
 						tag: this.select
 					});
 					this.onClick(message);
-					// this.time = '';
+					this.time = '';
 					this.body = '';
 					this.select = '';
 				} catch (error) {
