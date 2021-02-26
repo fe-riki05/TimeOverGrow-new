@@ -10,11 +10,6 @@
 								{{ title }}
 							</nuxt-link>
 						</v-toolbar-title>
-						<!-- <v-spacer /> -->
-						<!-- <v-app-bar-nav-icon class="float-right" @click="drawer = true" /> -->
-						<!-- <v-navigation-drawer v-model="drawer" absolute temporary right> -->
-						<!-- <v-list nav dense> -->
-						<!-- <v-list-item-group v-model="group" active-class="deep-grey--text text--accent-4"> -->
 						<v-btn
 							text
 							right
@@ -27,10 +22,6 @@
 							<v-icon>mdi-arrow-left-bold</v-icon>
 							<v-list-item-title style="display: block">ログアウト</v-list-item-title>
 						</v-btn>
-						<!-- </div> -->
-						<!-- </v-list-item-group> -->
-						<!-- </v-list> -->
-						<!-- </v-navigation-drawer> -->
 					</div>
 				</v-app-bar>
 			</v-card>

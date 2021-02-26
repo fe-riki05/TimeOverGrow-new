@@ -3,16 +3,13 @@
 		<v-main>
 			<v-container class="d-flex justify-space-around content">
 				<v-row cols="5" sm="5" md="4" class="container">
-					<v-col class="item text-center">
+					<v-col v-if="initialLoaded" class="item text-center">
 						<TotalTime :times="times" />
-					</v-col>
-					<v-col v-if="initialLoaded" class="item">
 						<v-card :elevation="10" class="mt-5 p-5">
 							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="m-2" />
 						</v-card>
 					</v-col>
 				</v-row>
-
 				<v-row cols="7" sm="7" md="6" class="container mt-0">
 					<v-col class="item">
 						<v-card :elevation="10" class="pt-3 pl-5">
@@ -20,11 +17,32 @@
 							<Spinner v-if="!initialLoaded" class="container" />
 							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
 						</v-card>
-						<MessageList :messages="reversedMessages" @pop="clear" @update="edit" />
+						<MessageList :messages="reversedMessages" @pop="clear" @update="updated" @updatedDate="updatedDateId" />
 					</v-col>
 				</v-row>
 			</v-container>
 		</v-main>
+		<!-- dialogの設定 -->
+		<v-row justify="center">
+			<v-dialog v-model="dialog" persistent max-width="600">
+				<v-card>
+					<PostEdit
+						:update-time.sync="updateTime"
+						:update-select.sync="updateSelect"
+						:update-body.sync="updateBody"
+						class="container"
+						@updatedDate="updatedDate"
+					>
+						<v-icon color="green darken-1">更新する</v-icon>
+					</PostEdit>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+		</v-row>
+		<!-- ここまで -->
 	</v-app>
 </template>
 
@@ -35,6 +53,8 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
+	import PostEdit from '../pages/PostEdit';
+	import { dbMessages } from '../plugins/firebase';
 
 
 	export default {
@@ -43,10 +63,16 @@
 			Chart,
 			TextBox,
 			Spinner,
-			MessageList
+			MessageList,
+			PostEdit
 		},
 		data() {
 			return {
+				indexId: '',
+				updateTime: 0,
+				updateSelect: [],
+				updateBody: '',
+				dialog: false,
 				num: 0,
 				name: '',
 				index: '',
@@ -119,7 +145,6 @@
 			this.BarChartData.datasets[0].data[0] = vuechartData[0];
 			this.initialLoaded = true;
 		},
-
 		methods: {
 			add(message) {
 				this.messages.push(message);
@@ -158,8 +183,39 @@
 					]
 				};
 			},
-			edit() {
-				console.log('Main.vueのeditです。');
+			// ここで選択した投稿IDを取得し、timeを入力。
+			async updated(docId) {
+				this.dialog = true;
+				const editId = await dbMessages.doc(docId).get();
+				const editData = editId.data();
+				// dialogにtag表示の記述
+				let newTagData = [];
+				editData.tag.map(tagData => {
+					newTagData.push(tagData.text);
+					return newTagData;
+				});
+				this.updateTime = Number(editData.time);
+				this.updateBody = editData.body;
+				this.updateSelect = newTagData;
+				console.log(this.updateSelect);
+			},
+			async updatedDateId(docId) {
+				const editId = await dbMessages.doc(docId).get();
+				this.indexId = editId.id;
+			},
+			async updatedDate() {
+				this.dialog = false;
+				console.log(this.indexId);
+				await dbMessages.doc(this.indexId).update({
+					time: this.updateTime,
+					tag: this.updateSelect,
+					body: this.updateBody
+				});
+				(this.updateTime = 0),
+					(this.updateSelect = []),
+					(this.updateBody = ''),
+					// フロントでdbを反映
+					this.clear();
 			},
 			async fetchMessages() {
 				try {

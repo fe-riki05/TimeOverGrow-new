@@ -5,12 +5,11 @@
 			<div class="d-flex justify-space-between">
 				<div>
 					<p>今日のアウトプット内容</p>
-					<input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
-					<!-- <input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" /> -->
+					<input v-model.number="updatedTime" type="number" class="textbox-input" max="24" min="0" placeholder="3" />
 					時間
 					<v-container fluid class="pl-0">
 						<v-combobox
-							v-model="select"
+							v-model="updatedSelect"
 							:filter="filter"
 							:hide-no-data="!search"
 							:items="items"
@@ -74,7 +73,7 @@
 				</div>
 			</div>
 			<v-textarea
-				v-model.trim="body"
+				v-model="updatedBody"
 				class="textbox-area"
 				label="JSの非同期処理(async,await)について学びました。"
 				flat
@@ -85,7 +84,7 @@
 				max-width="100px"
 			/>
 			<div class="button">
-				<Button :on-click.stop="add">
+				<Button :on-click="update">
 					<v-icon color="#70c2fd"> mdi-send </v-icon>
 					<slot />
 				</Button>
@@ -95,38 +94,30 @@
 </template>
 
 <script>
-	import MessageModel from '../models/Message';
 	import TagModel from '../models/Tag';
 	import firebase, { dbTags } from '../plugins/firebase';
-	import Button from './Button';
+	import Button from '../components/Button';
 
 	export default {
 		components: {
 			Button
 		},
 		props: {
-			onClick: {
-				type: Function,
+			updateTime: {
+				type: Number,
 				required: true
+			},
+			updateSelect: {
+				type: Array,
+				required: true
+			},
+			updateBody: {
+				type: String,
+				default: ''
 			}
-			// dialog: {
-			// 	type: Boolean,
-			// 	default: false
-			// }
-			// value: {
-			// 	type: Number,
-			// 	default: 0
-			// },
-			// update: {
-			// 	type: Function,
-			// 	required: true
-			// }
 		},
 		data() {
 			return {
-				// edittime: this.time,
-				time: '',
-				body: '',
 				canPost: true,
 				activator: null,
 				attach: null,
@@ -136,26 +127,41 @@
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				nonce: 1,
 				menu: false,
-				select: [],
 				x: 0,
 				search: null,
 				y: 0
 			};
 		},
-		// computed: {
-		// 	time: {
-		// 		get() {
-		// 			return this.value;
-		// 		},
-		// 		set(value) {
-		// 			this.$emit('input', value);
-		// 		}
-		// 	}
-		// },
+		computed: {
+			updatedTime: {
+				get() {
+					return this.updateTime;
+				},
+				set(value) {
+					this.$emit('update:updateTime', value);
+				}
+			},
+			updatedSelect: {
+				get() {
+					return this.updateSelect;
+				},
+				set(value) {
+					this.$emit('update:updateSelect', value);
+				}
+			},
+			updatedBody: {
+				get() {
+					return this.updateBody;
+				},
+				set(value) {
+					this.$emit('update:updateBody', value);
+				}
+			}
+		},
 		watch: {
-			select(val, prev) {
+			updatedSelect(val, prev) {
 				if (val.length === prev.length) return;
-				this.select = Array.prototype.map.call(Object(val), value => {
+				this.updatedSelect = Array.prototype.map.call(Object(val), value => {
 					if (typeof value === 'string') {
 						value = {
 							color: this.colors[this.nonce - 1],
@@ -169,6 +175,7 @@
 			}
 		},
 		async created() {
+			console.log(typeof this.updateTime);
 			try {
 				const tags = await TagModel.get();
 				this.items = tags;
@@ -177,34 +184,13 @@
 			}
 		},
 		methods: {
-			// updated(docId) {
-			// 	this.update(docId);
-			// },
-			// async updated(docId) {
-			// 	this.dialog = true;
-			// 	const editId = await dbMessages.doc(docId).get();
-			// 	const editData = editId.data();
-			// 	console.log(editData.time);
-			// 	this.updatedTime = Number(editData.time);
-			// },
-			// updateTime() {
-			// 	if (this.dialog === true) {
-			// 		this.$emit('updateTime', this.$event.target.value);
-			// 	}
-			// },
-			// updateTags() {
-			// 	this.$nextTick(() => {
-			// 		this.select.push(...this.search.split(","));
-			// 		this.$nextTick(() => {
-			// 			this.search = "";
-			// 		});
-			// 	});
-			// },
-			async add() {
+			async update() {
+				Number(this.updateTime);
+				this.$emit('updatedDate');
 				this.canPost = false;
 				try {
 					const uid = firebase.auth().currentUser.uid;
-					this.select.forEach(async element => {
+					this.updatedSelect.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
 						// console.log(params.text);
 						// console.log(this.select);
@@ -213,15 +199,6 @@
 						// }
 						await dbTags.add(params);
 					});
-					const message = await MessageModel.save({
-						time: Number(this.time),
-						body: this.body,
-						tag: this.select
-					});
-					this.onClick(message);
-					this.time = '';
-					this.body = '';
-					this.select = '';
 				} catch (error) {
 					alert(error.message);
 				}
@@ -262,6 +239,12 @@
 		border: 1px solid rgb(161, 161, 161);
 		-webkit-appearance: none;
 	}
+	/* Chrome, Safari, Edge */
+	.textbox-input::-webkit-outer-spin-button,
+	.textbox-input::-webkit-inner-spin-button {
+		margin: 0;
+		-webkit-appearance: none;
+	}
 	p {
 		font-weight: 900;
 		font-size: 25px;
@@ -270,6 +253,8 @@
 		max-width: 80%;
 		resize: none;
 		background: white;
+		width: 100%;
+		height: 100px;
 		border-radius: 5px;
 		padding: 0;
 		margin: 0;

@@ -63,9 +63,7 @@
 </template>
 
 <script>
-	// import axios from '../axios-for-auth'
 	import SocialLogin from '../components/SocialLogin.vue';
-	// import { auth } from '../plugins/firebase'
 
 	export default {
 		components: {

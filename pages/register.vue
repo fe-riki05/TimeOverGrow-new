@@ -10,7 +10,6 @@
 								<v-tab to="/login"> ログイン </v-tab>
 								<v-tab to="/register"> アカウント登録 </v-tab>
 							</v-tabs>
-
 							<v-row>
 								<v-col sm="12">
 									<v-card flat>
@@ -23,7 +22,6 @@
 													required
 													validate-on-blur
 												/>
-
 												<v-text-field
 													ref="register_password"
 													v-model="register_password"
@@ -50,16 +48,14 @@
 													:rules="register_passwordAgainRules"
 													@click:append="show_registerPassword = !show_registerPassword"
 												/>
-
 												<v-alert v-if="registerErrorMsg" dense text type="error">
 													{{ registerErrorMsg }}
 												</v-alert>
-
 												<v-btn
 													:disabled="!register_valid"
 													color="blue darken-3"
 													class="mr-4 white--text"
-													@click="email_register()"
+													@click="email_register"
 												>
 													登録
 												</v-btn>
@@ -86,8 +82,11 @@
 <script>
 	import zxcvbn from 'zxcvbn';
 	import SocialLogin from '../components/SocialLogin.vue';
+	// import firebase from '../plugins/firebase';
+	// import { mapActions, mapState, mapGetters } from 'vuex';
 
 	export default {
+		// store,
 		components: {
 			SocialLogin
 		},
@@ -131,6 +130,7 @@
 			},
 			score() {
 				const result = zxcvbn(this.register_password);
+
 				switch (result.score) {
 					case 4:
 						return {
@@ -162,6 +162,7 @@
 		},
 		methods: {
 			email_register() {
+				console.log(this.register_email);
 				if (this.$refs.register_form.validate()) {
 					this.$store
 						.dispatch('signUp', {
