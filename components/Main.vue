@@ -17,7 +17,7 @@
 							<Spinner v-if="!initialLoaded" class="container" />
 							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
 						</v-card>
-						<MessageList :messages="reversedMessages" @pop="clear" @update="updated" />
+						<MessageList :messages="reversedMessages" @pop="clear" @update="updated" @updatedDate="updatedDateId" />
 					</v-col>
 				</v-row>
 			</v-container>
@@ -26,8 +26,14 @@
 		<v-row justify="center">
 			<v-dialog v-model="dialog" persistent max-width="600">
 				<v-card>
-					<PostEdit :updated-time="updatedTime" :updated-body="updatedBody" class="container">
-						<v-btn color="green darken-1" text @click="dialog = false">更新する</v-btn>
+					<PostEdit
+						:update-time.sync="updateTime"
+						:update-select.sync="updateSelect"
+						:update-body.sync="updateBody"
+						class="container"
+						@updatedDate="updatedDate"
+					>
+						<v-icon color="green darken-1">更新する</v-icon>
 					</PostEdit>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -61,6 +67,10 @@
 		},
 		data() {
 			return {
+				indexId: '',
+				updateTime: 0,
+				updateSelect: [],
+				updateBody: '',
 				dialog: false,
 				num: 0,
 				name: '',
@@ -68,8 +78,6 @@
 				done: false,
 				messages: [],
 				vuechartData: [],
-				updatedTime: 0,
-				updatedBody: '',
 				times: 0,
 				initialLoaded: false,
 				BarChartData: {
@@ -179,9 +187,34 @@
 				this.dialog = true;
 				const editId = await dbMessages.doc(docId).get();
 				const editData = editId.data();
-				console.log(editData);
-				this.updatedTime = Number(editData.time);
-				this.updatedBody = editData.body;
+				// dialogにtag表示の記述
+				let newTagData = [];
+				editData.tag.map(tagData => {
+					newTagData.push(tagData.text);
+					return newTagData;
+				});
+				this.updateTime = Number(editData.time);
+				this.updateBody = editData.body;
+				this.updateSelect = newTagData;
+				console.log(this.updateSelect);
+			},
+			async updatedDateId(docId) {
+				const editId = await dbMessages.doc(docId).get();
+				this.indexId = editId.id;
+			},
+			async updatedDate() {
+				this.dialog = false;
+				console.log(this.indexId);
+				await dbMessages.doc(this.indexId).update({
+					time: this.updateTime,
+					tag: this.updateSelect,
+					body: this.updateBody
+				});
+				(this.updateTime = 0),
+					(this.updateSelect = []),
+					(this.updateBody = ''),
+					// フロントでdbを反映
+					this.clear();
 			},
 			async fetchMessages() {
 				try {

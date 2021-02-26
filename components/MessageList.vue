@@ -28,9 +28,9 @@
 				required: true,
 				validator(messages) {
 					return messages.every(message => {
-						if (typeof message.time !== 'number') {
-							return false;
-						}
+						// if (typeof message.time !== 'number') {
+						// 	return false;
+						// }
 						if (typeof message.date !== 'string') {
 							return false;
 						}
@@ -48,6 +48,7 @@
 			},
 			edit(docId) {
 				this.$emit('update', docId);
+				this.$emit('updatedDate', docId);
 			}
 		}
 	};
