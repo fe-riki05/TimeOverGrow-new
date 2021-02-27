@@ -4,9 +4,9 @@ import { normalizeURL, decode } from '@nuxt/ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _6eea0764 = () => interopDefault(import('../pages/editPost.vue' /* webpackChunkName: "pages/editPost" */))
+const _61245cac = () => interopDefault(import('../pages/DialogEdit.vue' /* webpackChunkName: "pages/DialogEdit" */))
 const _c77d9e82 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
-const _1f30bef8 = () => interopDefault(import('../pages/PostEdit.vue' /* webpackChunkName: "pages/PostEdit" */))
+const _1c341415 = () => interopDefault(import('../pages/MyPage.vue' /* webpackChunkName: "pages/MyPage" */))
 const _4498bbbd = () => interopDefault(import('../pages/register.vue' /* webpackChunkName: "pages/register" */))
 const _6e7037aa = () => interopDefault(import('../pages/top.vue' /* webpackChunkName: "pages/top" */))
 const _5acce4b0 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
@@ -28,17 +28,17 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
-    path: "/editPost",
-    component: _6eea0764,
-    name: "editPost"
+    path: "/DialogEdit",
+    component: _61245cac,
+    name: "DialogEdit"
   }, {
     path: "/login",
     component: _c77d9e82,
     name: "login"
   }, {
-    path: "/PostEdit",
-    component: _1f30bef8,
-    name: "PostEdit"
+    path: "/MyPage",
+    component: _1c341415,
+    name: "MyPage"
   }, {
     path: "/register",
     component: _4498bbbd,

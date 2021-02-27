@@ -26,7 +26,7 @@
 		<v-row justify="center">
 			<v-dialog v-model="dialog" persistent max-width="600">
 				<v-card>
-					<PostEdit
+					<DialogEdit
 						:update-time.sync="updateTime"
 						:update-select.sync="updateSelect"
 						:update-body.sync="updateBody"
@@ -34,7 +34,7 @@
 						@updatedDate="updatedDate"
 					>
 						<v-icon color="green darken-1">更新する</v-icon>
-					</PostEdit>
+					</DialogEdit>
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
@@ -53,9 +53,8 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
-	import PostEdit from '../pages/PostEdit';
+	import DialogEdit from '../pages/DialogEdit';
 	import { dbMessages } from '../plugins/firebase';
-
 
 	export default {
 		components: {
@@ -64,7 +63,7 @@
 			TextBox,
 			Spinner,
 			MessageList,
-			PostEdit
+			DialogEdit
 		},
 		data() {
 			return {

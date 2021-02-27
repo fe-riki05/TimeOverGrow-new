@@ -1,6 +1,11 @@
 <template>
 	<v-app>
-		<Header />
+		<Header>
+			<nuxt-link to="/mypage" class="link d-flex">
+				<v-icon>mdi-account-check</v-icon>
+				<v-list-item-title style="display: block">マイページ</v-list-item-title>
+			</nuxt-link>
+		</Header>
 		<Main />
 	</v-app>
 </template>

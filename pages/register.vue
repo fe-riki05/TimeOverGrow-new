@@ -86,7 +86,6 @@
 	// import { mapActions, mapState, mapGetters } from 'vuex';
 
 	export default {
-		// store,
 		components: {
 			SocialLogin
 		},
@@ -130,7 +129,6 @@
 			},
 			score() {
 				const result = zxcvbn(this.register_password);
-
 				switch (result.score) {
 					case 4:
 						return {
@@ -162,14 +160,15 @@
 		},
 		methods: {
 			email_register() {
-				console.log(this.register_email);
+				console.log('@@@@@');
 				if (this.$refs.register_form.validate()) {
 					this.$store
 						.dispatch('signUp', {
 							email: this.register_email,
 							password: this.register_password
 						})
-						.then(() => {
+						.then(err => {
+							console.log(err);
 							this.register_email = '';
 							this.register_password = '';
 							this.$router.push({
@@ -181,6 +180,7 @@
 							});
 						})
 						.catch(err => {
+							console.log('エラー');
 							if (err.code === 'auth/email-already-in-use') {
 								this.registerErrorMsg = 'このメールアドレスは既に登録されています。';
 							} else if (err.code === 'auth/invalid-email') {
@@ -194,3 +194,5 @@
 		}
 	};
 </script>
+
+<style></style>

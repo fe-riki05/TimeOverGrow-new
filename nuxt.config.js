@@ -11,9 +11,6 @@ export default {
 	router: {
 		middleware: 'authenticated'
 	},
-	// css: [
-	// 	'modern-css-reset'
-	// ],
 	modules: ['@nuxtjs/vuetify'],
 	module: {
 		rules: [

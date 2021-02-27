@@ -56,11 +56,16 @@
 					});
 			},
 			guestLogin() {
-				this.$store.dispatch('signInWithGuest').then(() => {
-					this.$router.push({
-						name: 'index'
+				this.$store
+					.dispatch('signInWithGuest')
+					.then(() => {
+						this.$router.push({
+							name: 'index'
+						});
+					})
+					.catch(() => {
+						console.error('現在ゲストログインは使用できません。後ほどお試しください。');
 					});
-				});
 			}
 		}
 	};

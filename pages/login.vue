@@ -10,14 +10,12 @@
 								<v-tab to="/login"> ログイン </v-tab>
 								<v-tab to="/register"> アカウント登録 </v-tab>
 							</v-tabs>
-
 							<v-row>
 								<v-col sm="12">
 									<v-card flat>
 										<v-card-text class="pa-0">
 											<v-form ref="login_form" v-model="login_valid" lazy-validation>
 												<v-text-field v-model="login_email" label="メールアドレス" required />
-
 												<v-text-field
 													v-model="login_password"
 													label="パスワード"
@@ -26,16 +24,14 @@
 													:type="show_loginpassword ? 'text' : 'password'"
 													@click:append="show_loginpassword = !show_loginpassword"
 												/>
-
 												<v-alert v-if="loginErrorMsg" dense text type="error">
 													{{ loginErrorMsg }}
 												</v-alert>
-
 												<v-btn
 													:disabled="!login_valid"
 													color="blue darken-3"
 													class="my-4 white--text"
-													@click="email_login()"
+													@click="email_login"
 												>
 													ログイン
 												</v-btn>
@@ -83,6 +79,7 @@
 		},
 		methods: {
 			email_login() {
+				console.log(this.login_email);
 				this.$store
 					.dispatch('signInWithEmail', {
 						email: this.login_email,
@@ -96,6 +93,7 @@
 						});
 					})
 					.catch(err => {
+						console.log(err);
 						if (err.code === 'auth/user-disabled') {
 							this.loginErrorMsg = 'このアカウントはロックされています。';
 						} else {
@@ -106,3 +104,5 @@
 		}
 	};
 </script>
+
+<style></style>

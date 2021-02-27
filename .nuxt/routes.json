@@ -1,9 +1,9 @@
 [
   {
-    "name": "editPost",
-    "path": "/editPost",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/editPost.vue",
-    "chunkName": "pages/editPost"
+    "name": "DialogEdit",
+    "path": "/DialogEdit",
+    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/DialogEdit.vue",
+    "chunkName": "pages/DialogEdit"
   },
   {
     "name": "login",
@@ -12,10 +12,10 @@
     "chunkName": "pages/login"
   },
   {
-    "name": "PostEdit",
-    "path": "/PostEdit",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/PostEdit.vue",
-    "chunkName": "pages/PostEdit"
+    "name": "MyPage",
+    "path": "/MyPage",
+    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/MyPage.vue",
+    "chunkName": "pages/MyPage"
   },
   {
     "name": "register",
