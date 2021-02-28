@@ -4,12 +4,12 @@ import { normalizeURL, decode } from '@nuxt/ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _61245cac = () => interopDefault(import('../pages/DialogEdit.vue' /* webpackChunkName: "pages/DialogEdit" */))
-const _c77d9e82 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
-const _1c341415 = () => interopDefault(import('../pages/MyPage.vue' /* webpackChunkName: "pages/MyPage" */))
-const _4498bbbd = () => interopDefault(import('../pages/register.vue' /* webpackChunkName: "pages/register" */))
-const _6e7037aa = () => interopDefault(import('../pages/top.vue' /* webpackChunkName: "pages/top" */))
-const _5acce4b0 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _80a5653c = () => interopDefault(import('../pages/DialogEdit.vue' /* webpackChunkName: "pages/DialogEdit" */))
+const _57062649 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
+const _8be4606a = () => interopDefault(import('../pages/MyPage.vue' /* webpackChunkName: "pages/MyPage" */))
+const _5a1b3c1a = () => interopDefault(import('../pages/register.vue' /* webpackChunkName: "pages/register" */))
+const _0e80b435 = () => interopDefault(import('../pages/top.vue' /* webpackChunkName: "pages/top" */))
+const _e542f99c = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -29,27 +29,27 @@ export const routerOptions = {
 
   routes: [{
     path: "/DialogEdit",
-    component: _61245cac,
+    component: _80a5653c,
     name: "DialogEdit"
   }, {
     path: "/login",
-    component: _c77d9e82,
+    component: _57062649,
     name: "login"
   }, {
     path: "/MyPage",
-    component: _1c341415,
+    component: _8be4606a,
     name: "MyPage"
   }, {
     path: "/register",
-    component: _4498bbbd,
+    component: _5a1b3c1a,
     name: "register"
   }, {
     path: "/top",
-    component: _6e7037aa,
+    component: _0e80b435,
     name: "top"
   }, {
     path: "/",
-    component: _5acce4b0,
+    component: _e542f99c,
     name: "index"
   }],
 

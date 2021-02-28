@@ -15,13 +15,8 @@
 								<v-icon>mdi-arrow-left-bold</v-icon>
 								<v-list-item-title style="display: block">ログアウト</v-list-item-title>
 							</v-btn>
-							<!-- <v-btn text class="menu" style="display: block" color="grey darken-3"> -->
 							<slot></slot>
-							<nuxt-link to="/mypage" class="link d-flex">
-								<!-- <v-icon>mdi-account-check</v-icon>
-								<v-list-item-title style="display: block"></v-list-item-title> -->
-							</nuxt-link>
-							<!-- </v-btn> -->
+							<nuxt-link to="/mypage" class="link d-flex"> </nuxt-link>
 						</v-layout>
 					</v-container>
 				</v-app-bar>

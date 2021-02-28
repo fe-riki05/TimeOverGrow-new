@@ -1,23 +1,28 @@
 <template>
 	<v-app>
-		<!-- <div> -->
 		<Header>
 			<nuxt-link to="/" class="link d-flex">
 				<v-icon>mdi-reply-all</v-icon>
 				<v-list-item-title style="display: block">アプリへ戻る</v-list-item-title>
 			</nuxt-link>
 		</Header>
-		<v-card :elevation="10" class="mt-5 p-5">
-			<Chart :chart-data="BarChartData" :options="BarChartOptions" class="m-2" />
-		</v-card>
-		<!-- </div> -->
+		<v-container class="pa-0">
+			<v-row cols="7" sm="7" md="4" class="container">
+				<v-col>
+					<v-card :elevation="10" class="mt-5 p-5">
+						<Chart :chart-data="TagBarChartData" :options="TagBarChartOptions" class="m-2 pa-4" />
+					</v-card>
+				</v-col>
+			</v-row>
+		</v-container>
 	</v-app>
 </template>
 
 <script>
 	import Header from '../layouts/Header';
 	import Chart from '../components/Chart';
-	import MessageModel from '../models/Message';
+	// import MessageModel from '../models/Message';
+	import { dbTags } from '../plugins/firebase';
 
 	export default {
 		components: {
@@ -27,18 +32,21 @@
 		data() {
 			return {
 				vuechartData: [],
-				BarChartData: {
-					labels: ['学習時間'],
+				TagBarChartData: {
+					// ↓にtagの名前を格納
+					labels: ['学習時間a'],
 					datasets: [
 						{
 							label: ['学習時間'],
-							data: [],
-							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)']
+							// ↓にtagのデータを格納
+							data: [100],
+							// ↓にtagの色を格納
+							backgroundColor: ['red'],
+							borderColor: ['red']
 						}
 					]
 				},
-				BarChartOptions: {
+				TagBarChartOptions: {
 					responsive: true,
 					maintainAspectRatio: false,
 					scales: {
@@ -55,8 +63,8 @@
 							{
 								ticks: {
 									beginAtZero: true,
-									max: 1000,
-									stepSize: 100,
+									max: 500,
+									stepSize: 50,
 									callback(label) {
 										return label + ' h';
 									}
@@ -75,25 +83,16 @@
 			};
 		},
 		async created() {
-			const vuechartData = await this.getChart();
-			if (this.BarChartData.datasets[0].data.length === 0) {
-				this.BarChartData.datasets[0].data.push(vuechartData[0]);
-			}
-			this.BarChartData.datasets[0].data[0] = vuechartData[0];
+			await this.tagChart();
+			// if (this.TagBarChartData.datasets[0].data.length === 0) {
+			// 	this.TagBarChartData.datasets[0].data.push(vuechartData[0]);
+			// }
+			// this.TagBarChartData.datasets[0].data[0] = vuechartData[0];
 		},
 		methods: {
-			async getChart() {
-				try {
-					const chartdbtime = await MessageModel.dbtime();
-					if (this.BarChartData.datasets[0].data.length === 0) {
-						this.BarChartData.datasets[0].data.push(chartdbtime);
-					}
-					this.vuechartData[0] = chartdbtime;
-					this.BarChartData.datasets[0].data[0] = chartdbtime;
-					return this.vuechartData;
-				} catch (error) {
-					alert(error.message);
-				}
+			async tagChart() {
+				const TagCollection = await dbTags.get();
+				console.log(TagCollection.docs);
 			}
 		}
 	};

@@ -6,7 +6,7 @@
 					<v-col v-if="initialLoaded" class="item text-center">
 						<TotalTime :times="times" />
 						<v-card :elevation="10" class="mt-5 p-5">
-							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="m-2" />
+							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="ma-2 pa-3" />
 						</v-card>
 					</v-col>
 				</v-row>
@@ -148,12 +148,10 @@
 			add(message) {
 				this.messages.push(message);
 				this.times += message.time;
-
 				const chartdbtime = message.time;
 				if (this.BarChartData.datasets[0].data.length === 0) {
 					this.BarChartData.datasets[0].data.push(chartdbtime);
 				}
-
 				this.BarChartData.datasets[0].data[0] += chartdbtime;
 				// もう1度作り直さないといけない。
 				this.BarChartData = {
@@ -196,7 +194,6 @@
 				this.updateTime = Number(editData.time);
 				this.updateBody = editData.body;
 				this.updateSelect = newTagData;
-				console.log(this.updateSelect);
 			},
 			async updatedDateId(docId) {
 				const editId = await dbMessages.doc(docId).get();
@@ -204,7 +201,6 @@
 			},
 			async updatedDate() {
 				this.dialog = false;
-				console.log(this.indexId);
 				await dbMessages.doc(this.indexId).update({
 					time: this.updateTime,
 					tag: this.updateSelect,

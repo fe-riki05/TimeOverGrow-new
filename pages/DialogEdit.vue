@@ -175,7 +175,6 @@
 			}
 		},
 		async created() {
-			console.log(typeof this.updateTime);
 			try {
 				const tags = await TagModel.get();
 				this.items = tags;
@@ -192,12 +191,19 @@
 					const uid = firebase.auth().currentUser.uid;
 					this.updatedSelect.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
-						// console.log(params.text);
-						// console.log(this.select);
-						// if (dbTags.where('color', '==', params.color).where('text', '==', params.text)) {
-						// 	return;
-						// }
-						await dbTags.add(params);
+						const TagSame = await dbTags.where('color', '==', params.color).where('text', '==', params.text).get();
+						if (TagSame.docs) {
+							let Tag = [];
+							TagSame.docs.forEach(e => {
+								Tag = [];
+								Tag.push(e.id);
+							});
+							await dbTags.doc(Tag[0]).set({
+								color: params.color,
+								text: params.text,
+								uid: params.uid
+							});
+						}
 					});
 				} catch (error) {
 					alert(error.message);

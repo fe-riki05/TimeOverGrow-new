@@ -1,10 +1,10 @@
 <template>
 	<v-app>
-		<!-- <v-row> -->
-		<!-- <v-main> -->
-		<Nuxt />
-		<!-- </v-main> -->
-		<!-- </v-row> -->
+		<v-row>
+			<v-main>
+				<Nuxt />
+			</v-main>
+		</v-row>
 	</v-app>
 </template>
 

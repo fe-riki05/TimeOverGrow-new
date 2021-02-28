@@ -11,13 +11,13 @@ class Message {
 	}
 
 	static async save({ time, body, tag }) {
-		// if (!time) {
-		// 	throw new Error('入力欄が空欄です。');
-		// }
+		if (!time) {
+			throw new Error('入力欄が空欄です。');
+		}
 
-		// if (!body || !body.trim()) {
-		// 	throw new Error('入力欄が空欄です。');
-		// }
+		if (!body || !body.trim()) {
+			throw new Error('入力欄が空欄です。');
+		}
 
 		const uid = firebase.auth().currentUser.uid;
 

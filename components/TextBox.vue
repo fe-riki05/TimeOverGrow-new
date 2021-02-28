@@ -6,7 +6,6 @@
 				<div>
 					<p>今日のアウトプット内容</p>
 					<input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
-					<!-- <input v-model="time" class="textbox-input" type="number" max="24" min="0" placeholder="3" /> -->
 					時間
 					<v-container fluid class="pl-0">
 						<v-combobox
@@ -109,22 +108,9 @@
 				type: Function,
 				required: true
 			}
-			// dialog: {
-			// 	type: Boolean,
-			// 	default: false
-			// }
-			// value: {
-			// 	type: Number,
-			// 	default: 0
-			// },
-			// update: {
-			// 	type: Function,
-			// 	required: true
-			// }
 		},
 		data() {
 			return {
-				// edittime: this.time,
 				time: '',
 				body: '',
 				canPost: true,
@@ -142,16 +128,6 @@
 				y: 0
 			};
 		},
-		// computed: {
-		// 	time: {
-		// 		get() {
-		// 			return this.value;
-		// 		},
-		// 		set(value) {
-		// 			this.$emit('input', value);
-		// 		}
-		// 	}
-		// },
 		watch: {
 			select(val, prev) {
 				if (val.length === prev.length) return;
@@ -177,41 +153,25 @@
 			}
 		},
 		methods: {
-			// updated(docId) {
-			// 	this.update(docId);
-			// },
-			// async updated(docId) {
-			// 	this.dialog = true;
-			// 	const editId = await dbMessages.doc(docId).get();
-			// 	const editData = editId.data();
-			// 	console.log(editData.time);
-			// 	this.updatedTime = Number(editData.time);
-			// },
-			// updateTime() {
-			// 	if (this.dialog === true) {
-			// 		this.$emit('updateTime', this.$event.target.value);
-			// 	}
-			// },
-			// updateTags() {
-			// 	this.$nextTick(() => {
-			// 		this.select.push(...this.search.split(","));
-			// 		this.$nextTick(() => {
-			// 			this.search = "";
-			// 		});
-			// 	});
-			// },
 			async add() {
 				this.canPost = false;
 				try {
 					const uid = firebase.auth().currentUser.uid;
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
-						// console.log(params.text);
-						// console.log(this.select);
-						// if (dbTags.where('color', '==', params.color).where('text', '==', params.text)) {
-						// 	return;
-						// }
-						await dbTags.add(params);
+						const TagSame = await dbTags.where('color', '==', params.color).where('text', '==', params.text).get();
+						if (TagSame.docs) {
+							let Tag = [];
+							TagSame.docs.forEach(e => {
+								Tag = [];
+								Tag.push(e.id);
+							});
+							await dbTags.doc(Tag[0]).set({
+								color: params.color,
+								text: params.text,
+								uid: params.uid
+							});
+						}
 					});
 					const message = await MessageModel.save({
 						time: Number(this.time),
