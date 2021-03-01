@@ -53,7 +53,7 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
-	import DialogEdit from '../pages/DialogEdit';
+	import DialogEdit from './DialogEdit';
 	import { dbMessages } from '../plugins/firebase';
 
 	export default {
@@ -147,8 +147,8 @@
 		methods: {
 			add(message) {
 				this.messages.push(message);
-				this.times += message.time;
-				const chartdbtime = message.time;
+				this.times += message.times;
+				const chartdbtime = message.times;
 				if (this.BarChartData.datasets[0].data.length === 0) {
 					this.BarChartData.datasets[0].data.push(chartdbtime);
 				}
@@ -187,12 +187,12 @@
 				const editData = editId.data();
 				// dialogにtag表示の記述
 				let newTagData = [];
-				editData.tag.map(tagData => {
+				editData.tags.map(tagData => {
 					newTagData.push(tagData.text);
 					return newTagData;
 				});
-				this.updateTime = Number(editData.time);
-				this.updateBody = editData.body;
+				this.updateTime = Number(editData.times);
+				this.updateBody = editData.bodys;
 				this.updateSelect = newTagData;
 			},
 			async updatedDateId(docId) {
@@ -202,9 +202,9 @@
 			async updatedDate() {
 				this.dialog = false;
 				await dbMessages.doc(this.indexId).update({
-					time: this.updateTime,
-					tag: this.updateSelect,
-					body: this.updateBody
+					times: this.updateTime,
+					tags: this.updateSelect,
+					bodys: this.updateBody
 				});
 				(this.updateTime = 0),
 					(this.updateSelect = []),

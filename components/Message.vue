@@ -24,10 +24,10 @@
 			</div>
 		</div>
 		<p class="message-text mb-0 mr-3">
-			<span>今日の学習時間は</span><span style="text-decoration: underline">{{ time }}時間</span>
+			<span>今日の学習時間は</span><span style="text-decoration: underline">{{ times }}時間</span>
 		</p>
 		<p class="message-text mb-0">
-			{{ body }}
+			{{ bodys }}
 		</p>
 		<div class="message-date">
 			{{ date }}
@@ -45,11 +45,11 @@
 			Button
 		},
 		props: {
-			time: {
+			times: {
 				type: Number,
 				required: true
 			},
-			body: {
+			bodys: {
 				type: String,
 				required: true
 			},

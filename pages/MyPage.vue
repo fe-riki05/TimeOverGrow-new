@@ -34,15 +34,15 @@
 				vuechartData: [],
 				TagBarChartData: {
 					// ↓にtagの名前を格納
-					labels: ['学習時間a'],
+					labels: [],
 					datasets: [
 						{
 							label: ['学習時間'],
 							// ↓にtagのデータを格納
 							data: [100],
 							// ↓にtagの色を格納
-							backgroundColor: ['red'],
-							borderColor: ['red']
+							backgroundColor: [],
+							borderColor: []
 						}
 					]
 				},
@@ -92,7 +92,18 @@
 		methods: {
 			async tagChart() {
 				const TagCollection = await dbTags.get();
-				console.log(TagCollection.docs);
+				// const tagId = [];
+				TagCollection.docs.map(e => {
+					// ↓でオブジェクトでデータを取得。
+					console.log(e.data());
+
+					// タグtext,colorを格納。
+					this.TagBarChartData.labels.push(e.data().text);
+					this.TagBarChartData.datasets[0].backgroundColor.push(e.data().color);
+					this.TagBarChartData.datasets[0].borderColor.push(e.data().color);
+				});
+				console.log(this.TagBarChartData.labels);
+				console.log(this.TagBarChartData.datasets[0].backgroundColor);
 			}
 		}
 	};

@@ -2,31 +2,31 @@ import firebase from 'firebase';
 import { dbMessages } from '../plugins/firebase';
 
 class Message {
-	constructor({ id, time, body, date, tag }) {
+	constructor({ id, times, bodys, date, tags }) {
 		this.id = id;
-		this.time = time;
-		this.body = body;
+		this.times = times;
+		this.bodys = bodys;
 		this.date = date;
-		this.tag = tag;
+		this.tags = tags;
 	}
 
-	static async save({ time, body, tag }) {
-		if (!time) {
-			throw new Error('入力欄が空欄です。');
-		}
+	static async save({ times, bodys, tags }) {
+		// if (!times) {
+		// 	throw new Error('入力欄が空欄です。');
+		// }
 
-		if (!body || !body.trim()) {
+		if (!bodys || !bodys.trim()) {
 			throw new Error('入力欄が空欄です。');
 		}
 
 		const uid = firebase.auth().currentUser.uid;
 
 		const postData = {
-			time,
-			body,
+			times,
+			bodys,
 			date: firebase.firestore.FieldValue.serverTimestamp(),
 			uid,
-			tag
+			tags
 		};
 
 		const docRef = await dbMessages.add(postData);
@@ -66,10 +66,10 @@ class Message {
 	static create(id, data) {
 		return new Message({
 			id,
-			time: data.time,
-			body: data.body,
+			times: data.times,
+			bodys: data.bodys,
 			date: data.date.toDate().toLocaleString(),
-			tag: data.tag
+			tags: data.tags
 		});
 	}
 
@@ -79,7 +79,7 @@ class Message {
 			const querySnapshot = await dbMessages.where('uid', '==', uid).get();
 			let totaltime = 0;
 			querySnapshot.forEach(postDoc => {
-				totaltime += postDoc.data().time;
+				totaltime += postDoc.data().times;
 			});
 			return totaltime;
 		} catch (error) {
