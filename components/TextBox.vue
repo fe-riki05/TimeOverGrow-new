@@ -228,7 +228,7 @@
 
 				// this.dbMessagesSelect = this.select;
 
-				this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
+				// this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
 				console.log(this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time);
 				console.log(this.dbMessagesSelect);
 				console.log(Number(this.tagTimes));
