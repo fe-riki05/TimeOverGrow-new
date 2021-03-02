@@ -79,7 +79,6 @@
 		},
 		methods: {
 			email_login() {
-				console.log(this.login_email);
 				this.$store
 					.dispatch('signInWithEmail', {
 						email: this.login_email,

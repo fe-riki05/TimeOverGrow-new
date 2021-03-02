@@ -159,16 +159,45 @@
 			}
 		},
 		methods: {
+			// email_register() {
+			// 	if (this.$refs.register_form.validate()) {
+			// 		this.$store
+			// 			.dispatch('signUp', {
+			// 				email: this.register_email,
+			// 				password: this.register_password
+			// 			})
+			// 			.then(err => {
+			// 				console.log(err);
+			// 				this.register_email = '';
+			// 				this.register_password = '';
+			// 				this.$router.push({
+			// 					name: 'index',
+			// 					params: {
+			// 						dashboard_msg: true,
+			// 						dashboard_msg_text: 'アカウントの登録が完了しました。'
+			// 					}
+			// 				});
+			// 			})
+			// 			.catch(err => {
+			// 				console.log('エラー');
+			// 				if (err.code === 'auth/email-already-in-use') {
+			// 					this.registerErrorMsg = 'このメールアドレスは既に登録されています。';
+			// 				} else if (err.code === 'auth/invalid-email') {
+			// 					this.registerErrorMsg = '無効なメールアドレスです。';
+			// 				} else {
+			// 					this.registerErrorMsg = 'エラーにより登録できませんでした。';
+			// 				}
+			// 			});
+			// 	}
+			// }
 			email_register() {
-				console.log('@@@@@');
 				if (this.$refs.register_form.validate()) {
 					this.$store
 						.dispatch('signUp', {
 							email: this.register_email,
 							password: this.register_password
 						})
-						.then(err => {
-							console.log(err);
+						.then(() => {
 							this.register_email = '';
 							this.register_password = '';
 							this.$router.push({
@@ -180,7 +209,7 @@
 							});
 						})
 						.catch(err => {
-							console.log('エラー');
+							console.log(err);
 							if (err.code === 'auth/email-already-in-use') {
 								this.registerErrorMsg = 'このメールアドレスは既に登録されています。';
 							} else if (err.code === 'auth/invalid-email') {

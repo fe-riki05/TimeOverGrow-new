@@ -12,7 +12,7 @@
 				</v-row>
 				<v-row cols="7" sm="7" md="6" class="container mt-0">
 					<v-col class="item">
-						<v-card :elevation="10" class="pt-3 pl-5">
+						<v-card :elevation="10">
 							<TextBox :on-click="add" class="container" />
 							<Spinner v-if="!initialLoaded" class="container" />
 							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
@@ -253,6 +253,7 @@
 		max-width: 1300px;
 		margin: 0 30px;
 		padding: 0;
+		padding-left: 30px;
 	}
 	.content {
 		margin: 0 auto;

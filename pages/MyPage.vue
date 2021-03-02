@@ -19,6 +19,7 @@
 </template>
 
 <script>
+	import 'chartjs-plugin-colorschemes';
 	import Header from '../layouts/Header';
 	import Chart from '../components/Chart';
 	// import MessageModel from '../models/Message';
@@ -39,16 +40,21 @@
 						{
 							label: ['学習時間'],
 							// ↓にtagのデータを格納
-							data: [100],
+							data: []
 							// ↓にtagの色を格納
-							backgroundColor: [],
-							borderColor: []
+							// backgroundColor: [],
+							// borderColor: []
 						}
 					]
 				},
 				TagBarChartOptions: {
 					responsive: true,
 					maintainAspectRatio: false,
+					plugins: {
+						colorschemes: {
+							scheme: 'brewer.DarkTwo8'
+						}
+					},
 					scales: {
 						xAxes: [
 							{
@@ -84,6 +90,7 @@
 		},
 		async created() {
 			await this.tagChart();
+
 			// if (this.TagBarChartData.datasets[0].data.length === 0) {
 			// 	this.TagBarChartData.datasets[0].data.push(vuechartData[0]);
 			// }
@@ -95,15 +102,50 @@
 				// const tagId = [];
 				TagCollection.docs.map(e => {
 					// ↓でオブジェクトでデータを取得。
-					console.log(e.data());
+					// console.log(e.data());
 
 					// タグtext,colorを格納。
 					this.TagBarChartData.labels.push(e.data().text);
-					this.TagBarChartData.datasets[0].backgroundColor.push(e.data().color);
-					this.TagBarChartData.datasets[0].borderColor.push(e.data().color);
+					// this.TagBarChartData.datasets[0].backgroundColor.push(e.data().color);
+					// this.TagBarChartData.datasets[0].borderColor.push(e.data().color);
+					this.TagBarChartData.datasets[0].data.push(e.data().time);
+
+					this.TagBarChartOptions = {
+						responsive: true,
+						maintainAspectRatio: false,
+						plugins: {
+							colorschemes: {
+								scheme: 'brewer.DarkTwo8'
+							}
+						}
+					};
 				});
-				console.log(this.TagBarChartData.labels);
-				console.log(this.TagBarChartData.datasets[0].backgroundColor);
+				// console.log(this.TagBarChartData.labels);
+				// console.log(this.TagBarChartData.datasets[0].backgroundColor);
+
+				this.TagBarChartData = {
+					// ↓にtagの名前を格納
+					labels: this.TagBarChartData.labels,
+					datasets: [
+						{
+							label: ['学習時間'],
+							// ↓にtagのデータを格納
+							data: this.TagBarChartData.datasets[0].data
+							// ↓にtagの色を格納
+							// backgroundColor: this.TagBarChartData.datasets[0].backgroundColor,
+							// borderColor: this.TagBarChartData.datasets[0].borderColor
+						}
+					]
+				};
+				this.TagBarChartOptions = {
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins: {
+						colorschemes: {
+							scheme: 'brewer.DarkTwo8'
+						}
+					}
+				};
 			}
 		}
 	};
