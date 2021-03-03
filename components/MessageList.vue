@@ -3,10 +3,10 @@
 		<template v-for="(message, index) in messages">
 			<Message
 				:key="index"
-				:time="message.time"
-				:body="message.body"
+				:times="message.times"
+				:bodys="message.bodys"
 				:date="message.date"
-				:tag="message.tag"
+				:tag="message.tags"
 				:i="index"
 				@clear="clear"
 				@edit="edit"
@@ -34,7 +34,7 @@
 						if (typeof message.date !== 'string') {
 							return false;
 						}
-						if (typeof message.body !== 'string') {
+						if (typeof message.bodys !== 'string') {
 							return false;
 						}
 						return true;

@@ -11,6 +11,18 @@
   "LazyChart": {
     "description": "Auto imported from /components/Chart.vue"
   },
+  "DialogEdit": {
+    "description": "Auto imported from /components/DialogEdit.vue"
+  },
+  "LazyDialogEdit": {
+    "description": "Auto imported from /components/DialogEdit.vue"
+  },
+  "DialogTime": {
+    "description": "Auto imported from /components/DialogTime.vue"
+  },
+  "LazyDialogTime": {
+    "description": "Auto imported from /components/DialogTime.vue"
+  },
   "Main": {
     "description": "Auto imported from /components/Main.vue"
   },

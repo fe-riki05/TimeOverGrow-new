@@ -1,38 +1,37 @@
 [
   {
-    "name": "editPost",
-    "path": "/editPost",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/editPost.vue",
-    "chunkName": "pages/editPost"
-  },
-  {
     "name": "login",
     "path": "/login",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/login.vue",
-    "chunkName": "pages/login"
+    "component": "/usr/src/app/pages/login.vue",
+    "chunkName": "pages/login",
+    "_name": "_57062649"
   },
   {
-    "name": "PostEdit",
-    "path": "/PostEdit",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/PostEdit.vue",
-    "chunkName": "pages/PostEdit"
+    "name": "MyPage",
+    "path": "/MyPage",
+    "component": "/usr/src/app/pages/MyPage.vue",
+    "chunkName": "pages/MyPage",
+    "_name": "_8be4606a"
   },
   {
     "name": "register",
     "path": "/register",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/register.vue",
-    "chunkName": "pages/register"
+    "component": "/usr/src/app/pages/register.vue",
+    "chunkName": "pages/register",
+    "_name": "_5a1b3c1a"
   },
   {
     "name": "top",
     "path": "/top",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/top.vue",
-    "chunkName": "pages/top"
+    "component": "/usr/src/app/pages/top.vue",
+    "chunkName": "pages/top",
+    "_name": "_0e80b435"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/index.vue",
-    "chunkName": "pages/index"
+    "component": "/usr/src/app/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_e542f99c"
   }
 ]

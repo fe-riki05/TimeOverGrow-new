@@ -6,13 +6,13 @@
 					<v-col v-if="initialLoaded" class="item text-center">
 						<TotalTime :times="times" />
 						<v-card :elevation="10" class="mt-5 p-5">
-							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="m-2" />
+							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="ma-2 pa-3" />
 						</v-card>
 					</v-col>
 				</v-row>
 				<v-row cols="7" sm="7" md="6" class="container mt-0">
 					<v-col class="item">
-						<v-card :elevation="10" class="pt-3 pl-5">
+						<v-card :elevation="10">
 							<TextBox :on-click="add" class="container" />
 							<Spinner v-if="!initialLoaded" class="container" />
 							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
@@ -26,7 +26,7 @@
 		<v-row justify="center">
 			<v-dialog v-model="dialog" persistent max-width="600">
 				<v-card>
-					<PostEdit
+					<DialogEdit
 						:update-time.sync="updateTime"
 						:update-select.sync="updateSelect"
 						:update-body.sync="updateBody"
@@ -34,7 +34,7 @@
 						@updatedDate="updatedDate"
 					>
 						<v-icon color="green darken-1">更新する</v-icon>
-					</PostEdit>
+					</DialogEdit>
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
@@ -53,9 +53,8 @@
 	import TextBox from './TextBox';
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
-	import PostEdit from '../pages/PostEdit';
+	import DialogEdit from './DialogEdit';
 	import { dbMessages } from '../plugins/firebase';
-
 
 	export default {
 		components: {
@@ -64,7 +63,7 @@
 			TextBox,
 			Spinner,
 			MessageList,
-			PostEdit
+			DialogEdit
 		},
 		data() {
 			return {
@@ -148,13 +147,11 @@
 		methods: {
 			add(message) {
 				this.messages.push(message);
-				this.times += message.time;
-
-				const chartdbtime = message.time;
+				this.times += message.times;
+				const chartdbtime = message.times;
 				if (this.BarChartData.datasets[0].data.length === 0) {
 					this.BarChartData.datasets[0].data.push(chartdbtime);
 				}
-
 				this.BarChartData.datasets[0].data[0] += chartdbtime;
 				// もう1度作り直さないといけない。
 				this.BarChartData = {
@@ -190,14 +187,13 @@
 				const editData = editId.data();
 				// dialogにtag表示の記述
 				let newTagData = [];
-				editData.tag.map(tagData => {
+				editData.tags.map(tagData => {
 					newTagData.push(tagData.text);
 					return newTagData;
 				});
-				this.updateTime = Number(editData.time);
-				this.updateBody = editData.body;
+				this.updateTime = Number(editData.times);
+				this.updateBody = editData.bodys;
 				this.updateSelect = newTagData;
-				console.log(this.updateSelect);
 			},
 			async updatedDateId(docId) {
 				const editId = await dbMessages.doc(docId).get();
@@ -205,11 +201,10 @@
 			},
 			async updatedDate() {
 				this.dialog = false;
-				console.log(this.indexId);
 				await dbMessages.doc(this.indexId).update({
-					time: this.updateTime,
-					tag: this.updateSelect,
-					body: this.updateBody
+					times: this.updateTime,
+					tags: this.updateSelect,
+					bodys: this.updateBody
 				});
 				(this.updateTime = 0),
 					(this.updateSelect = []),
@@ -258,6 +253,7 @@
 		max-width: 1300px;
 		margin: 0 30px;
 		padding: 0;
+		padding-left: 30px;
 	}
 	.content {
 		margin: 0 auto;

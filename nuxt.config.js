@@ -11,9 +11,6 @@ export default {
 	router: {
 		middleware: 'authenticated'
 	},
-	// css: [
-	// 	'modern-css-reset'
-	// ],
 	modules: ['@nuxtjs/vuetify'],
 	module: {
 		rules: [
@@ -39,6 +36,7 @@ export default {
 		extend(config, ctx) {
 			// Run ESLint on save
 			if (ctx.isDev && ctx.isClient) {
+				config.devtool = 'inline-cheap-module-source-map';
 				config.module.rules.push({
 					enforce: 'pre',
 					test: /\.(js|vue)$/,

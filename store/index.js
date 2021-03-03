@@ -13,11 +13,11 @@ export const mutations = {
 };
 
 export const actions = {
-	signUp({ email, password }) {
+	signUp(commit, { email, password }) {
 		return auth().createUserWithEmailAndPassword(email, password);
 	},
 
-	signInWithEmail({ email, password }) {
+	signInWithEmail(commit, { email, password }) {
 		return auth().signInWithEmailAndPassword(email, password);
 	},
 

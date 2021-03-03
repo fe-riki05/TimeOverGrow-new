@@ -2,15 +2,17 @@ import firebase from 'firebase';
 import { dbTags } from '../plugins/firebase';
 
 class Tag {
-	constructor({ colors, texts }) {
-		this.colors = colors;
-		this.texts = texts;
+	constructor({ text, time }) {
+		// this.color = color;
+		this.text = text;
+		this.time = time;
 	}
 
 	static create(data) {
 		return new Tag({
-			colors: data.colors,
-			texts: data.texts
+			// color: data.color,
+			text: data.text,
+			time: data.time
 		});
 	}
 

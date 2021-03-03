@@ -10,16 +10,20 @@ service cloud.firestore {
     // match /users/{userId} {
     //     allow read, write: if request.auth.uid == userId;
     // }
-    match /posts/{postId} {
-        allow read: if request.auth.uid == userId;
-        allow create, update, delete: if request.auth.uid == resource.data.uid;
-        }
+    // match /posts/{postId} {
+    //     allow read;
+    //     allow create, update, delete: if request.auth.uid == resource.data.uid;
+    //     }
+    match /tags/{tagsId} {
+    		allow read;
+        allow write;
+    		}
     match /users/{userId} {
-    		allow read: if request.auth.uid == userId;
+    		allow read;
         allow create, update, delete: if request.auth.uid == resource.data.uid;
     		}
     match /messages/{messageId} {
-        allow read: if request.auth.uid == resource.data.uid;
+        allow read;
         allow create: if request.auth.uid == request.resource.data.uid;
         allow update, delete: if request.auth.uid == resource.data.uid;
     }
