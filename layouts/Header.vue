@@ -5,18 +5,20 @@
 				<v-app-bar height="100" class="header-menu header">
 					<v-container class="d-flex header-item">
 						<v-layout>
-							<nuxt-link to="/top" class="link d-flex">
-								<v-icon>mdi-timer-sand</v-icon>
-								<v-toolbar-title class="title menu"> TimeOverGrow </v-toolbar-title>
-							</nuxt-link>
+							<v-btn v-if="title" text>
+								<nuxt-link to="/top" class="link d-flex menu">
+									<v-icon color="black">mdi-timer-sand</v-icon>
+									<v-toolbar-title> TimeOverGrow </v-toolbar-title>
+								</nuxt-link>
+							</v-btn>
 						</v-layout>
 						<v-layout class="d-flex p-0 justify-end">
-							<v-btn text class="menu" style="display: block" color="grey darken-3" @click="signOut">
+							<v-btn v-if="logout" text @click="signOut">
 								<v-icon>mdi-arrow-left-bold</v-icon>
 								<v-list-item-title style="display: block">ログアウト</v-list-item-title>
 							</v-btn>
+							<!-- ここで挿入される -->
 							<slot></slot>
-							<nuxt-link to="/mypage" class="link d-flex"> </nuxt-link>
 						</v-layout>
 					</v-container>
 				</v-app-bar>
@@ -27,6 +29,16 @@
 
 <script>
 	export default {
+		props: {
+			title: {
+				type: Boolean,
+				default: true
+			},
+			logout: {
+				type: Boolean,
+				default: true
+			}
+		},
 		data() {
 			return {
 				drawer: false,
@@ -57,19 +69,7 @@
 	.link:visited {
 		color: inherit;
 	}
-
-	.title {
-		font-size: 35px;
-	}
-	.menu {
-		width: 200px;
-		padding: 0;
-	}
-	h1 {
-		margin: 0 auto;
-	}
 	.header {
-		margin-bottom: 50px;
 		/* background-color: #70c2fd; */
 		background: #2980b9; /* fallback for old browsers */
 		background: -webkit-linear-gradient(to right, #2980b9, #6dd5fa, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
@@ -79,6 +79,18 @@
 			#6dd5fa,
 			#ffffff
 		); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+	.title {
+		font-size: 35px;
+	}
+	.menu {
+		width: 200px;
+		padding: 0;
+		text-decoration: none;
+		color: inherit;
+	}
+	h1 {
+		margin: 0 auto;
 	}
 	.header-menu {
 		margin: 0 auto;

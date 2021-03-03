@@ -230,13 +230,12 @@
 
 				// this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
 				console.log(this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time);
+				console.log(this.select);
 				console.log(this.dbMessagesSelect);
 				console.log(Number(this.tagTimes));
 
 				// 合計値を格納
 				this.times += Number(this.tagTimes);
-
-				console.log(Number(this.tagTimes));
 
 				// tagとtimeを紐付け
 				if (this.select[this.select.length - 1].time) {

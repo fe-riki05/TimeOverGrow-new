@@ -1,10 +1,12 @@
 <template>
 	<v-app>
 		<Header>
-			<nuxt-link to="/mypage" class="link d-flex">
-				<v-icon>mdi-account-check</v-icon>
-				<v-list-item-title style="display: block">マイページ</v-list-item-title>
-			</nuxt-link>
+			<v-btn text>
+				<nuxt-link to="/mypage" class="d-flex auth">
+					<v-icon>mdi-account-check</v-icon>
+					<v-list-item-title style="display: block">マイページ</v-list-item-title>
+				</nuxt-link>
+			</v-btn>
 		</Header>
 		<Main />
 	</v-app>
@@ -25,5 +27,9 @@
 <style scoped>
 	>>> .v-application--wrap {
 		min-height: 0;
+	}
+	.auth {
+		text-decoration: none;
+		color: inherit;
 	}
 </style>

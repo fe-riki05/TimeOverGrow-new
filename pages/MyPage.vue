@@ -1,10 +1,13 @@
 <template>
 	<v-app>
 		<Header>
-			<nuxt-link to="/" class="link d-flex">
-				<v-icon>mdi-reply-all</v-icon>
-				<v-list-item-title style="display: block">アプリへ戻る</v-list-item-title>
-			</nuxt-link>
+			<v-btn text>
+				<nuxt-link to="/" class="d-flex auth">
+					<v-icon>mdi-reply-all</v-icon>
+					<v-list-item-title style="display: block">アプリへ戻る</v-list-item-title>
+				</nuxt-link>
+			</v-btn>
+			<!-- </v-layout> -->
 		</Header>
 		<v-container class="pa-0">
 			<v-row cols="7" sm="7" md="4" class="container">
@@ -53,6 +56,7 @@
 					plugins: {
 						colorschemes: {
 							scheme: 'brewer.DarkTwo8'
+							// custom: customColorFunction
 						}
 					},
 					scales: {
@@ -154,5 +158,9 @@
 <style scoped>
 	>>> .v-application--wrap {
 		min-height: 0;
+	}
+	.auth {
+		text-decoration: none;
+		color: inherit;
 	}
 </style>
