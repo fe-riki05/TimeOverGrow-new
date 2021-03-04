@@ -8,6 +8,12 @@
 	</v-app>
 </template>
 
+<script>
+	export default {
+		name: 'TimeOverGrow'
+	};
+</script>
+
 <style>
 	html {
 		font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,

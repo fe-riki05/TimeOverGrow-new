@@ -138,8 +138,7 @@
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				menu: false,
 				select: [],
-				dbMessagesSelect: [],
-				totalTagTime: 0,
+				dbMessagesTags: [],
 				search: null,
 				dialog: false
 			};
@@ -175,10 +174,12 @@
 					const message = await MessageModel.save({
 						times: parseInt(this.times),
 						bodys: this.bodys,
-						tags: this.select
+						tags: this.dbMessagesTags
 					});
 
+					// dbTagsへの保存処理。
 					const uid = firebase.auth().currentUser.uid;
+
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
 						const TagSame = await dbTags.where('text', '==', params.text).get();
@@ -189,6 +190,13 @@
 								Tag.push(e.id);
 							});
 
+							let TagData = await dbTags.doc(Tag[0]).get();
+							let TagTime = TagData.data();
+
+							console.log(TagTime);
+
+							// params.time += await TagData.data().time;
+
 							await dbTags.doc(Tag[0]).set({
 								text: params.text,
 								time: params.time,
@@ -196,10 +204,12 @@
 							});
 						}
 					});
+
 					this.onClick(message);
 					this.times = 0;
 					this.bodys = '';
 					this.select = '';
+					this.dbMessagesTags = [];
 				} catch (error) {
 					alert(error.message);
 				}
@@ -211,35 +221,23 @@
 			// dialog内の決定ボタンで発火
 			async tagTime() {
 				this.dialog = false;
-				// this.dbMessagesSelect = this.select.map(e => {
-				// 	console.log(e);
-				// 	return e;
-				// });
+				const uid = firebase.auth().currentUser.uid;
 
-				// const uid = firebase.auth().currentUser.uid;
-				// await dbMessages.add({
-				// 	tags: this.select[this.select.length - 1],
-				// 	uid
-				// });
+				this.select[this.select.length - 1] = JSON.parse(JSON.stringify(this.select[this.select.length - 1]));
+				Object.assign(this.select[this.select.length - 1], { time: parseInt(this.tagTimes) }, { uid: uid });
 
-				await MessageModel.save({
-					times: parseInt(this.times),
-					bodys: this.bodys,
-					tags: this.select
+				Object.assign(this.dbMessagesTags, {
+					tags: this.select[this.select.length - 1],
+					uid: uid
 				});
-
-				console.log(this.select[this.select.length - 1]);
-				console.log(parseInt(this.tagTimes));
+				this.dbMessagesTags.push({
+					time: this.select[this.select.length - 1].time,
+					text: this.select[this.select.length - 1].text,
+					uid: uid
+				});
 
 				// 合計値を格納
 				this.times += parseInt(this.tagTimes);
-
-				// tagとtimeを紐付け
-				if (this.select[this.select.length - 1].time) {
-					this.select[this.select.length - 1].time += parseInt(this.tagTimes);
-				} else {
-					Object.assign(this.select[this.select.length - 1], { time: parseInt(this.tagTimes) });
-				}
 
 				this.tagTimes = 0;
 			},
