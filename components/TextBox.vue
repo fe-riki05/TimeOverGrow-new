@@ -10,7 +10,14 @@
 						<v-dialog v-model="dialog" width="500">
 							<v-card>
 								<v-card-title class="headline grey lighten-2"> 学習時間を記入して下さい。 </v-card-title>
-								<input v-model="tagTimes" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
+								<input
+									v-model="tagTimes"
+									class="textbox-input ml-4 mt-4"
+									type="number"
+									max="24"
+									min="0"
+									placeholder="3"
+								/>
 								時間
 								<v-card-text> </v-card-text>
 								<v-divider></v-divider>
@@ -59,7 +66,14 @@
 									<span class="pr-2 tagcolor">
 										{{ item.text }}
 									</span>
-									<v-icon small @click="parent.selectItem(item)">mdi-close</v-icon>
+									<v-icon
+										small
+										@click="
+											parent.selectItem(item);
+											close(item);
+										"
+										>mdi-close</v-icon
+									>
 								</v-chip>
 							</template>
 							<template v-slot:item="{ index, item }" class="tagcolor">
@@ -113,6 +127,7 @@
 	import MessageModel from '../models/Message';
 	import TagModel from '../models/Tag';
 	import firebase, { dbTags } from '../plugins/firebase';
+	// import func from '../vue-temp/vue-editor-bridge';
 	import Button from './Button';
 
 	export default {
@@ -180,6 +195,9 @@
 					// dbTagsへの保存処理。
 					const uid = firebase.auth().currentUser.uid;
 
+					const newSelect = JSON.parse(JSON.stringify(this.select));
+					this.select = newSelect;
+
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
 						const TagSame = await dbTags.where('text', '==', params.text).get();
@@ -190,12 +208,20 @@
 								Tag.push(e.id);
 							});
 
-							let TagData = await dbTags.doc(Tag[0]).get();
-							let TagTime = TagData.data();
+							let TagData = await (await dbTags.doc(Tag[0]).get()).data();
+							// let TagTime = TagData.data();
+							if (TagData === undefined) {
+								TagData = [];
+							}
+							let dbMessagesTagTime = TagSame.docs.map(doc => {
+								return doc.data();
+							});
 
-							console.log(TagTime);
+							console.log(dbMessagesTagTime);
 
-							// params.time += await TagData.data().time;
+							if (dbMessagesTagTime.length !== 0) {
+								params.time += await dbMessagesTagTime[0].time;
+							}
 
 							await dbTags.doc(Tag[0]).set({
 								text: params.text,
@@ -215,6 +241,9 @@
 				}
 				this.canPost = true;
 			},
+			close(item) {
+				this.times -= item.time;
+			},
 			dialogTime() {
 				this.dialog = true;
 			},
@@ -223,18 +252,23 @@
 				this.dialog = false;
 				const uid = firebase.auth().currentUser.uid;
 
-				this.select[this.select.length - 1] = JSON.parse(JSON.stringify(this.select[this.select.length - 1]));
 				Object.assign(this.select[this.select.length - 1], { time: parseInt(this.tagTimes) }, { uid: uid });
 
 				Object.assign(this.dbMessagesTags, {
 					tags: this.select[this.select.length - 1],
 					uid: uid
 				});
-				this.dbMessagesTags.push({
-					time: this.select[this.select.length - 1].time,
-					text: this.select[this.select.length - 1].text,
-					uid: uid
+				this.select[this.select.length - 1] = JSON.parse(JSON.stringify(this.select[this.select.length - 1]));
+
+				this.dbMessagesTags.push(this.select[this.select.length - 1]);
+
+				this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
+					return array.findIndex(nextItem => item.text === nextItem.text) === index;
 				});
+
+				this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
+					JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
+				);
 
 				// 合計値を格納
 				this.times += parseInt(this.tagTimes);
