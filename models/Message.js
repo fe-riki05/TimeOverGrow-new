@@ -15,9 +15,9 @@ class Message {
 		// 	throw new Error('入力欄が空欄です。');
 		// }
 
-		if (!bodys || !bodys.trim()) {
-			throw new Error('入力欄が空欄です。');
-		}
+		// if (!bodys || !bodys.trim()) {
+		// 	throw new Error('入力欄が空欄です。');
+		// }
 
 		const uid = firebase.auth().currentUser.uid;
 

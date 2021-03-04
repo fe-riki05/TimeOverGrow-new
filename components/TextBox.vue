@@ -81,9 +81,6 @@
 										<v-btn icon @click.stop.prevent="edit(index, item)">
 											<v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
 										</v-btn>
-										<!-- <Button :on-click="tagDelete" class="ma-0">
-										<v-icon>mdi-trash-can-outline</v-icon>
-									</Button> -->
 									</div>
 								</v-list-item-action>
 							</template>
@@ -121,7 +118,6 @@
 	export default {
 		components: {
 			Button
-			// DialogTime
 		},
 		props: {
 			onClick: {
@@ -177,16 +173,14 @@
 				this.canPost = false;
 				try {
 					const message = await MessageModel.save({
-						times: Number(this.times),
+						times: parseInt(this.times),
 						bodys: this.bodys,
-						// tags: this.select
-						tags: this.dbMessagesSelect
+						tags: this.select
 					});
 
 					const uid = firebase.auth().currentUser.uid;
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
-						// console.log(params);
 						const TagSame = await dbTags.where('text', '==', params.text).get();
 						if (TagSame.docs) {
 							let Tag = [];
@@ -194,9 +188,6 @@
 								Tag = [];
 								Tag.push(e.id);
 							});
-							// console.log(await dbTags.doc(Tag[0]).get());
-							// console.log(element.time);
-							// console.log(TagSame.docs);
 
 							await dbTags.doc(Tag[0]).set({
 								text: params.text,
@@ -209,7 +200,6 @@
 					this.times = 0;
 					this.bodys = '';
 					this.select = '';
-					// this.dbMessagesSelect = '';
 				} catch (error) {
 					alert(error.message);
 				}
@@ -221,39 +211,38 @@
 			// dialog内の決定ボタンで発火
 			async tagTime() {
 				this.dialog = false;
-				this.dbMessagesSelect = this.select.map(e => {
-					console.log(e);
-					return e;
+				// this.dbMessagesSelect = this.select.map(e => {
+				// 	console.log(e);
+				// 	return e;
+				// });
+
+				// const uid = firebase.auth().currentUser.uid;
+				// await dbMessages.add({
+				// 	tags: this.select[this.select.length - 1],
+				// 	uid
+				// });
+
+				await MessageModel.save({
+					times: parseInt(this.times),
+					bodys: this.bodys,
+					tags: this.select
 				});
 
-				// this.dbMessagesSelect = this.select;
-
-				// this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
-				console.log(this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time);
-				console.log(this.select);
-				console.log(this.dbMessagesSelect);
-				console.log(Number(this.tagTimes));
+				console.log(this.select[this.select.length - 1]);
+				console.log(parseInt(this.tagTimes));
 
 				// 合計値を格納
-				this.times += Number(this.tagTimes);
+				this.times += parseInt(this.tagTimes);
 
 				// tagとtimeを紐付け
 				if (this.select[this.select.length - 1].time) {
-					// dbMessages内のtagのtime値
-					// this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
-
-					console.log(this.dbMessagesSelect);
-
-					this.select[this.select.length - 1].time += Number(this.tagTimes);
+					this.select[this.select.length - 1].time += parseInt(this.tagTimes);
 				} else {
-					Object.assign(this.select[this.select.length - 1], { time: Number(this.tagTimes) });
+					Object.assign(this.select[this.select.length - 1], { time: parseInt(this.tagTimes) });
 				}
 
 				this.tagTimes = 0;
 			},
-			// tagDelete() {
-			// 	console.log('削除');
-			// },
 			async edit(index, item) {
 				if (!this.editing) {
 					// ここで編集前のデータ削除

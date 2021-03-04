@@ -8,7 +8,7 @@
 				</nuxt-link>
 			</v-btn>
 		</Header>
-		<Main />
+		<Main class="mt-7" />
 	</v-app>
 </template>
 
