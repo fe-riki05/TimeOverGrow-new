@@ -5,8 +5,8 @@
 		<div class="d-flex justify-space-between">
 			<div>
 				<p>今日のアウトプット内容</p>
-				<!-- <input v-model.number="updatedTime" type="number" class="textbox-input" max="24" min="0" placeholder="3" />
-				時間 -->
+				<input v-model.number="updatedTime" type="number" class="textbox-input" max="24" min="0" placeholder="3" />
+				時間
 				<v-container fluid class="pl-0">
 					<v-combobox
 						v-model="updatedSelect"
@@ -123,13 +123,13 @@
 				attach: null,
 				colors: ['blue', 'orange', 'cyan', 'purple', 'indigo', 'green', 'red', 'teal', 'lime', 'navy'],
 				editing: null,
-				// index: -1,
+				index: -1,
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				nonce: 1,
 				menu: false,
-				// x: 0,
-				search: null
-				// y: 0
+				x: 0,
+				search: null,
+				y: 0
 			};
 		},
 		computed: {

@@ -26,7 +26,7 @@
 	import Header from '../layouts/Header';
 	import Chart from '../components/Chart';
 	// import MessageModel from '../models/Message';
-	import { dbTags } from '../plugins/firebase';
+	import firebase, { dbTags } from '../plugins/firebase';
 
 	export default {
 		components: {
@@ -102,7 +102,8 @@
 		},
 		methods: {
 			async tagChart() {
-				const TagCollection = await dbTags.get();
+				const uid = firebase.auth().currentUser.uid;
+				const TagCollection = await dbTags.where('uid', '==', uid).get();
 				// const tagId = [];
 				TagCollection.docs.map(e => {
 					// ↓でオブジェクトでデータを取得。

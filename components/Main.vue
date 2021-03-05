@@ -180,7 +180,7 @@
 					]
 				};
 			},
-			// ここで選択した投稿IDを取得し、timeを入力。
+			// ここで選択した投稿IDを取得し、bodyを入力。
 			async updated(docId) {
 				this.dialog = true;
 				const editId = await dbMessages.doc(docId).get();
@@ -191,13 +191,16 @@
 					newTagData.push(tagData.text);
 					return newTagData;
 				});
-				this.updateTime = Number(editData.times);
+				this.updateTime = parseInt(editData.times);
 				this.updateBody = editData.bodys;
 				this.updateSelect = newTagData;
 			},
 			async updatedDateId(docId) {
 				const editId = await dbMessages.doc(docId).get();
 				this.indexId = editId.id;
+
+				// editId.id = 選択したdocId
+				// 一度indexIdへ渡すことで取り出せる様にしてる。
 			},
 			async updatedDate() {
 				this.dialog = false;
@@ -206,6 +209,11 @@
 					tags: this.updateSelect,
 					bodys: this.updateBody
 				});
+
+				console.log(this.updateTime);
+				// console.log(this.updateTime);
+				// console.log(this.updateTime);
+
 				(this.updateTime = 0),
 					(this.updateSelect = []),
 					(this.updateBody = ''),

@@ -113,11 +113,13 @@
 				row-height="100"
 				max-width="100px"
 			/>
-			<div class="button">
+			<div v-if="btn" class="button">
 				<Button :on-click.stop="add">
 					<v-icon color="#70c2fd"> mdi-send </v-icon>
 					<slot />
 				</Button>
+				<!-- ここで挿入 -->
+				<slot></slot>
 			</div>
 		</div>
 	</v-app>
@@ -127,7 +129,6 @@
 	import MessageModel from '../models/Message';
 	import TagModel from '../models/Tag';
 	import firebase, { dbTags } from '../plugins/firebase';
-	// import func from '../vue-temp/vue-editor-bridge';
 	import Button from './Button';
 
 	export default {
@@ -138,6 +139,10 @@
 			onClick: {
 				type: Function,
 				required: true
+			},
+			btn: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -149,7 +154,7 @@
 				activator: null,
 				attach: null,
 				editing: null,
-				index: -1,
+				// index: -1,
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				menu: false,
 				select: [],
@@ -200,7 +205,7 @@
 
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
-						const TagSame = await dbTags.where('text', '==', params.text).get();
+						const TagSame = await dbTags.where('uid', '==', uid).where('text', '==', params.text).get();
 						if (TagSame.docs) {
 							let Tag = [];
 							TagSame.docs.forEach(e => {
@@ -216,8 +221,6 @@
 							let dbMessagesTagTime = TagSame.docs.map(doc => {
 								return doc.data();
 							});
-
-							console.log(dbMessagesTagTime);
 
 							if (dbMessagesTagTime.length !== 0) {
 								params.time += await dbMessagesTagTime[0].time;
