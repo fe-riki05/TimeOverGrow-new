@@ -1,7 +1,6 @@
 <template>
 	<!-- eslint-disable -->
 	<div class="textbox-container">
-		<!-- <client-only> -->
 		<div class="d-flex justify-space-between">
 			<div>
 				<p>今日のアウトプット内容</p>
@@ -89,7 +88,6 @@
 				<slot />
 			</Button>
 		</div>
-		<!-- </client-only> -->
 	</div>
 </template>
 

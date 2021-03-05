@@ -37,7 +37,7 @@
 
 <script>
 	import MessageModel from '../models/Message';
-	import { dbMessages } from '../plugins/firebase';
+	import firebase, { dbMessages, dbTags } from '../plugins/firebase';
 	import Button from './Button';
 
 	export default {
@@ -71,6 +71,32 @@
 				try {
 					const id = this.i;
 					const docIds = await MessageModel.clear();
+
+					const Data = await dbMessages.doc(docIds[id]).get();
+					console.log(Data.data().tags);
+
+					Data.data().tags.map(async Element => {
+						Element = JSON.parse(JSON.stringify(Element));
+
+						const uid = firebase.auth().currentUser.uid;
+						const sameTagText = await dbTags.where('uid', '==', uid).where('text', '==', Element.text).get();
+						sameTagText.docs.map(async doc => {
+							// クリックした箇所の元々のdataとid
+							let sameTagTime = doc.data().time;
+							sameTagTime -= Element.time;
+
+							if (sameTagTime <= 0) {
+								await dbTags.doc(doc.id).delete();
+							} else {
+								await dbTags.doc(doc.id).update({
+									time: sameTagTime
+								});
+							}
+
+							return doc.id, doc.data();
+						});
+					});
+
 					await dbMessages.doc(docIds[id]).delete();
 					this.$emit('clear');
 				} catch (error) {

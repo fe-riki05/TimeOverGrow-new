@@ -154,7 +154,7 @@
 				activator: null,
 				attach: null,
 				editing: null,
-				// index: -1,
+				index: -1,
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				menu: false,
 				select: [],
