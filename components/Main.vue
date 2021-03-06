@@ -37,7 +37,7 @@
 					</DialogEdit>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
+						<v-btn color="green darken-1" text @click="back">戻る</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
@@ -54,7 +54,7 @@
 	import Spinner from './Spinner';
 	import MessageList from './MessageList';
 	import DialogEdit from './DialogEdit';
-	import { dbMessages } from '../plugins/firebase';
+	import firebase, { dbMessages, dbTags } from '../plugins/firebase';
 
 	export default {
 		components: {
@@ -71,6 +71,7 @@
 				updateTime: 0,
 				updateSelect: [],
 				updateBody: '',
+				editTagData: [],
 				dialog: false,
 				num: 0,
 				name: '',
@@ -180,34 +181,85 @@
 					]
 				};
 			},
-			// ここで選択した投稿IDを取得し、timeを入力。
+			back() {
+				this.dialog = false;
+				this.editTagData = [];
+			},
+			// ここで選択した投稿IDを取得し、bodyを入力。
 			async updated(docId) {
 				this.dialog = true;
 				const editId = await dbMessages.doc(docId).get();
 				const editData = editId.data();
+				this.editTagData = editData.tags;
 				// dialogにtag表示の記述
-				let newTagData = [];
-				editData.tags.map(tagData => {
-					newTagData.push(tagData.text);
-					return newTagData;
-				});
-				this.updateTime = Number(editData.times);
+				// let newTagData = [];
+				// editData.tags.map(tagData => {
+				// 	newTagData.push(tagData.text);
+				// 	return newTagData;
+				// });
+
+				// クリックしたtagのdata取得。
+				// console.log(editData.tags);
+
+				// console.log(newTagData);
+				// console.log();
+
+				this.updateTime = parseInt(editData.times);
 				this.updateBody = editData.bodys;
-				this.updateSelect = newTagData;
+				// this.updateSelect = newTagData;
 			},
 			async updatedDateId(docId) {
 				const editId = await dbMessages.doc(docId).get();
 				this.indexId = editId.id;
+
+				// editId.idは、選択したdocId
+				// 一度indexIdへ渡すことで取り出せる様にしてる。
 			},
+			// 編集dialogで決定した際の挙動
 			async updatedDate() {
 				this.dialog = false;
+
+				// 入力したtagの合計time値をthis.updateTimeへ入力(複数dataの時も考える)
+				let tagTime = 0;
+				let tagText = [];
+
+				this.updateSelect.map(Element => {
+					tagText.push(Element.text);
+					tagTime += Element.time;
+				});
+				this.updateTime = tagTime;
+
+				// クリックしたtagのtime値をdbTagsからマイナス(複数dataの時も考える)
+				this.editTagData.map(async Element => {
+					Element = JSON.parse(JSON.stringify(Element));
+
+					const uid = firebase.auth().currentUser.uid;
+					const sameTagText = await dbTags.where('uid', '==', uid).where('text', '==', Element.text).get();
+					sameTagText.docs.map(async doc => {
+						// クリックした箇所の元々のdataとid
+						let sameTagTime = doc.data().time;
+						sameTagTime -= Element.time;
+
+						if (sameTagTime <= 0) {
+							await dbTags.doc(doc.id).delete();
+						} else {
+							await dbTags.doc(doc.id).update({
+								time: sameTagTime
+							});
+						}
+						return doc.id, doc.data();
+					});
+				});
+
 				await dbMessages.doc(this.indexId).update({
 					times: this.updateTime,
 					tags: this.updateSelect,
 					bodys: this.updateBody
 				});
+
 				(this.updateTime = 0),
 					(this.updateSelect = []),
+					(this.editTagData = []),
 					(this.updateBody = ''),
 					// フロントでdbを反映
 					this.clear();

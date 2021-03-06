@@ -10,7 +10,14 @@
 						<v-dialog v-model="dialog" width="500">
 							<v-card>
 								<v-card-title class="headline grey lighten-2"> 学習時間を記入して下さい。 </v-card-title>
-								<input v-model="tagTimes" class="textbox-input" type="number" max="24" min="0" placeholder="3" />
+								<input
+									v-model="tagTimes"
+									class="textbox-input ml-4 mt-4"
+									type="number"
+									max="24"
+									min="0"
+									placeholder="3"
+								/>
 								時間
 								<v-card-text> </v-card-text>
 								<v-divider></v-divider>
@@ -21,7 +28,6 @@
 							</v-card>
 						</v-dialog>
 					</div>
-
 					<v-container fluid class="pl-0">
 						<v-combobox
 							v-model="select"
@@ -39,14 +45,14 @@
 							small-chips
 							solo
 						>
-							<template v-slot:no-data class="tagcolor">
+							<!-- <template v-slot:no-data class="tagcolor">
 								<v-list-item>
 									<span class="subheading">制作</span>
 									<v-chip color="tagcolor" label small>
 										{{ search }}
 									</v-chip>
 								</v-list-item>
-							</template>
+							</template> -->
 							<template v-slot:selection="{ attrs, item, parent, selected }">
 								<v-chip
 									v-if="item === Object(item)"
@@ -59,7 +65,14 @@
 									<span class="pr-2 tagcolor">
 										{{ item.text }}
 									</span>
-									<v-icon small @click="parent.selectItem(item)">mdi-close</v-icon>
+									<v-icon
+										small
+										@click="
+											parent.selectItem(item);
+											close(item);
+										"
+										>mdi-close</v-icon
+									>
 								</v-chip>
 							</template>
 							<template v-slot:item="{ index, item }" class="tagcolor">
@@ -81,9 +94,9 @@
 										<v-btn icon @click.stop.prevent="edit(index, item)">
 											<v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
 										</v-btn>
-										<!-- <Button :on-click="tagDelete" class="ma-0">
-										<v-icon>mdi-trash-can-outline</v-icon>
-									</Button> -->
+										<v-btn icon @click="tagDelete(index, item)" class="color btn ml-2">
+											<v-icon> mdi-trash-can-outline </v-icon>
+										</v-btn>
 									</div>
 								</v-list-item-action>
 							</template>
@@ -102,11 +115,13 @@
 				row-height="100"
 				max-width="100px"
 			/>
-			<div class="button">
+			<div v-if="btn" class="button">
 				<Button :on-click.stop="add">
 					<v-icon color="#70c2fd"> mdi-send </v-icon>
 					<slot />
 				</Button>
+				<!-- ここで挿入 -->
+				<slot></slot>
 			</div>
 		</div>
 	</v-app>
@@ -121,12 +136,15 @@
 	export default {
 		components: {
 			Button
-			// DialogTime
 		},
 		props: {
 			onClick: {
 				type: Function,
 				required: true
+			},
+			btn: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -142,8 +160,7 @@
 				items: [{ header: 'タグを選択するか作成して下さい。' }],
 				menu: false,
 				select: [],
-				dbMessagesSelect: [],
-				totalTagTime: 0,
+				dbMessagesTags: [],
 				search: null,
 				dialog: false
 			};
@@ -177,26 +194,39 @@
 				this.canPost = false;
 				try {
 					const message = await MessageModel.save({
-						times: Number(this.times),
+						times: parseInt(this.times),
 						bodys: this.bodys,
-						// tags: this.select
-						tags: this.dbMessagesSelect
+						tags: this.dbMessagesTags
 					});
 
+					// dbTagsへの保存処理。
 					const uid = firebase.auth().currentUser.uid;
+
+					const newSelect = JSON.parse(JSON.stringify(this.select));
+					this.select = newSelect;
+
 					this.select.forEach(async element => {
 						const params = Object.assign(element, { uid: uid });
-						// console.log(params);
-						const TagSame = await dbTags.where('text', '==', params.text).get();
+						const TagSame = await dbTags.where('uid', '==', uid).where('text', '==', params.text).get();
 						if (TagSame.docs) {
 							let Tag = [];
 							TagSame.docs.forEach(e => {
 								Tag = [];
 								Tag.push(e.id);
 							});
-							// console.log(await dbTags.doc(Tag[0]).get());
-							// console.log(element.time);
-							// console.log(TagSame.docs);
+
+							let TagData = await (await dbTags.doc(Tag[0]).get()).data();
+							// let TagTime = TagData.data();
+							if (TagData === undefined) {
+								TagData = [];
+							}
+							let dbMessagesTagTime = TagSame.docs.map(doc => {
+								return doc.data();
+							});
+
+							if (dbMessagesTagTime.length !== 0) {
+								params.time += await dbMessagesTagTime[0].time;
+							}
 
 							await dbTags.doc(Tag[0]).set({
 								text: params.text,
@@ -205,15 +235,39 @@
 							});
 						}
 					});
+
 					this.onClick(message);
 					this.times = 0;
 					this.bodys = '';
 					this.select = '';
-					// this.dbMessagesSelect = '';
+					this.dbMessagesTags = [];
 				} catch (error) {
 					alert(error.message);
 				}
 				this.canPost = true;
+			},
+			// tagの削除機能
+			async tagDelete(index, item) {
+				item = JSON.parse(JSON.stringify(item));
+				const tagData = await dbTags
+					.where('text', '==', item.text)
+					.where('time', '==', item.time)
+					.where('uid', '==', item.uid)
+					.get();
+
+				tagData.docs.map(async Element => {
+					await dbTags.doc(Element.id).delete();
+					return Element.id;
+				});
+
+				// tag削除してもリアクティブな変更にならない。
+				// console.log('前');
+				// this.$forceUpdate();
+				// console.log(this.$forceUpdate());
+				// console.log('後');
+			},
+			close(item) {
+				this.times -= item.time;
 			},
 			dialogTime() {
 				this.dialog = true;
@@ -221,46 +275,38 @@
 			// dialog内の決定ボタンで発火
 			async tagTime() {
 				this.dialog = false;
-				this.dbMessagesSelect = this.select.map(e => {
-					console.log(e);
-					return e;
+				const uid = firebase.auth().currentUser.uid;
+
+				Object.assign(this.select[this.select.length - 1], { time: parseInt(this.tagTimes) }, { uid: uid });
+
+				Object.assign(this.dbMessagesTags, {
+					tags: this.select[this.select.length - 1],
+					uid: uid
+				});
+				this.select[this.select.length - 1] = JSON.parse(JSON.stringify(this.select[this.select.length - 1]));
+
+				this.dbMessagesTags.push(this.select[this.select.length - 1]);
+
+				this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
+					return array.findIndex(nextItem => item.text === nextItem.text) === index;
 				});
 
-				// this.dbMessagesSelect = this.select;
-
-				// this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
-				console.log(this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time);
-				console.log(this.select);
-				console.log(this.dbMessagesSelect);
-				console.log(Number(this.tagTimes));
+				this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
+					JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
+				);
 
 				// 合計値を格納
-				this.times += Number(this.tagTimes);
-
-				// tagとtimeを紐付け
-				if (this.select[this.select.length - 1].time) {
-					// dbMessages内のtagのtime値
-					// this.dbMessagesSelect[this.dbMessagesSelect.length - 1].time = Number(this.tagTimes);
-
-					console.log(this.dbMessagesSelect);
-
-					this.select[this.select.length - 1].time += Number(this.tagTimes);
-				} else {
-					Object.assign(this.select[this.select.length - 1], { time: Number(this.tagTimes) });
-				}
+				this.times += parseInt(this.tagTimes);
 
 				this.tagTimes = 0;
 			},
-			// tagDelete() {
-			// 	console.log('削除');
-			// },
 			async edit(index, item) {
 				if (!this.editing) {
 					// ここで編集前のデータ削除
-					const editBefore = await dbTags.where('text', '==', item.text).get();
-					editBefore.docs.forEach(doc => {
-						dbTags.doc(doc.id).delete();
-					});
+					// const editBefore = await dbTags.where('text', '==', item.text).get();
+					// editBefore.docs.forEach(doc => {
+					// 	dbTags.doc(doc.id).delete();
+					// });
 					this.editing = item;
 					this.index = index;
 				} else {
