@@ -247,7 +247,6 @@
 								time: sameTagTime
 							});
 						}
-
 						return doc.id, doc.data();
 					});
 				});

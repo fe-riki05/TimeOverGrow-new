@@ -28,7 +28,6 @@
 							</v-card>
 						</v-dialog>
 					</div>
-
 					<v-container fluid class="pl-0">
 						<v-combobox
 							v-model="select"
@@ -46,14 +45,14 @@
 							small-chips
 							solo
 						>
-							<template v-slot:no-data class="tagcolor">
+							<!-- <template v-slot:no-data class="tagcolor">
 								<v-list-item>
 									<span class="subheading">制作</span>
 									<v-chip color="tagcolor" label small>
 										{{ search }}
 									</v-chip>
 								</v-list-item>
-							</template>
+							</template> -->
 							<template v-slot:selection="{ attrs, item, parent, selected }">
 								<v-chip
 									v-if="item === Object(item)"
@@ -94,6 +93,9 @@
 									<div class="d-flex">
 										<v-btn icon @click.stop.prevent="edit(index, item)">
 											<v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
+										</v-btn>
+										<v-btn icon @click="tagDelete(index, item)" class="color btn ml-2">
+											<v-icon> mdi-trash-can-outline </v-icon>
 										</v-btn>
 									</div>
 								</v-list-item-action>
@@ -244,6 +246,26 @@
 				}
 				this.canPost = true;
 			},
+			// tagの削除機能
+			async tagDelete(index, item) {
+				item = JSON.parse(JSON.stringify(item));
+				const tagData = await dbTags
+					.where('text', '==', item.text)
+					.where('time', '==', item.time)
+					.where('uid', '==', item.uid)
+					.get();
+
+				tagData.docs.map(async Element => {
+					await dbTags.doc(Element.id).delete();
+					return Element.id;
+				});
+
+				// tag削除してもリアクティブな変更にならない。
+				// console.log('前');
+				// this.$forceUpdate();
+				// console.log(this.$forceUpdate());
+				// console.log('後');
+			},
 			close(item) {
 				this.times -= item.time;
 			},
@@ -281,10 +303,10 @@
 			async edit(index, item) {
 				if (!this.editing) {
 					// ここで編集前のデータ削除
-					const editBefore = await dbTags.where('text', '==', item.text).get();
-					editBefore.docs.forEach(doc => {
-						dbTags.doc(doc.id).delete();
-					});
+					// const editBefore = await dbTags.where('text', '==', item.text).get();
+					// editBefore.docs.forEach(doc => {
+					// 	dbTags.doc(doc.id).delete();
+					// });
 					this.editing = item;
 					this.index = index;
 				} else {

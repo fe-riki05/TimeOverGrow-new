@@ -71,9 +71,7 @@
 				try {
 					const id = this.i;
 					const docIds = await MessageModel.clear();
-
 					const Data = await dbMessages.doc(docIds[id]).get();
-					console.log(Data.data().tags);
 
 					Data.data().tags.map(async Element => {
 						Element = JSON.parse(JSON.stringify(Element));
@@ -92,12 +90,16 @@
 									time: sameTagTime
 								});
 							}
-
 							return doc.id, doc.data();
 						});
 					});
+					if (docIds[id]) {
+						await dbMessages.doc(docIds[id]).delete();
+					}
 
-					await dbMessages.doc(docIds[id]).delete();
+					// ここで強制リロード
+					this.$nextTick();
+
 					this.$emit('clear');
 				} catch (error) {
 					console.error(error);

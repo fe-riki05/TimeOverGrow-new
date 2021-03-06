@@ -70,7 +70,7 @@
 								solo
 								@keyup.enter="edit(index, item)"
 							></v-text-field>
-							<v-chip v-else color="tagcolor" dark label small>
+							<v-chip v-else color="tagcolor" label small>
 								{{ item.text }}
 							</v-chip>
 							<v-spacer></v-spacer>

@@ -1,7 +1,6 @@
 export { default as Button } from '../../components/Button.vue'
 export { default as Chart } from '../../components/Chart.vue'
 export { default as DialogEdit } from '../../components/DialogEdit.vue'
-export { default as DialogEdit1 } from '../../components/DialogEdit1.vue'
 export { default as DialogTime } from '../../components/DialogTime.vue'
 export { default as Main } from '../../components/Main.vue'
 export { default as Message } from '../../components/Message.vue'
@@ -14,7 +13,6 @@ export { default as TotalTime } from '../../components/TotalTime.vue'
 export const LazyButton = import('../../components/Button.vue' /* webpackChunkName: "components/button" */).then(c => c.default || c)
 export const LazyChart = import('../../components/Chart.vue' /* webpackChunkName: "components/chart" */).then(c => c.default || c)
 export const LazyDialogEdit = import('../../components/DialogEdit.vue' /* webpackChunkName: "components/dialog-edit" */).then(c => c.default || c)
-export const LazyDialogEdit1 = import('../../components/DialogEdit1.vue' /* webpackChunkName: "components/dialog-edit-1" */).then(c => c.default || c)
 export const LazyDialogTime = import('../../components/DialogTime.vue' /* webpackChunkName: "components/dialog-time" */).then(c => c.default || c)
 export const LazyMain = import('../../components/Main.vue' /* webpackChunkName: "components/main" */).then(c => c.default || c)
 export const LazyMessage = import('../../components/Message.vue' /* webpackChunkName: "components/message" */).then(c => c.default || c)
