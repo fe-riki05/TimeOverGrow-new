@@ -11,9 +11,14 @@
 		<v-container class="pa-0">
 			<v-row cols="7" sm="7" md="4" class="container">
 				<v-col>
+					<!-- <canvas id="myChart" height="400" width="400"> -->
 					<v-card :elevation="10" class="mt-5 p-5">
 						<Chart :chart-data="TagBarChartData" :options="TagBarChartOptions" class="m-2 pa-4" />
 					</v-card>
+					<!-- <v-card :elevation="10" class="mt-5 p-5">
+						<Chart :chart-data="TimeBarChartData" :options="TimeBarChartOptions" class="m-2 pa-4" />
+					</v-card> -->
+					<!-- </canvas> -->
 				</v-col>
 			</v-row>
 		</v-container>
@@ -21,9 +26,10 @@
 </template>
 
 <script>
+	import Chart from '../components/Chart';
+	import ChartDataLabels from 'chartjs-plugin-datalabels';
 	import 'chartjs-plugin-colorschemes';
 	import Header from '../layouts/Header';
-	import Chart from '../components/Chart';
 	import firebase, { dbTags } from '../plugins/firebase';
 
 	export default {
@@ -51,12 +57,66 @@
 				TagBarChartOptions: {
 					responsive: true,
 					maintainAspectRatio: false,
-					// plugins: {
-					// 	colorschemes: {
-					// 		scheme: 'brewer.Paired12'
-					// 		// custom: customColorFunction
-					// 	}
-					// },
+					plugins: {
+						colorschemes: {
+							scheme: 'brewer.Paired12'
+						}
+					},
+					scales: {
+						xAxes: [
+							{
+								stacked: true,
+								scaleLabel: {
+									display: true,
+									labelString: ''
+								}
+							}
+						],
+						yAxes: [
+							{
+								ticks: {
+									beginAtZero: true,
+									max: 500,
+									stepSize: 50,
+									callback(label) {
+										return label + ' h';
+									}
+								}
+							}
+						]
+					},
+					tooltips: {
+						callbacks: {
+							label(tooltipItem) {
+								return tooltipItem.yLabel + ' h';
+							}
+						}
+					}
+				},
+				TimeBarChartData: {
+					// ↓にtagの名前を格納
+					labels: [],
+					datasets: [
+						{
+							label: ['学習時間'],
+							// ↓にtagのデータを格納
+							data: []
+							// ↓にtagの色を格納
+							// backgroundColor: [],
+							// borderColor: []
+						}
+					]
+				},
+				TimeBarChartOptions: {
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins: {
+						colorschemes: {
+							scheme: 'brewer.Paired12'
+							// custom: customColorFunction
+						},
+						ChartDataLabels
+					},
 					scales: {
 						xAxes: [
 							{
