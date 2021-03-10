@@ -133,6 +133,11 @@
 		min-height: 30px;
 		padding: 20px;
 		margin: 0;
+		padding: 0.4em 0.5em;
+		color: #494949;
+		background: #fff;
+		border-left: solid 5px #7db4e6;
+		border-bottom: solid 3px #d7d7d7;
 	}
 	.message-date {
 		font-size: 0.8em;

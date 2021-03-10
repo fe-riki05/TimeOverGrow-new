@@ -1,12 +1,14 @@
 <template>
 	<v-app>
 		<Header :title="false" :logout="false">
-			<v-layout class="d-flex p-0 justify-end">
-				<v-btn text @click="signIn">
-					<v-icon>mdi-account-check</v-icon>
+			<v-list-item>
+				<nuxt-link to="/login" class="d-flex auth" @click="signIn">
+					<v-list-item-icon>
+						<v-icon>mdi-account-check</v-icon>
+					</v-list-item-icon>
 					<v-list-item-title>ログイン</v-list-item-title>
-				</v-btn>
-			</v-layout>
+				</nuxt-link>
+			</v-list-item>
 		</Header>
 		<v-container>
 			<v-row>
@@ -47,7 +49,10 @@
 	>>> .v-application--wrap {
 		min-height: 0;
 	}
-
+	.auth {
+		text-decoration: none;
+		color: inherit;
+	}
 	.img {
 		width: 40%;
 	}

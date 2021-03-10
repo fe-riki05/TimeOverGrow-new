@@ -2,47 +2,49 @@
 	<v-app>
 		<div class="header">
 			<v-card class="overflow-hidden">
-				<v-app-bar app height="100" class="header-menu header">
-					<v-container class="d-flex header-item">
-						<div>
-							<v-btn v-if="title" text>
-								<nuxt-link to="/top" class="link d-flex menu">
-									<v-icon color="black">mdi-timer-sand</v-icon>
-									<v-toolbar-title> TimeOverGrow </v-toolbar-title>
-								</nuxt-link>
-							</v-btn>
-						</div>
-						<div class="p-0 justify-end hidden-md-and-down">
-							<v-btn v-if="logout" text @click="signOut">
-								<v-icon>mdi-arrow-left-bold</v-icon>
+				<v-app-bar app height="100" class="header-menu header py-0 px-4">
+					<v-spacer></v-spacer>
+					<v-btn v-if="title" text>
+						<nuxt-link to="/top" class="link d-flex menu">
+							<v-icon color="black">mdi-timer-sand</v-icon>
+							<v-toolbar-title> TimeOverGrow </v-toolbar-title>
+						</nuxt-link>
+					</v-btn>
+					<v-spacer></v-spacer>
+					<v-spacer></v-spacer>
+					<v-list nav dense class="p-0 justify-end hidden-sm-and-down" style="background: transparent">
+						<v-list-item-group class="d-flex">
+							<v-list-item v-if="logout" text @click="signOut">
+								<v-list-item-icon>
+									<v-icon>mdi-arrow-left-bold</v-icon>
+								</v-list-item-icon>
 								<v-list-item-title>ログアウト</v-list-item-title>
-							</v-btn>
+							</v-list-item>
 							<!-- ここで挿入される -->
 							<slot></slot>
-						</div>
-						<!-- ここからハンバーガーメニュー -->
-						<div class="hidden-md-and-up">
-							<v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-							<v-navigation-drawer v-model="drawer" right fixed temporary>
-								<v-list nav dense>
-									<v-list-item-group>
-										<v-list-item>
-											<v-btn v-if="logout" text @click="signOut">
-												<v-icon>mdi-arrow-left-bold</v-icon>
-												<v-list-item-title>ログアウト</v-list-item-title>
-											</v-btn>
-										</v-list-item>
-										<v-list-item>
-											<!-- ここで挿入される -->
-											<slot></slot>
-										</v-list-item>
-									</v-list-item-group>
-								</v-list>
-							</v-navigation-drawer>
-							<!-- ここまで -->
-						</div>
-					</v-container>
+						</v-list-item-group>
+					</v-list>
+					<v-app-bar-nav-icon v-if="humbargarmenu" class="hidden-md-and-up" @click="drawer = true"></v-app-bar-nav-icon>
+					<v-spacer></v-spacer>
 				</v-app-bar>
+				<!-- ここからハンバーガーメニュー -->
+				<div class="hidden-md-and-up">
+					<v-navigation-drawer v-model="drawer" right fixed temporary>
+						<v-list nav dense>
+							<v-list-item-group>
+								<v-list-item v-if="logout" text @click="signOut">
+									<v-list-item-icon>
+										<v-icon>mdi-arrow-left-bold</v-icon>
+									</v-list-item-icon>
+									<v-list-item-title>ログアウト</v-list-item-title>
+								</v-list-item>
+								<!-- ここで挿入される -->
+								<slot></slot>
+							</v-list-item-group>
+						</v-list>
+					</v-navigation-drawer>
+					<!-- ここまで -->
+				</div>
 			</v-card>
 		</div>
 	</v-app>
@@ -56,6 +58,10 @@
 				default: true
 			},
 			logout: {
+				type: Boolean,
+				default: true
+			},
+			humbargarmenu: {
 				type: Boolean,
 				default: true
 			}
@@ -117,4 +123,7 @@
 		margin: 0 auto;
 		padding: 0 20%;
 	}
+	/* .theme--light.v-sheet {
+		background: transparent;
+	} */
 </style>

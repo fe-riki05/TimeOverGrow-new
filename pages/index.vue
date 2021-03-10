@@ -1,14 +1,16 @@
 <template>
 	<v-app>
 		<Header>
-			<v-btn text>
+			<v-list-item text nuxt>
 				<nuxt-link to="/mypage" class="d-flex auth">
-					<v-icon>mdi-account-check</v-icon>
-					<v-list-item-title style="display: block">マイページ</v-list-item-title>
+					<v-list-item-icon>
+						<v-icon>mdi-account-check</v-icon>
+					</v-list-item-icon>
+					<v-list-item-title>マイページ</v-list-item-title>
 				</nuxt-link>
-			</v-btn>
+			</v-list-item>
 		</Header>
-		<Main class="mt-7" />
+		<Main class="mt-5 mx-5" />
 	</v-app>
 </template>
 

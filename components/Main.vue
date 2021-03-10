@@ -1,48 +1,45 @@
 <template>
 	<v-app>
-		<v-main>
-			<v-container class="d-flex justify-space-around content">
-				<v-row cols="5" sm="5" md="4" class="container">
-					<v-col v-if="initialLoaded" class="item text-center">
-						<TotalTime :times="times" />
-						<v-card :elevation="10" class="mt-5 p-5">
-							<Chart :chart-data="BarChartData" :options="BarChartOptions" class="ma-2 pa-3" />
-						</v-card>
-					</v-col>
-				</v-row>
-				<v-row cols="7" sm="7" md="6" class="container mt-0">
-					<v-col class="item">
-						<v-card :elevation="10">
-							<TextBox :on-click="add" class="container" />
-							<Spinner v-if="!initialLoaded" class="container" />
-							<p v-else-if="initialLoaded && messages.length === 0" class="text-center">投稿が0件です！！！</p>
-						</v-card>
-						<MessageList :messages="reversedMessages" @pop="clear" @update="updated" @updatedDate="updatedDateId" />
-					</v-col>
-				</v-row>
-			</v-container>
-		</v-main>
-		<!-- dialogの設定 -->
-		<v-row justify="center">
-			<v-dialog v-model="dialog" persistent max-width="600">
-				<v-card>
-					<DialogEdit
-						:update-time.sync="updateTime"
-						:update-select.sync="updateSelect"
-						:update-body.sync="updateBody"
-						class="container"
-						@updatedDate="updatedDate"
-					>
-						<v-icon color="green darken-1">更新する</v-icon>
-					</DialogEdit>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn color="green darken-1" text @click="back">戻る</v-btn>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
-		</v-row>
-		<!-- ここまで -->
+		<v-container class="pa-0 col">
+			<v-row class="pa-0 col">
+				<v-spacer v-if="$vuetify.breakpoint.smAndUp"></v-spacer>
+				<!-- <v-spacer></v-spacer> -->
+				<v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
+					<TotalTime :times="times" />
+					<v-card :elevation="10" class="mt-5 py-5">
+						<Chart :chart-data="BarChartData" :options="BarChartOptions" class="pa-3" />
+					</v-card>
+				</v-col>
+				<v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
+					<v-card :elevation="10" class="pa-5">
+						<TextBox :on-click="add" />
+						<h2 v-if="messages.length === 0" class="pa-5">投稿が0件です！！！</h2>
+					</v-card>
+					<MessageList :messages="reversedMessages" @pop="clear" @update="updated" @updatedDate="updatedDateId" />
+					<!-- dialogの設定 -->
+					<div justify="center">
+						<v-dialog v-model="dialog" persistent max-width="600">
+							<v-card>
+								<DialogEdit
+									:update-time.sync="updateTime"
+									:update-select.sync="updateSelect"
+									:update-body.sync="updateBody"
+									class="container"
+									@updatedDate="updatedDate"
+								>
+									<v-icon color="green darken-1">更新する</v-icon>
+								</DialogEdit>
+								<v-card-actions>
+									<v-btn color="green darken-1" text @click="back">戻る</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
+					</div>
+					<!-- ここまで -->
+				</v-col>
+				<v-spacer v-if="$vuetify.breakpoint.smAndUp"></v-spacer>
+			</v-row>
+		</v-container>
 	</v-app>
 </template>
 
@@ -51,7 +48,7 @@
 	import TotalTime from './TotalTime';
 	import Chart from './Chart';
 	import TextBox from './TextBox';
-	import Spinner from './Spinner';
+	// import Spinner from './Spinner';
 	import MessageList from './MessageList';
 	import DialogEdit from './DialogEdit';
 	import firebase, { dbMessages, dbTags } from '../plugins/firebase';
@@ -61,7 +58,7 @@
 			TotalTime,
 			Chart,
 			TextBox,
-			Spinner,
+			// Spinner,
 			MessageList,
 			DialogEdit
 		},
@@ -335,16 +332,27 @@
 </script>
 
 <style scoped>
-	.container {
-		max-width: 1300px;
-		margin: 0 30px;
-		padding: 0;
-		padding-left: 30px;
+	h2 {
+		position: relative;
+		padding: 0.6em;
+		background: #e0edff;
 	}
-	.content {
+
+	h2:after {
+		position: absolute;
+		content: '';
+		top: 100%;
+		left: 30px;
+		border: 15px solid transparent;
+		border-top: 15px solid #e0edff;
+		width: 0;
+		height: 0;
+	}
+	.col {
+		padding: 0;
 		margin: 0 auto;
 	}
-	.item {
-		padding: 0;
+	.v-application .mx-2 {
+		margin: 0 auto;
 	}
 </style>

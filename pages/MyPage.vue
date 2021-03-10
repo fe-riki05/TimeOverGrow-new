@@ -1,12 +1,14 @@
 <template>
 	<v-app>
 		<Header>
-			<v-btn text>
+			<v-list-item text>
 				<nuxt-link to="/" class="d-flex auth">
-					<v-icon>mdi-reply-all</v-icon>
+					<v-list-item-icon>
+						<v-icon>mdi-reply-all</v-icon>
+					</v-list-item-icon>
 					<v-list-item-title style="display: block">アプリへ戻る</v-list-item-title>
 				</nuxt-link>
-			</v-btn>
+			</v-list-item>
 		</Header>
 		<v-container class="pa-0">
 			<v-row cols="7" sm="7" md="4" class="container">

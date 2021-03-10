@@ -1,9 +1,11 @@
 <template>
 	<v-app>
-		<v-container>
+		<Header :logout="false" :humbargarmenu="false" />
+		<v-spacer></v-spacer>
+		<v-container class="mt-8">
 			<v-row justify="center">
-				<v-col cols="12" sm="8" md="6">
-					<h2 class="text-center subtitle-1 font-weight-bold mb-2">メールアドレスでログイン</h2>
+				<v-col cols="10" sm="8" md="6" class="form">
+					<h2 class="text-center subtitle-1 font-weight-bold mb-2 h1">メールアドレスでログイン</h2>
 					<v-row>
 						<v-col>
 							<v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
@@ -12,7 +14,7 @@
 							</v-tabs>
 							<v-row>
 								<v-col sm="12">
-									<v-card flat>
+									<v-card flat class="pa-5">
 										<v-card-text class="pa-0">
 											<v-form ref="login_form" v-model="login_valid" lazy-validation>
 												<v-text-field v-model="login_email" label="メールアドレス" required />
@@ -59,10 +61,12 @@
 </template>
 
 <script>
+	import Header from '../layouts/Header';
 	import SocialLogin from '../components/SocialLogin.vue';
 
 	export default {
 		components: {
+			Header,
 			SocialLogin
 		},
 		layout: 'signin',
@@ -104,4 +108,18 @@
 	};
 </script>
 
-<style></style>
+<style scoped>
+	>>> .v-application--wrap {
+		min-height: 0;
+	}
+	.form {
+		padding: 0.5em 1em;
+		margin: 2em 0;
+		background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
+		background: repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
+	}
+	.form p {
+		margin: 0;
+		padding: 0;
+	}
+</style>
