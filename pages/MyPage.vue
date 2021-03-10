@@ -11,14 +11,14 @@
 		<v-container class="pa-0">
 			<v-row cols="7" sm="7" md="4" class="container">
 				<v-col>
-					<!-- <canvas id="myChart" height="400" width="400"> -->
 					<v-card :elevation="10" class="mt-5 p-5">
 						<Chart :chart-data="TagBarChartData" :options="TagBarChartOptions" class="m-2 pa-4" />
 					</v-card>
-					<!-- <v-card :elevation="10" class="mt-5 p-5">
-						<Chart :chart-data="TimeBarChartData" :options="TimeBarChartOptions" class="m-2 pa-4" />
-					</v-card> -->
-					<!-- </canvas> -->
+					<v-card :elevation="10" class="mt-5 p-5">
+						<!-- <Chart :chart-data="TimeBarChartData" :options="TimeBarChartOptions" class="m-2 pa-4" /> -->
+						<CalendarHeatmap :values="heartmapData" :end-date="endData" :max="5" tooltip-unit="点" class="ma-10 py-4">
+						</CalendarHeatmap>
+					</v-card>
 				</v-col>
 			</v-row>
 		</v-container>
@@ -29,13 +29,16 @@
 	import Chart from '../components/Chart';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
 	import 'chartjs-plugin-colorschemes';
+	import { CalendarHeatmap } from 'vue-calendar-heatmap';
 	import Header from '../layouts/Header';
-	import firebase, { dbTags } from '../plugins/firebase';
+	import firebase, { dbMessages, dbTags } from '../plugins/firebase';
+	// import MessageModel from '../models/Message';
 
 	export default {
 		components: {
 			Header,
-			Chart
+			Chart,
+			CalendarHeatmap
 		},
 		data() {
 			return {
@@ -147,11 +150,16 @@
 							}
 						}
 					}
-				}
+				},
+				heartmapData: [],
+				// 空白だとエラー発生
+				endData: '2021-01-1',
+				timeCount: 5
 			};
 		},
 		async created() {
 			await this.tagChart();
+			await this.hearmap();
 		},
 		methods: {
 			async tagChart() {
@@ -160,20 +168,8 @@
 				TagCollection.docs.map(e => {
 					this.TagBarChartData.labels.push(e.data().text);
 					this.TagBarChartData.datasets[0].data.push(e.data().time);
-
-					// this.TagBarChartOptions = {
-					// 	responsive: true,
-					// 	maintainAspectRatio: false,
-					// 	plugins: {
-					// 		colorschemes: {
-					// 			scheme: 'brewer.Paired12'
-					// 		}
-					// 	}
-					// };
 				});
-
 				this.TagBarChartData = {
-					// ↓にtagの名前を格納
 					labels: this.TagBarChartData.labels,
 					datasets: [
 						{
@@ -182,15 +178,38 @@
 						}
 					]
 				};
-				// this.TagBarChartOptions = {
-				// 	responsive: true,
-				// 	maintainAspectRatio: false,
-				// 	plugins: {
-				// 		colorschemes: {
-				// 			scheme: 'brewer.Paired12'
-				// 		}
-				// 	}
-				// };
+			},
+			async hearmap() {
+				const uid = firebase.auth().currentUser.uid;
+				const messageData = await dbMessages.where('uid', '==', uid).get();
+				let messagesDate = messageData.docs.map(doc => {
+					// console.log(doc.data().times);
+					let timeData = doc.data().times;
+					if (timeData <= 1) {
+						timeData = 1;
+					} else if (timeData <= 3) {
+						timeData = 2;
+					} else if (timeData <= 5) {
+						timeData = 3;
+					} else if (timeData <= 8) {
+						timeData = 4;
+					} else if (timeData > 8) {
+						timeData = 5;
+					}
+					this.timeCount = timeData;
+					return { date: doc.data().date.seconds * 1000, count: this.timeCount };
+				});
+				// console.log(messagesDate);
+
+				this.heartmapData = messagesDate;
+
+				// endData
+				const today = new Date();
+				const Year = new Date(today.setFullYear(today.getFullYear()));
+				this.endData = Year;
+				// this.startData = Year;
+
+				// console.log(this.heartmapData);
 			}
 		}
 	};

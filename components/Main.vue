@@ -81,6 +81,8 @@
 				vuechartData: [],
 				times: 0,
 				initialLoaded: false,
+				// Max: 300,
+				// Step: 1,
 				BarChartData: {
 					labels: ['学習時間'],
 					datasets: [
@@ -109,8 +111,8 @@
 							{
 								ticks: {
 									beginAtZero: true,
-									max: 1000,
-									stepSize: 100,
+									max: [30],
+									stepSize: [3],
 									callback(label) {
 										return label + ' h';
 									}
@@ -144,8 +146,39 @@
 			}
 			this.BarChartData.datasets[0].data[0] = vuechartData[0];
 			this.initialLoaded = true;
+
+			await this.timeScales();
 		},
 		methods: {
+			// Chart図のメモリ変更処理
+			async timeScales() {
+				let totalTime = await MessageModel.dbtime();
+				let max = this.BarChartOptions.scales.yAxes[0].ticks.max;
+				let step = this.BarChartOptions.scales.yAxes[0].ticks.stepSize;
+
+				max = JSON.parse(JSON.stringify(max));
+				step = JSON.parse(JSON.stringify(step));
+
+				if (totalTime < 30) {
+					max.push(30);
+					step.push(3);
+				}
+				console.log(totalTime); // 31
+				if (30 <= totalTime) {
+					console.log(max); // [30]
+					console.log(step); // [3]
+
+					max.pop();
+					step.pop();
+					max.push(50);
+					step.push(5);
+					// max[0] = 50;
+					// step[0] = 5;
+
+					console.log(max); // [50]
+					console.log(step); // [5]
+				}
+			},
 			add(message) {
 				this.messages.push(message);
 				this.times += message.times;
@@ -165,6 +198,7 @@
 						}
 					]
 				};
+				// this.timeScales();
 			},
 			async clear() {
 				this.messages = await this.fetchMessages();

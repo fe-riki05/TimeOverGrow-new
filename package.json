@@ -27,6 +27,7 @@
 		"nuxt": "^2.14.12",
 		"prettier-eslint": "^12.0.0",
 		"save": "^2.4.0",
+		"vue-calendar-heatmap": "^0.8.4",
 		"vue-chartjs": "^3.5.1",
 		"vue-eslint-parser": "^7.4.1",
 		"vuetify": "^2.4.3",
