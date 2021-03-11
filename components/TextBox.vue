@@ -1,5 +1,5 @@
 <template>
-  <!-- eslint-disable -->
+	<!-- eslint-disable -->
 	<v-app class="ma-0">
 		<v-container class="textbox-container">
 			<h2>今日のアウトプット内容</h2>
@@ -125,264 +125,264 @@ import firebase, { dbTags } from '../plugins/firebase'
 import Button from './Button'
 
 export default {
-  components: {
-    Button,
-  },
-  props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
-    btn: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data() {
-    return {
-      times: 0,
-      bodys: '',
-      tagTimes: 0,
-      canPost: true,
-      activator: null,
-      attach: null,
-      editing: null,
-      index: -1,
-      items: [{ header: 'タグを選択するか作成して下さい。' }],
-      menu: false,
-      select: [],
-      dbMessagesTags: [],
-      search: null,
-      dialog: false,
-    }
-  },
-  watch: {
-    select(val, prev) {
-      if (val.length === prev.length) return
-      this.select = Array.prototype.map.call(Object(val), (value) => {
-        if (typeof value === 'string') {
-          value = {
-            text: value,
-          }
-          this.items.push(value)
-        }
-        // ここでtag事の学習時間をdialogで入力させることができたらいいかも
-        this.dialogTime()
-        return value
-      })
-    },
-  },
-  async created() {
-    try {
-      const tags = await TagModel.get()
-      this.items = tags
-    } catch (error) {
-      console.error(error)
-    }
-  },
-  methods: {
-    async add() {
-      this.canPost = false
-      try {
-        const message = await MessageModel.save({
-          times: parseInt(this.times),
-          bodys: this.bodys,
-          tags: this.dbMessagesTags,
-        })
+	components: {
+		Button,
+	},
+	props: {
+		onClick: {
+			type: Function,
+			required: true,
+		},
+		btn: {
+			type: Boolean,
+			default: true,
+		},
+	},
+	data() {
+		return {
+			times: 0,
+			bodys: '',
+			tagTimes: 0,
+			canPost: true,
+			activator: null,
+			attach: null,
+			editing: null,
+			index: -1,
+			items: [{ header: 'タグを選択するか作成して下さい。' }],
+			menu: false,
+			select: [],
+			dbMessagesTags: [],
+			search: null,
+			dialog: false,
+		}
+	},
+	watch: {
+		select(val, prev) {
+			if (val.length === prev.length) return
+			this.select = Array.prototype.map.call(Object(val), (value) => {
+				if (typeof value === 'string') {
+					value = {
+						text: value,
+					}
+					this.items.push(value)
+				}
+				// ここでtag事の学習時間をdialogで入力させることができたらいいかも
+				this.dialogTime()
+				return value
+			})
+		},
+	},
+	async created() {
+		try {
+			const tags = await TagModel.get()
+			this.items = tags
+		} catch (error) {
+			console.error(error)
+		}
+	},
+	methods: {
+		async add() {
+			this.canPost = false
+			try {
+				const message = await MessageModel.save({
+					times: parseInt(this.times),
+					bodys: this.bodys,
+					tags: this.dbMessagesTags,
+				})
 
-        // dbTagsへの保存処理。
-        const uid = firebase.auth().currentUser.uid
+				// dbTagsへの保存処理。
+				const uid = firebase.auth().currentUser.uid
 
-        const newSelect = JSON.parse(JSON.stringify(this.select))
-        this.select = newSelect
+				const newSelect = JSON.parse(JSON.stringify(this.select))
+				this.select = newSelect
 
-        this.select.forEach(async (element) => {
-          const params = Object.assign(element, { uid })
-          const TagSame = await dbTags
-            .where('uid', '==', uid)
-            .where('text', '==', params.text)
-            .get()
-          if (TagSame.docs) {
-            let Tag = []
-            TagSame.docs.forEach((e) => {
-              Tag = []
-              Tag.push(e.id)
-            })
+				this.select.forEach(async (element) => {
+					const params = Object.assign(element, { uid })
+					const TagSame = await dbTags
+						.where('uid', '==', uid)
+						.where('text', '==', params.text)
+						.get()
+					if (TagSame.docs) {
+						let Tag = []
+						TagSame.docs.forEach((e) => {
+							Tag = []
+							Tag.push(e.id)
+						})
 
-            let TagData = await (await dbTags.doc(Tag[0]).get()).data()
-            // let TagTime = TagData.data();
-            if (TagData === undefined) {
-              TagData = []
-            }
-            const dbMessagesTagTime = TagSame.docs.map((doc) => {
-              return doc.data()
-            })
+						let TagData = await (await dbTags.doc(Tag[0]).get()).data()
+						// let TagTime = TagData.data();
+						if (TagData === undefined) {
+							TagData = []
+						}
+						const dbMessagesTagTime = TagSame.docs.map((doc) => {
+							return doc.data()
+						})
 
-            if (dbMessagesTagTime.length !== 0) {
-              params.time += await dbMessagesTagTime[0].time
-            }
+						if (dbMessagesTagTime.length !== 0) {
+							params.time += await dbMessagesTagTime[0].time
+						}
 
-            await dbTags.doc(Tag[0]).set({
-              text: params.text,
-              time: params.time,
-              uid: params.uid,
-            })
-          }
-        })
+						await dbTags.doc(Tag[0]).set({
+							text: params.text,
+							time: params.time,
+							uid: params.uid,
+						})
+					}
+				})
 
-        this.onClick(message)
-        this.times = 0
-        this.bodys = ''
-        this.select = ''
-        this.dbMessagesTags = []
-      } catch (error) {
-        alert(error.message)
-      }
-      this.canPost = true
-    },
-    // tagの削除機能
-    async tagDelete(index, item) {
-      item = JSON.parse(JSON.stringify(item))
-      const tagData = await dbTags
-        .where('text', '==', item.text)
-        .where('time', '==', item.time)
-        .where('uid', '==', item.uid)
-        .get()
+				this.onClick(message)
+				this.times = 0
+				this.bodys = ''
+				this.select = ''
+				this.dbMessagesTags = []
+			} catch (error) {
+				alert(error.message)
+			}
+			this.canPost = true
+		},
+		// tagの削除機能
+		async tagDelete(index, item) {
+			item = JSON.parse(JSON.stringify(item))
+			const tagData = await dbTags
+				.where('text', '==', item.text)
+				.where('time', '==', item.time)
+				.where('uid', '==', item.uid)
+				.get()
 
-      tagData.docs.map(async (Element) => {
-        await dbTags.doc(Element.id).delete()
-        return Element.id
-      })
+			tagData.docs.map(async (Element) => {
+				await dbTags.doc(Element.id).delete()
+				return Element.id
+			})
 
-      // tag削除してもリアクティブな変更にならない。
-      // console.log('前');
-      // this.$forceUpdate();
-      // console.log(this.$forceUpdate());
-      // console.log('後');
-    },
-    close(item) {
-      this.times -= item.time
-    },
-    dialogTime() {
-      this.dialog = true
-    },
-    // dialog内の決定ボタンで発火
-    async tagTime() {
-      this.dialog = false
-      const uid = firebase.auth().currentUser.uid
+			// tag削除してもリアクティブな変更にならない。
+			// console.log('前');
+			// this.$forceUpdate();
+			// console.log(this.$forceUpdate());
+			// console.log('後');
+		},
+		close(item) {
+			this.times -= item.time
+		},
+		dialogTime() {
+			this.dialog = true
+		},
+		// dialog内の決定ボタンで発火
+		async tagTime() {
+			this.dialog = false
+			const uid = firebase.auth().currentUser.uid
 
-      Object.assign(
-        this.select[this.select.length - 1],
-        { time: parseInt(this.tagTimes) },
-        { uid }
-      )
+			Object.assign(
+				this.select[this.select.length - 1],
+				{ time: parseInt(this.tagTimes) },
+				{ uid }
+			)
 
-      Object.assign(this.dbMessagesTags, {
-        tags: this.select[this.select.length - 1],
-        uid,
-      })
-      this.select[this.select.length - 1] = JSON.parse(
-        JSON.stringify(this.select[this.select.length - 1])
-      )
+			Object.assign(this.dbMessagesTags, {
+				tags: this.select[this.select.length - 1],
+				uid,
+			})
+			this.select[this.select.length - 1] = JSON.parse(
+				JSON.stringify(this.select[this.select.length - 1])
+			)
 
-      this.dbMessagesTags.push(this.select[this.select.length - 1])
+			this.dbMessagesTags.push(this.select[this.select.length - 1])
 
-      this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
-        return (
-          array.findIndex((nextItem) => item.text === nextItem.text) === index
-        )
-      })
+			this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
+				return (
+					array.findIndex((nextItem) => item.text === nextItem.text) === index
+				)
+			})
 
-      this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
-        JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
-      )
+			this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
+				JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
+			)
 
-      // 合計値を格納
-      this.times += parseInt(this.tagTimes)
+			// 合計値を格納
+			this.times += parseInt(this.tagTimes)
 
-      this.tagTimes = 0
-    },
-    async edit(index, item) {
-      if (!this.editing) {
-        // ここで編集前のデータ削除
-        // const editBefore = await dbTags.where('text', '==', item.text).get();
-        // editBefore.docs.forEach(doc => {
-        // 	dbTags.doc(doc.id).delete();
-        // });
-        this.editing = item
-        this.index = index
-      } else {
-        this.editing = null
-        this.index = -1
-      }
-    },
-    filter(item, queryText, itemText) {
-      if (item.header) return false
+			this.tagTimes = 0
+		},
+		async edit(index, item) {
+			if (!this.editing) {
+				// ここで編集前のデータ削除
+				// const editBefore = await dbTags.where('text', '==', item.text).get();
+				// editBefore.docs.forEach(doc => {
+				// 	dbTags.doc(doc.id).delete();
+				// });
+				this.editing = item
+				this.index = index
+			} else {
+				this.editing = null
+				this.index = -1
+			}
+		},
+		filter(item, queryText, itemText) {
+			if (item.header) return false
 
-      const hasValue = (val) => (val != null ? val : '')
+			const hasValue = (val) => (val != null ? val : '')
 
-      const text = hasValue(itemText)
-      const query = hasValue(queryText)
+			const text = hasValue(itemText)
+			const query = hasValue(queryText)
 
-      return text
-        .toString()
-        .toLowerCase()
-        .includes(query.toString().toLowerCase())
-    },
-  },
+			return text
+				.toString()
+				.toLowerCase()
+				.includes(query.toString().toLowerCase())
+		},
+	},
 }
 </script>
 
 <style scoped>
 .textbox-input {
-  margin: 0;
-  padding: 3px 10px;
-  border: 1px solid rgb(161, 161, 161);
-  -webkit-appearance: none;
+	margin: 0;
+	padding: 3px 10px;
+	border: 1px solid rgb(161, 161, 161);
+	-webkit-appearance: none;
 }
 h2 {
-  color: #6cb4e4;
-  text-align: center;
-  padding: 0.25em;
-  border-top: solid 2px #6cb4e4;
-  border-bottom: solid 2px #6cb4e4;
-  background: -webkit-repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
+	color: #6cb4e4;
+	text-align: center;
+	padding: 0.25em;
+	border-top: solid 2px #6cb4e4;
+	border-bottom: solid 2px #6cb4e4;
+	background: -webkit-repeating-linear-gradient(
+		-45deg,
+		#f0f8ff,
+		#f0f8ff 3px,
+		#e9f4ff 3px,
+		#e9f4ff 7px
+	);
 }
 .textbox-area {
-  resize: none;
-  background: white;
-  border-radius: 5px;
-  padding: 0;
-  margin: 0;
+	resize: none;
+	background: white;
+	border-radius: 5px;
+	padding: 0;
+	margin: 0;
 }
 .button {
-  margin-right: 20px;
-  text-align: right;
-  padding: 10px;
-  color: #70c2fd;
+	margin-right: 20px;
+	text-align: right;
+	padding: 10px;
+	color: #70c2fd;
 }
 
 .tagcolor,
 .theme--light.v-chip:not(.v-chip--active) {
-  background: #a8ff78; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #78ffd6,
-    #a8ff78
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #78ffd6,
-    #a8ff78
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: #a8ff78; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		to right,
+		#78ffd6,
+		#a8ff78
+	); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(
+		to right,
+		#78ffd6,
+		#a8ff78
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .v-card > *:last-child:not(.v-btn):not(.v-chip) {
-  margin: 0;
+	margin: 0;
 }
 </style>

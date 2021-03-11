@@ -3,30 +3,35 @@
     "name": "login",
     "path": "/login",
     "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/login.vue",
-    "chunkName": "pages/login"
+    "chunkName": "pages/login",
+    "_name": "_c77d9e82"
   },
   {
     "name": "MyPage",
     "path": "/MyPage",
     "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/MyPage.vue",
-    "chunkName": "pages/MyPage"
+    "chunkName": "pages/MyPage",
+    "_name": "_1c341415"
   },
   {
     "name": "register",
     "path": "/register",
     "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/register.vue",
-    "chunkName": "pages/register"
+    "chunkName": "pages/register",
+    "_name": "_4498bbbd"
   },
   {
     "name": "top",
     "path": "/top",
     "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/top.vue",
-    "chunkName": "pages/top"
+    "chunkName": "pages/top",
+    "_name": "_6e7037aa"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/macbookpro/Documents/TimeOverGrow-new/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_5acce4b0"
   }
 ]
