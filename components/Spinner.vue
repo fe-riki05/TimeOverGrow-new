@@ -5,7 +5,7 @@
 </template>
 
 <style scoped>
-	.v-progress-circular {
-		margin: 0 auto;
-	}
+.v-progress-circular {
+	margin: 0 auto;
+}
 </style>

@@ -2,7 +2,9 @@
 	<div class="text-center">
 		<v-dialog v-model="dialog" width="500">
 			<v-card>
-				<v-card-title class="headline grey lighten-2"> Privacy Policy </v-card-title>
+				<v-card-title class="headline grey lighten-2">
+					Privacy Policy
+				</v-card-title>
 
 				<v-card-text> </v-card-text>
 
@@ -21,23 +23,23 @@
 </template>
 
 <script>
-	import Button from '../components/Button';
+import Button from '../components/Button'
 
-	export default {
-		components: {
-			Button
-		},
-		data() {
-			return {
-				dialog: false
-			};
+export default {
+	components: {
+		Button,
+	},
+	data() {
+		return {
+			dialog: false,
 		}
-		// methods: {
-		// 	dialogTime() {
-		// 		this.$emit('dialog');
-		// 	}
-		// }
-	};
+	},
+	// methods: {
+	// 	dialogTime() {
+	// 		this.$emit('dialog');
+	// 	}
+	// }
+}
 </script>
 
 <style scoped></style>

@@ -9,50 +9,32 @@ module.exports = {
 		parser: 'babel-eslint'
 	},
 	extends: [
-		// '@nuxtjs/eslint-config',
-		'eslint:recommended',
-		'plugin:vue/recommended',
-		// "plugin:nuxt/recommended",
-		'plugin:prettier/recommended',
-		'prettier',
-		'prettier/vue'
-		// 'plugin:vue/recommended',
+		// '@nuxtjs',
+		// 'plugin:prettier/recommended',
+		// 'eslint:recommended',
 		// 'prettier/vue',
+		// 'eslint-config-prettier',
+		// 'prettier',
+		// 'prettier/prettier',
+		// 'plugin:nuxt/recommended',
+		// 'plugin:prettier/recommended'
+		// 'prettier'
+		// 'prettier/vue'
+		// '@nuxtjs',
+		// 'prettier',
+		'prettier/vue',
+		'plugin:prettier/recommended'
+		// 'plugin:nuxt/recommended'
 	],
-	plugins: ['vue', 'prettier'],
+	plugins: [],
 	rules: {
-		'prettier/prettier': [
-			'error',
-			{
-				// 'no-extra-parens': 1, // 不要なカッコは消す
-				'no-multi-spaces': 2, // 無駄なスペースは削除
-				semi: true,
-				singleQuote: true,
-				quotes: [2, 'single'], // 文字列はシングルクオートのみ
-				'vue/html-indent': ['off', 2],
-				'no-console': 0, // console.log();OK
-				'no-unused-vars': 'off', // 使っていない変数あってもOK
-				// 'keyword-spacing': 2, // キーワードの前後には適切なスペースを
-				'no-var': 2, // varは禁止
-				'no-unneeded-ternary': 2, // true/falseを無駄に使うな
-				// 'vue/html-self-closing': 'off', // imgタグのようにタグが１つで完結してもOK
-				// 'space-in-parens': [2, 'never'],
-				// 'vue/max-attributes-per-line': 'off',
-				// indent: [2, 'tab'],
-				'vue/no-lone-template': [
-					'error',
-					{
-						ignoreAccessible: false
-					}
-				],
-				'vue/html-closing-bracket-newline': [
-					'error',
-					{
-						singleline: 'never',
-						multiline: 'always'
-					}
-				]
-			}
-		]
+		'prettier/prettier': ['error', { semi: false }],
+		'vue/html-closing-bracket-newline': 'off',
+		// 'vue/max-attributes-per-line': 'off',
+		'no-unused-vars': 'off',
+		//   'no-extra-parens': 1, // 不要なカッコは消す
+		'no-multi-spaces': 2, // 無駄なスペースは削除
+		'import/no-named-as-default-member': 'off',
+		'no-console': 0 // console.log();OK
 	}
-};
+}
