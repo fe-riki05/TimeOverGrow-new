@@ -7,17 +7,17 @@
 //   "vetur.format.enable": false
 // }
 {
-	// "eslint.autoFixOnSave": true,
-	// "eslint.validate": [
-	//   {
-	//     "language": "vue",
-	//     "autoFix": true
-	//   }
-	// ],
-	"[vue]": {
-		"editor.formatOnSave": false
-	},
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	}
+  // "eslint.autoFixOnSave": true,
+  // "eslint.validate": [
+  //   {
+  //     "language": "vue",
+  //     "autoFix": true
+  //   }
+  // ],
+  "[vue]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

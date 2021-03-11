@@ -1,116 +1,116 @@
 <template>
-	<v-app>
-		<Header :logout="false" :humbargarmenu="false" />
-		<v-spacer></v-spacer>
-		<v-container class="mt-8">
-			<v-row justify="center">
-				<v-col cols="10" sm="8" md="6" class="form">
-					<h2 class="text-center subtitle-1 font-weight-bold mb-2">
-						メールアドレスで登録
-					</h2>
-					<v-row>
-						<v-col>
-							<v-tabs
-								v-model="tab"
-								background-color="transparent"
-								color="blue accent-2"
-								grow
-								class="mb-3"
-							>
-								<v-tab to="/login"> ログイン </v-tab>
-								<v-tab to="/register"> アカウント登録 </v-tab>
-							</v-tabs>
-							<v-row>
-								<v-col sm="12">
-									<v-card flat class="pa-5">
-										<v-card-text class="pa-0">
-											<v-form
-												ref="register_form"
-												v-model="register_valid"
-												lazy-validation
-											>
-												<v-text-field
-													v-model="register_email"
-													label="メールアドレス"
-													:rules="emailRules"
-													required
-													validate-on-blur
-												/>
-												<v-text-field
-													ref="register_password"
-													v-model="register_password"
-													label="パスワード"
-													required
-													:append-icon="
-														show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'
-													"
-													:type="show_registerPassword ? 'text' : 'password'"
-													:rules="register_passwordRules"
-													validate-on-blur
-													loading
-													@click:append="
-														show_registerPassword = !show_registerPassword
-													"
-												>
-													<template #progress>
-														<v-progress-linear
-															:value="score.value"
-															:color="score.color"
-															absolute
-															height="2"
-														/>
-													</template>
-												</v-text-field>
-												<v-text-field
-													v-model="register_password_again"
-													label="パスワード（確認）"
-													required
-													:append-icon="
-														show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'
-													"
-													:type="show_registerPassword ? 'text' : 'password'"
-													validate-on-blur
-													:rules="register_passwordAgainRules"
-													@click:append="
-														show_registerPassword = !show_registerPassword
-													"
-												/>
-												<v-alert
-													v-if="registerErrorMsg"
-													dense
-													text
-													type="error"
-												>
-													{{ registerErrorMsg }}
-												</v-alert>
-												<v-btn
-													:disabled="!register_valid"
-													color="blue darken-3"
-													class="mr-4 white--text"
-													@click="email_register"
-												>
-													登録
-												</v-btn>
-											</v-form>
-										</v-card-text>
-									</v-card>
-								</v-col>
-							</v-row>
-							<v-divider class="my-8" />
-							<v-row>
-								<v-col sm="12">
-									<h2 class="text-center subtitle-1 font-weight-bold mb-2">
-										その他のアカウントでログイン
-									</h2>
-								</v-col>
-							</v-row>
-							<SocialLogin />
-						</v-col>
-					</v-row>
-				</v-col>
-			</v-row>
-		</v-container>
-	</v-app>
+  <v-app>
+    <Header :logout="false" :humbargarmenu="false" />
+    <v-spacer></v-spacer>
+    <v-container class="mt-8">
+      <v-row justify="center">
+        <v-col cols="10" sm="8" md="6" class="form">
+          <h2 class="text-center subtitle-1 font-weight-bold mb-2">
+            メールアドレスで登録
+          </h2>
+          <v-row>
+            <v-col>
+              <v-tabs
+                v-model="tab"
+                background-color="transparent"
+                color="blue accent-2"
+                grow
+                class="mb-3"
+              >
+                <v-tab to="/login"> ログイン </v-tab>
+                <v-tab to="/register"> アカウント登録 </v-tab>
+              </v-tabs>
+              <v-row>
+                <v-col sm="12">
+                  <v-card flat class="pa-5">
+                    <v-card-text class="pa-0">
+                      <v-form
+                        ref="register_form"
+                        v-model="register_valid"
+                        lazy-validation
+                      >
+                        <v-text-field
+                          v-model="register_email"
+                          label="メールアドレス"
+                          :rules="emailRules"
+                          required
+                          validate-on-blur
+                        />
+                        <v-text-field
+                          ref="register_password"
+                          v-model="register_password"
+                          label="パスワード"
+                          required
+                          :append-icon="
+                            show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'
+                          "
+                          :type="show_registerPassword ? 'text' : 'password'"
+                          :rules="register_passwordRules"
+                          validate-on-blur
+                          loading
+                          @click:append="
+                            show_registerPassword = !show_registerPassword
+                          "
+                        >
+                          <template #progress>
+                            <v-progress-linear
+                              :value="score.value"
+                              :color="score.color"
+                              absolute
+                              height="2"
+                            />
+                          </template>
+                        </v-text-field>
+                        <v-text-field
+                          v-model="register_password_again"
+                          label="パスワード（確認）"
+                          required
+                          :append-icon="
+                            show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'
+                          "
+                          :type="show_registerPassword ? 'text' : 'password'"
+                          validate-on-blur
+                          :rules="register_passwordAgainRules"
+                          @click:append="
+                            show_registerPassword = !show_registerPassword
+                          "
+                        />
+                        <v-alert
+                          v-if="registerErrorMsg"
+                          dense
+                          text
+                          type="error"
+                        >
+                          {{ registerErrorMsg }}
+                        </v-alert>
+                        <v-btn
+                          :disabled="!register_valid"
+                          color="blue darken-3"
+                          class="mr-4 white--text"
+                          @click="email_register"
+                        >
+                          登録
+                        </v-btn>
+                      </v-form>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+              <v-divider class="my-8" />
+              <v-row>
+                <v-col sm="12">
+                  <h2 class="text-center subtitle-1 font-weight-bold mb-2">
+                    その他のアカウントでログイン
+                  </h2>
+                </v-col>
+              </v-row>
+              <SocialLogin />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -119,146 +119,146 @@ import Header from '../layouts/Header'
 import SocialLogin from '../components/SocialLogin.vue'
 
 export default {
-	components: {
-		Header,
-		SocialLogin,
-	},
-	layout: 'signin',
-	data() {
-		return {
-			registerErrorMsg: '',
-			tab: null,
-			register_valid: true,
-			register_email: '',
-			register_password: '',
-			register_password_again: '',
-			emailRules: [
-				(v) => {
-					if (v) {
-						return (
-							/.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください'
-						)
-					} else {
-						return true
-					}
-				},
-			],
-			register_passwordRules: [
-				(v) => !!v || 'パスワードを入力してください',
-				(v) =>
-					zxcvbn(v).score >= 3 ||
-					'大文字・小文字・数字・記号を混ぜた強いパスワードにしてください',
-			],
-			register_passwordAgainRules: [
-				(v) => {
-					if (v) {
-						return (
-							this.$refs.register_password.value === v ||
-							'パスワードと一致しません'
-						)
-					} else {
-						return true
-					}
-				},
-			],
-			show_registerPassword: false,
-		}
-	},
-	computed: {
-		progress() {
-			return this.score.value
-		},
-		score() {
-			const result = zxcvbn(this.register_password)
-			switch (result.score) {
-				case 4:
-					return {
-						color: 'green',
-						value: 100,
-					}
-				case 3:
-					return {
-						color: 'light-green lighten-1',
-						value: 75,
-					}
-				case 2:
-					return {
-						color: 'amber accent-2',
-						value: 50,
-					}
-				case 1:
-					return {
-						color: 'deep-orange lighten-1',
-						value: 25,
-					}
-				default:
-					return {
-						color: 'red darken-3',
-						value: 0,
-					}
-			}
-		},
-	},
-	methods: {
-		email_register() {
-			if (this.$refs.register_form.validate()) {
-				this.$store
-					.dispatch('signUp', {
-						email: this.register_email,
-						password: this.register_password,
-					})
-					.then(() => {
-						this.register_email = ''
-						this.register_password = ''
-						this.$router.push({
-							name: 'index',
-							params: {
-								dashboard_msg: true,
-								dashboard_msg_text: 'アカウントの登録が完了しました。',
-							},
-						})
-					})
-					.catch((err) => {
-						console.log(err)
-						if (err.code === 'auth/email-already-in-use') {
-							this.registerErrorMsg =
-								'このメールアドレスは既に登録されています。'
-						} else if (err.code === 'auth/invalid-email') {
-							this.registerErrorMsg = '無効なメールアドレスです。'
-						} else {
-							this.registerErrorMsg = 'エラーにより登録できませんでした。'
-						}
-					})
-			}
-		},
-	},
+  components: {
+    Header,
+    SocialLogin,
+  },
+  layout: 'signin',
+  data() {
+    return {
+      registerErrorMsg: '',
+      tab: null,
+      register_valid: true,
+      register_email: '',
+      register_password: '',
+      register_password_again: '',
+      emailRules: [
+        (v) => {
+          if (v) {
+            return (
+              /.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください'
+            )
+          } else {
+            return true
+          }
+        },
+      ],
+      register_passwordRules: [
+        (v) => !!v || 'パスワードを入力してください',
+        (v) =>
+          zxcvbn(v).score >= 3 ||
+          '大文字・小文字・数字・記号を混ぜた強いパスワードにしてください',
+      ],
+      register_passwordAgainRules: [
+        (v) => {
+          if (v) {
+            return (
+              this.$refs.register_password.value === v ||
+              'パスワードと一致しません'
+            )
+          } else {
+            return true
+          }
+        },
+      ],
+      show_registerPassword: false,
+    }
+  },
+  computed: {
+    progress() {
+      return this.score.value
+    },
+    score() {
+      const result = zxcvbn(this.register_password)
+      switch (result.score) {
+        case 4:
+          return {
+            color: 'green',
+            value: 100,
+          }
+        case 3:
+          return {
+            color: 'light-green lighten-1',
+            value: 75,
+          }
+        case 2:
+          return {
+            color: 'amber accent-2',
+            value: 50,
+          }
+        case 1:
+          return {
+            color: 'deep-orange lighten-1',
+            value: 25,
+          }
+        default:
+          return {
+            color: 'red darken-3',
+            value: 0,
+          }
+      }
+    },
+  },
+  methods: {
+    email_register() {
+      if (this.$refs.register_form.validate()) {
+        this.$store
+          .dispatch('signUp', {
+            email: this.register_email,
+            password: this.register_password,
+          })
+          .then(() => {
+            this.register_email = ''
+            this.register_password = ''
+            this.$router.push({
+              name: 'index',
+              params: {
+                dashboard_msg: true,
+                dashboard_msg_text: 'アカウントの登録が完了しました。',
+              },
+            })
+          })
+          .catch((err) => {
+            console.log(err)
+            if (err.code === 'auth/email-already-in-use') {
+              this.registerErrorMsg =
+                'このメールアドレスは既に登録されています。'
+            } else if (err.code === 'auth/invalid-email') {
+              this.registerErrorMsg = '無効なメールアドレスです。'
+            } else {
+              this.registerErrorMsg = 'エラーにより登録できませんでした。'
+            }
+          })
+      }
+    },
+  },
 }
 </script>
 
 <style scoped>
 >>> .v-application--wrap {
-	min-height: 0;
+  min-height: 0;
 }
 .form {
-	padding: 0.5em 1em;
-	margin: 2em 0;
-	background: -webkit-repeating-linear-gradient(
-		-45deg,
-		#f0f8ff,
-		#f0f8ff 3px,
-		#e9f4ff 3px,
-		#e9f4ff 7px
-	);
-	background: repeating-linear-gradient(
-		-45deg,
-		#f0f8ff,
-		#f0f8ff 3px,
-		#e9f4ff 3px,
-		#e9f4ff 7px
-	);
+  padding: 0.5em 1em;
+  margin: 2em 0;
+  background: -webkit-repeating-linear-gradient(
+    -45deg,
+    #f0f8ff,
+    #f0f8ff 3px,
+    #e9f4ff 3px,
+    #e9f4ff 7px
+  );
+  background: repeating-linear-gradient(
+    -45deg,
+    #f0f8ff,
+    #f0f8ff 3px,
+    #e9f4ff 3px,
+    #e9f4ff 7px
+  );
 }
 .form p {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 </style>
