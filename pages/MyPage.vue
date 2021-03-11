@@ -205,9 +205,9 @@ export default {
           timeData = 2
         } else if (timeData <= 5) {
           timeData = 3
-        } else if (timeData <= 8) {
+        } else if (timeData < 8) {
           timeData = 4
-        } else if (timeData > 8) {
+        } else if ((timeData) => 8) {
           timeData = 5
         }
         this.timeCount = timeData

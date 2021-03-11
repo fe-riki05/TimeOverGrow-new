@@ -119,8 +119,8 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                max: 0,
-                stepSize: 0,
+                max: 30,
+                stepSize: 3,
                 callback(label) {
                   return label + ' h'
                 },
@@ -158,9 +158,23 @@ export default {
     await this.timeScales()
   },
   methods: {
+    // update(chart) {
+    //   chart.options = {
+    //     plugins: {
+    //       labels: {
+    //         render: function (d) {
+    //           return d.label + '：' + d.percentage + '%'
+    //         },
+    //         fontColor: '#000',
+    //         position: 'outside',
+    //         segment: true,
+    //       },
+    //     },
+    //   }
+    //   chart.update()
+    // },
     // Chart図のメモリ変更処理
     async timeScales() {
-      // let chart = new Chart(this.BarChartData, this.BarChartOptions)
       const totalTime = await MessageModel.dbtime()
       let max = this.BarChartOptions.scales.yAxes[0].ticks.max
       let step = this.BarChartOptions.scales.yAxes[0].ticks.stepSize
@@ -168,17 +182,18 @@ export default {
       max = JSON.parse(JSON.stringify(max))
       step = JSON.parse(JSON.stringify(step))
 
-      if (totalTime < 30) {
-        this.max = max
-        this.step = step
+      console.log(totalTime)
+      if (totalTime >= 30) {
+        console.log(max)
+        console.log(step)
 
         this.BarChartOptions = {
           yAxes: [
             {
               ticks: {
                 beginAtZero: true,
-                max: this.max,
-                stepSize: this.step,
+                max: 50,
+                stepSize: 5,
                 callback(label) {
                   return label + ' h'
                 },
@@ -186,20 +201,8 @@ export default {
             },
           ],
         }
-      }
-
-      console.log(totalTime) // 31
-      if (totalTime >= 30) {
-        console.log(max) // [30]
-        console.log(step) // [3]
-
-        // max.pop()
-        // step.pop()
-        // max.push(50)
-        // step.push(5)
-
-        console.log(max) // [50]
-        console.log(step) // [5]
+        console.log(max)
+        console.log(step)
       }
     },
     add(message) {
