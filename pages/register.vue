@@ -123,7 +123,6 @@ export default {
     Header,
     SocialLogin,
   },
-  layout: 'signin',
   data() {
     return {
       registerErrorMsg: '',

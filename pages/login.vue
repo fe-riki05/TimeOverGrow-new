@@ -97,7 +97,6 @@ export default {
     Header,
     SocialLogin,
   },
-  layout: 'signin',
   data() {
     return {
       tab: null,

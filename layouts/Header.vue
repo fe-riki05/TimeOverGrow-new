@@ -61,6 +61,7 @@
 
 <script>
 export default {
+  name: 'headerMenu',
   props: {
     title: {
       type: Boolean,

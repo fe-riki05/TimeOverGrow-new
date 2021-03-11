@@ -3,7 +3,6 @@
     <v-container class="pa-0 col">
       <v-row class="pa-0 col">
         <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
-        <!-- <v-spacer></v-spacer> -->
         <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
           <TotalTime :times="times" />
           <v-card :elevation="10" class="mt-5 py-5">
@@ -61,8 +60,8 @@ import MessageModel from '../models/Message'
 import firebase, { dbMessages, dbTags } from '../plugins/firebase'
 import TotalTime from './TotalTime'
 import Chart from './Chart'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 import TextBox from './TextBox'
-// import Spinner from './Spinner';
 import MessageList from './MessageList'
 import DialogEdit from './DialogEdit'
 
@@ -71,7 +70,6 @@ export default {
     TotalTime,
     Chart,
     TextBox,
-    // Spinner,
     MessageList,
     DialogEdit,
   },
@@ -86,13 +84,13 @@ export default {
       num: 0,
       name: '',
       index: '',
+      vuechartData: [],
+      max: 0,
+      step: 0,
       done: false,
       messages: [],
-      vuechartData: [],
       times: 0,
       initialLoaded: false,
-      // Max: 300,
-      // Step: 1,
       BarChartData: {
         labels: ['学習時間'],
         datasets: [
@@ -121,8 +119,8 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                max: [30],
-                stepSize: [3],
+                max: 0,
+                stepSize: 0,
                 callback(label) {
                   return label + ' h'
                 },
@@ -162,6 +160,7 @@ export default {
   methods: {
     // Chart図のメモリ変更処理
     async timeScales() {
+      // let chart = new Chart(this.BarChartData, this.BarChartOptions)
       const totalTime = await MessageModel.dbtime()
       let max = this.BarChartOptions.scales.yAxes[0].ticks.max
       let step = this.BarChartOptions.scales.yAxes[0].ticks.stepSize
@@ -170,20 +169,34 @@ export default {
       step = JSON.parse(JSON.stringify(step))
 
       if (totalTime < 30) {
-        max.push(30)
-        step.push(3)
+        this.max = max
+        this.step = step
+
+        this.BarChartOptions = {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                max: this.max,
+                stepSize: this.step,
+                callback(label) {
+                  return label + ' h'
+                },
+              },
+            },
+          ],
+        }
       }
+
       console.log(totalTime) // 31
       if (totalTime >= 30) {
         console.log(max) // [30]
         console.log(step) // [3]
 
-        max.pop()
-        step.pop()
-        max.push(50)
-        step.push(5)
-        // max[0] = 50;
-        // step[0] = 5;
+        // max.pop()
+        // step.pop()
+        // max.push(50)
+        // step.push(5)
 
         console.log(max) // [50]
         console.log(step) // [5]
