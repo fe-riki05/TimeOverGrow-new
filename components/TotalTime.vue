@@ -9,7 +9,7 @@
       />
     </v-card>
     <v-card :elevation="10" class="mt-5 card">
-      <div class="totaltime d-flex justify-center mb-3 pb-2">
+      <div class="totaltime d-flex justify-center">
         <p class="times_text">合計学習時間</p>
         <div class="arrow">
           <p class="times">{{ times }}時間</p>
@@ -65,15 +65,12 @@ export default {
 .times {
   font-size: 30px;
 }
-/* .arrow {
-		margin: 10px 0;
-	} */
 .arrow p {
   margin: 0;
   padding-left: 5px;
   font-weight: bold;
 }
-.arrow span {
+/* .arrow span {
   display: block;
   width: 150px;
   height: 2px;
@@ -141,5 +138,5 @@ export default {
     transform: rotate(-45deg) scale(1, 1);
     opacity: 0;
   }
-}
+} */
 </style>

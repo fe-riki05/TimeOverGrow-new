@@ -1,102 +1,96 @@
 <template>
   <!-- eslint-disable -->
-  <div class="textbox-container">
-    <div class="d-flex justify-space-between">
-      <div>
-        <p>今日のアウトプット内容</p>
-        <div class="text-center">
-          <v-dialog v-model="EditDialog" width="500">
-            <v-card>
-              <v-card-title class="headline grey lighten-2">
-                学習時間を記入して下さい。
-              </v-card-title>
-              <input
-                v-model="tagTimes"
-                class="textbox-input ml-4 mt-4"
-                type="number"
-                max="24"
-                min="0"
-                placeholder="3"
-              />
-              時間
-              <v-card-text> </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <Button color="primary" text :on-click="tagTime">決定</Button>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <v-container fluid class="pl-0">
-          <v-combobox
-            v-model="updatedSelect"
-            :filter="filter"
-            :hide-no-data="!search"
-            :items="items"
-            :search-input.sync="search"
-            label="タグを入力してください。"
-            hide-selected
-            outlined
-            append-icon
-            chips
-            deletable-chips
-            multiple
-            small-chips
-            solo
+  <v-app class="ma-0" style="max-height: 400px">
+    <!-- <v-container fluid class="px-0"> -->
+    <h2>今日のアウトプット内容</h2>
+    <v-container fluid class="px-0 mt-3">
+      <v-combobox
+        v-model="updatedSelect"
+        :filter="filter"
+        :hide-no-data="!search"
+        :items="items"
+        :search-input.sync="search"
+        label="タグを入力してください。"
+        hide-selected
+        outlined
+        append-icon
+        chips
+        deletable-chips
+        multiple
+        small-chips
+        solo
+      >
+        <template v-slot:no-data>
+          <v-list-item>
+            <span class="subheading">制作</span>
+            <v-chip color="tagcolor" label small>
+              {{ search }}
+            </v-chip>
+          </v-list-item>
+        </template>
+        <template v-slot:selection="{ attrs, item, parent, selected }">
+          <v-chip
+            v-if="item === Object(item)"
+            v-bind="attrs"
+            color="tagcolor"
+            :input-value="selected"
+            label
+            small
           >
-            <template v-slot:no-data>
-              <v-list-item>
-                <span class="subheading">制作</span>
-                <v-chip color="tagcolor" label small>
-                  {{ search }}
-                </v-chip>
-              </v-list-item>
-            </template>
-            <template v-slot:selection="{ attrs, item, parent, selected }">
-              <v-chip
-                v-if="item === Object(item)"
-                v-bind="attrs"
-                color="tagcolor"
-                :input-value="selected"
-                label
-                small
-              >
-                <span class="pr-2">
-                  {{ item.text }}
-                </span>
-                <v-icon small @click="parent.selectItem(item)"
-                  >mdi-close</v-icon
-                >
-              </v-chip>
-            </template>
-            <template v-slot:item="{ index, item }">
-              <v-text-field
-                v-if="editing === item"
-                v-model="editing.text"
-                autofocus
-                flat
-                background-color="transparent"
-                hide-details
-                solo
-                @keyup.enter="edit(index, item)"
-              ></v-text-field>
-              <v-chip v-else color="tagcolor" label small>
-                {{ item.text }}
-              </v-chip>
-              <v-spacer></v-spacer>
-              <v-list-item-action @click.stop>
-                <v-btn icon @click.stop.prevent="edit(index, item)">
-                  <v-icon>{{
-                    editing !== item ? 'mdi-pencil' : 'mdi-check'
-                  }}</v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </template>
-          </v-combobox>
-        </v-container>
-      </div>
-    </div>
+            <span class="pr-2">
+              {{ item.text }}
+            </span>
+            <v-icon small @click="parent.selectItem(item)">mdi-close</v-icon>
+          </v-chip>
+        </template>
+        <template v-slot:item="{ index, item }">
+          <v-text-field
+            v-if="editing === item"
+            v-model="editing.text"
+            autofocus
+            flat
+            background-color="transparent"
+            hide-details
+            solo
+            @keyup.enter="edit(index, item)"
+          ></v-text-field>
+          <v-chip v-else color="tagcolor" label small>
+            {{ item.text }}
+          </v-chip>
+          <v-spacer></v-spacer>
+          <v-list-item-action @click.stop>
+            <v-btn icon @click.stop.prevent="edit(index, item)">
+              <v-icon>{{
+                editing !== item ? 'mdi-pencil' : 'mdi-check'
+              }}</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </template>
+      </v-combobox>
+    </v-container>
+    <!-- </v-container> -->
+    <v-dialog v-model="EditDialog" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2">
+          学習時間を記入して下さい。
+        </v-card-title>
+        <input
+          v-model="tagTimes"
+          class="textbox-input mt-4"
+          type="number"
+          max="24"
+          min="0"
+          placeholder="3"
+        />
+        時間
+        <!-- <v-card-text> </v-card-text>
+        <v-divider></v-divider> -->
+        <v-card-actions>
+          <!-- <v-spacer></v-spacer> -->
+          <Button color="primary" text :on-click="tagTime">決定</Button>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-textarea
       v-model="updatedBody"
       class="textbox-area"
@@ -106,15 +100,22 @@
       outlined
       rows="1"
       row-height="100"
-      max-width="100px"
     />
-    <div class="button">
+    <div class="d-flex button ma-0 pa-0">
+      <!-- <v-card-actions>
+        <v-btn color="green darken-1" text @click="back"> 戻る </v-btn>
+      </v-card-actions> -->
+      <Button :on-click="back">
+        <v-icon> mdi-arrow-left-bold-box </v-icon>
+        <v-icon color="green darken-1"> 戻る </v-icon>
+      </Button>
+      <v-spacer></v-spacer>
       <Button :on-click="update">
         <v-icon color="#70c2fd"> mdi-send </v-icon>
-        <slot />
+        <v-icon color="green darken-1"> 更新する </v-icon>
       </Button>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -263,6 +264,9 @@ export default {
     dialogTime() {
       this.EditDialog = true
     },
+    back() {
+      this.$emit('back')
+    },
     // dialog内の決定ボタンで発火
     async tagTime() {
       this.EditDialog = false
@@ -339,15 +343,36 @@ export default {
   border: 1px solid rgb(161, 161, 161);
   -webkit-appearance: none;
 }
+.input {
+  flex: 0;
+}
 /* Chrome, Safari, Edge */
 .textbox-input::-webkit-outer-spin-button,
 .textbox-input::-webkit-inner-spin-button {
   margin: 0;
   -webkit-appearance: none;
 }
-p {
-  font-weight: 900;
-  font-size: 25px;
+h2 {
+  color: #6cb4e4;
+  text-align: center;
+  padding: 0.25em;
+  border-top: solid 2px #6cb4e4;
+  border-bottom: solid 2px #6cb4e4;
+  background: -webkit-repeating-linear-gradient(
+    -45deg,
+    #f0f8ff,
+    #f0f8ff 3px,
+    #e9f4ff 3px,
+    #e9f4ff 7px
+  );
+}
+.textbox-area {
+  resize: none;
+  background: white;
+  border-radius: 5px;
+  padding: 0;
+  margin: 0;
+  flex-basis: none;
 }
 .tagcolor,
 .theme--light.v-chip:not(.v-chip--active) {
@@ -364,17 +389,15 @@ p {
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .textbox-area {
-  max-width: 80%;
   resize: none;
   background: white;
-  width: 100%;
-  height: 100px;
   border-radius: 5px;
   padding: 0;
   margin: 0;
+  max-height: 140px;
 }
 .button {
-  margin-right: 50px;
+  /* margin-right: 50px; */
   text-align: right;
   padding: 10px;
   color: #70c2fd;

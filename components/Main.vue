@@ -16,7 +16,7 @@
         <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
           <v-card :elevation="10" class="pa-5">
             <TextBox :on-click="add" />
-            <h2 v-if="messages.length === 0" class="pa-5">
+            <h2 v-if="messages.length === 0" class="mt-3 pa-5">
               投稿が0件です！！！
             </h2>
           </v-card>
@@ -26,27 +26,19 @@
             @update="updated"
             @updatedDate="updatedDateId"
           />
-          <!-- dialogの設定 -->
-          <div justify="center">
-            <v-dialog v-model="dialog" persistent max-width="600">
-              <v-card>
-                <DialogEdit
-                  :update-time.sync="updateTime"
-                  :update-select.sync="updateSelect"
-                  :update-body.sync="updateBody"
-                  class="container"
-                  @updatedDate="updatedDate"
-                >
-                  <v-icon color="green darken-1"> 更新する </v-icon>
-                </DialogEdit>
-                <v-card-actions>
-                  <v-btn color="green darken-1" text @click="back">
-                    戻る
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </div>
+          <v-dialog v-model="dialog" persistent max-width="600">
+            <v-card>
+              <DialogEdit
+                :update-time.sync="updateTime"
+                :update-select.sync="updateSelect"
+                :update-body.sync="updateBody"
+                class="container"
+                @updatedDate="updatedDate"
+                @back="back"
+              >
+              </DialogEdit>
+            </v-card>
+          </v-dialog>
           <!-- ここまで -->
         </v-col>
         <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
@@ -59,11 +51,11 @@
 import MessageModel from '../models/Message'
 import firebase, { dbMessages, dbTags } from '../plugins/firebase'
 import TotalTime from './TotalTime'
-import Chart from './Chart'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
 import TextBox from './TextBox'
 import MessageList from './MessageList'
 import DialogEdit from './DialogEdit'
+import Chart from './Chart'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
   components: {
@@ -85,12 +77,12 @@ export default {
       name: '',
       index: '',
       vuechartData: [],
-      max: 0,
-      step: 0,
+      // max: 0,
+      // step: 0,
       done: false,
       messages: [],
       times: 0,
-      initialLoaded: false,
+      // initialLoaded: false,
       BarChartData: {
         labels: ['学習時間'],
         datasets: [
@@ -119,8 +111,8 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                max: 30,
-                stepSize: 3,
+                max: 1000,
+                stepSize: 100,
                 callback(label) {
                   return label + ' h'
                 },
@@ -149,62 +141,69 @@ export default {
     const vuechartData = await this.getChart()
     this.messages = messages
     this.times = times
-    if (this.BarChartData.datasets[0].data.length === 0) {
-      this.BarChartData.datasets[0].data.push(vuechartData[0])
-    }
-    this.BarChartData.datasets[0].data[0] = vuechartData[0]
-    this.initialLoaded = true
+    // if (this.BarChartData.datasets[0].data.length === 0) {
+    //   this.BarChartData.datasets[0].data.push(vuechartData[0])
+    // }
+    // this.BarChartData.datasets[0].data[0] = vuechartData[0]
 
-    await this.timeScales()
-  },
-  methods: {
-    // update(chart) {
-    //   chart.options = {
-    //     plugins: {
-    //       labels: {
-    //         render: function (d) {
-    //           return d.label + '：' + d.percentage + '%'
+    // const optionTime = await this.timeScales()
+
+    this.BarChartData = {
+      labels: ['学習時間'],
+      datasets: [
+        {
+          label: ['学習時間'],
+          data: [vuechartData[0]],
+          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+          borderColor: ['rgba(54, 162, 235, 1)'],
+        },
+      ],
+    }
+
+    // this.BarChartOptions = {
+    //   responsive: true,
+    //   maintainAspectRatio: false,
+    //   scales: {
+    //     xAxes: [
+    //       {
+    //         stacked: true,
+    //         scaleLabel: {
+    //           display: true,
+    //           labelString: '',
     //         },
-    //         fontColor: '#000',
-    //         position: 'outside',
-    //         segment: true,
+    //       },
+    //     ],
+    //     yAxes: [
+    //       {
+    //         ticks: {
+    //           beginAtZero: true,
+    //           max: optionTime[0],
+    //           stepSize: optionTime[1],
+    //           callback(label) {
+    //             return label + ' h'
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   tooltips: {
+    //     callbacks: {
+    //       label(tooltipItem) {
+    //         return tooltipItem.yLabel + ' h'
     //       },
     //     },
+    //   },
+    // }
+  },
+  methods: {
+    // async timeScales() {
+    //   const chartdbtime = await MessageModel.dbtime()
+    //   if (chartdbtime < 100) {
+    //     let optionTime = [800, 80]
+    //     return optionTime
+    //     console.log('timeScales内部')
     //   }
-    //   chart.update()
     // },
-    // Chart図のメモリ変更処理
-    async timeScales() {
-      const totalTime = await MessageModel.dbtime()
-      let max = this.BarChartOptions.scales.yAxes[0].ticks.max
-      let step = this.BarChartOptions.scales.yAxes[0].ticks.stepSize
-
-      max = JSON.parse(JSON.stringify(max))
-      step = JSON.parse(JSON.stringify(step))
-
-      console.log(totalTime)
-      if (totalTime >= 30) {
-        console.log(max)
-        console.log(step)
-
-        this.BarChartOptions = {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                max: 50,
-                stepSize: 5,
-                callback(label) {
-                  return label + ' h'
-                },
-              },
-            },
-          ],
-        }
-        console.log(max)
-        console.log(step)
-      }
-    },
     add(message) {
       this.messages.push(message)
       this.times += message.times
@@ -224,7 +223,6 @@ export default {
           },
         ],
       }
-      // this.timeScales();
     },
     async clear() {
       this.messages = await this.fetchMessages()

@@ -10,7 +10,7 @@
           class="tag color ml-3 mb-3"
           style="min-width: 80px"
         >
-          <v-icon left class="color"> mdi-check-outline </v-icon>
+          <v-icon left class="color"> mdi-check </v-icon>
           <span>{{ tags.text }}</span>
         </v-chip>
       </div>
@@ -121,8 +121,9 @@ export default {
 
 <style scoped>
 .tag {
-  background: #fff;
-  min-width: 80px;
+  /* background: #fff;
+  min-width: 80px; */
+  border: solid 1px #7db4e6;
 }
 .color {
   color: #70c2fd;

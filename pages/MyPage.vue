@@ -12,18 +12,21 @@
         </nuxt-link>
       </v-list-item>
     </Header>
-    <v-container class="pa-0">
-      <v-row cols="7" sm="7" md="4" class="container">
-        <v-col>
+    <v-container class="mt-5 pa-0 col">
+      <v-row class="pa-0 col">
+        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
+        <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
             <Chart
               :chart-data="TagBarChartData"
               :options="TagBarChartOptions"
-              class="m-2 pa-4"
+              class="pa-4"
             />
           </v-card>
+        </v-col>
+        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
+        <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
-            <!-- <Chart :chart-data="TimeBarChartData" :options="TimeBarChartOptions" class="m-2 pa-4" /> -->
             <CalendarHeatmap
               :values="heartmapData"
               :end-date="endData"
@@ -34,6 +37,7 @@
             </CalendarHeatmap>
           </v-card>
         </v-col>
+        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
       </v-row>
     </v-container>
   </v-app>
@@ -93,8 +97,8 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                max: 500,
-                stepSize: 50,
+                max: 1000,
+                stepSize: 100,
                 callback(label) {
                   return label + ' h'
                 },
@@ -124,47 +128,47 @@ export default {
           },
         ],
       },
-      TimeBarChartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          colorschemes: {
-            scheme: 'brewer.Paired12',
-            // custom: customColorFunction
-          },
-          ChartDataLabels,
-        },
-        scales: {
-          xAxes: [
-            {
-              stacked: true,
-              scaleLabel: {
-                display: true,
-                labelString: '',
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                max: 500,
-                stepSize: 50,
-                callback(label) {
-                  return label + ' h'
-                },
-              },
-            },
-          ],
-        },
-        tooltips: {
-          callbacks: {
-            label(tooltipItem) {
-              return tooltipItem.yLabel + ' h'
-            },
-          },
-        },
-      },
+      // TimeBarChartOptions: {
+      //   responsive: true,
+      //   maintainAspectRatio: false,
+      //   plugins: {
+      //     colorschemes: {
+      //       scheme: 'brewer.Paired12',
+      //       // custom: customColorFunction
+      //     },
+      //     ChartDataLabels,
+      //   },
+      //   scales: {
+      //     xAxes: [
+      //       {
+      //         stacked: true,
+      //         scaleLabel: {
+      //           display: true,
+      //           labelString: '',
+      //         },
+      //       },
+      //     ],
+      //     yAxes: [
+      //       {
+      //         ticks: {
+      //           beginAtZero: true,
+      //           max: 1000,
+      //           stepSize: 100,
+      //           callback(label) {
+      //             return label + ' h'
+      //           },
+      //         },
+      //       },
+      //     ],
+      //   },
+      //   tooltips: {
+      //     callbacks: {
+      //       label(tooltipItem) {
+      //         return tooltipItem.yLabel + ' h'
+      //       },
+      //     },
+      //   },
+      // },
       heartmapData: [],
       // 空白だとエラー発生
       endData: '2021-01-1',
@@ -213,17 +217,12 @@ export default {
         this.timeCount = timeData
         return { date: doc.data().date.seconds * 1000, count: this.timeCount }
       })
-      // console.log(messagesDate);
-
       this.heartmapData = messagesDate
 
       // endData
       const today = new Date()
       const Year = new Date(today.setFullYear(today.getFullYear()))
       this.endData = Year
-      // this.startData = Year;
-
-      // console.log(this.heartmapData);
     },
   },
 }
@@ -232,6 +231,10 @@ export default {
 <style scoped>
 >>> .v-application--wrap {
   min-height: 0;
+}
+.col {
+  padding: 0;
+  margin: 0 auto;
 }
 .auth {
   text-decoration: none;

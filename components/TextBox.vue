@@ -1,120 +1,113 @@
 <template>
   <!-- eslint-disable -->
   <v-app class="ma-0">
-    <v-container class="textbox-container">
-      <h2>今日のアウトプット内容</h2>
-      <v-container fluid class="px-0 mt-3">
-        <v-combobox
-          v-model="select"
-          :filter="filter"
-          :hide-no-data="!search"
-          :items="items"
-          :search-input.sync="search"
-          light
-          class="form"
-          label="タグを入力してください。"
-          hide-selected
-          clearable
-          append-icon
-          chips
-          deletable-chips
-          multiple
-          small-chips
-          solo
-        >
-          <template v-slot:selection="{ attrs, item, parent, selected }">
-            <v-chip
-              v-if="item === Object(item)"
-              v-bind="attrs"
-              :input-value="selected"
-              label
+    <h2>今日のアウトプット内容</h2>
+    <v-container fluid class="px-0 mt-3">
+      <v-combobox
+        v-model="select"
+        :filter="filter"
+        :hide-no-data="!search"
+        :items="items"
+        :search-input.sync="search"
+        light
+        class="form"
+        label="タグを入力してください。"
+        hide-selected
+        clearable
+        append-icon
+        chips
+        deletable-chips
+        multiple
+        small-chips
+        solo
+      >
+        <template v-slot:selection="{ attrs, item, parent, selected }">
+          <v-chip
+            v-if="item === Object(item)"
+            v-bind="attrs"
+            :input-value="selected"
+            label
+            small
+            color="tagcolor"
+          >
+            <span class="tagcolor">
+              {{ item.text }}
+            </span>
+            <v-icon
               small
-              color="tagcolor"
+              @click="
+                parent.selectItem(item)
+                close(item)
+              "
+              >mdi-close</v-icon
             >
-              <span class="tagcolor">
-                {{ item.text }}
-              </span>
-              <v-icon
-                small
-                @click="
-                  parent.selectItem(item)
-                  close(item)
-                "
-                >mdi-close</v-icon
-              >
-            </v-chip>
-          </template>
-          <template v-slot:item="{ index, item }" class="tagcolor">
-            <v-text-field
-              v-if="editing === item"
-              v-model="editing.text"
-              autofocus
-              flat
-              hide-details
-              solo
-              @keyup.enter="edit(index, item)"
-            ></v-text-field>
-            <v-chip v-else label small class="tagcolor">
-              <span class="tagcolor pa-0 d-block">{{ item.text }}</span>
-            </v-chip>
-            <v-spacer></v-spacer>
-            <v-list-item-action @click.stop>
-              <div class="d-flex">
-                <v-btn icon @click.stop.prevent="edit(index, item)">
-                  <v-icon>{{
-                    editing !== item ? 'mdi-pencil' : 'mdi-check'
-                  }}</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  @click="tagDelete(index, item)"
-                  class="color btn ml-2"
-                >
-                  <v-icon> mdi-trash-can-outline </v-icon>
-                </v-btn>
-              </div>
-            </v-list-item-action>
-          </template>
-        </v-combobox>
-      </v-container>
-      <v-dialog v-model="dialog" width="500">
-        <v-card>
-          <v-card-title class="headline grey lighten-2">
-            学習時間を記入して下さい。
-          </v-card-title>
-          <input
-            v-model="tagTimes"
-            class="textbox-input mt-4"
-            type="number"
-            max="24"
-            min="0"
-            placeholder="3"
-          />
-          時間
-          <v-card-text> </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <Button color="primary" text :on-click="tagTime">決定</Button>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-textarea
-        v-model.trim="bodys"
-        class="textbox-area"
-        label="JSの非同期処理(async,await)について学びました。"
-        flat
-        auto-grow
-        outlined
-        rows="1"
-        row-height="100"
-      />
-      <div v-if="btn" class="button ma-0 pa-0">
-        <Button :on-click.stop="add" class="ma-0">
-          <v-icon color="#70c2fd" class="pa-5"> mdi-send </v-icon>
-        </Button>
-      </div>
+          </v-chip>
+        </template>
+        <template v-slot:item="{ index, item }" class="tagcolor">
+          <v-text-field
+            v-if="editing === item"
+            v-model="editing.text"
+            autofocus
+            flat
+            hide-details
+            solo
+            @keyup.enter="edit(index, item)"
+            class="field"
+          ></v-text-field>
+          <v-chip v-else label small class="tagcolor">
+            <span class="tagcolor pa-0 d-block">{{ item.text }}</span>
+          </v-chip>
+          <v-spacer></v-spacer>
+          <v-list-item-action @click.stop>
+            <div class="d-flex">
+              <v-btn icon @click.stop.prevent="edit(index, item)" class="field">
+                <v-icon>{{
+                  editing !== item ? 'mdi-pencil' : 'mdi-check'
+                }}</v-icon>
+              </v-btn>
+              <v-btn icon @click="tagDelete(index, item)" class="field ml-2">
+                <v-icon> mdi-trash-can-outline </v-icon>
+              </v-btn>
+            </div>
+          </v-list-item-action>
+        </template>
+      </v-combobox>
     </v-container>
+    <v-dialog v-model="dialog" width="500">
+      <v-card class="pa-5">
+        <v-card-title class="headline px-2 text-center">
+          学習時間を記入して下さい。
+        </v-card-title>
+        <input
+          v-model="tagTimes"
+          class="textbox-input mt-4"
+          type="number"
+          max="24"
+          min="0"
+          placeholder="3"
+        />
+        <span style="color: #70c2fd">時間</span>
+        <v-card-actions class="pa-0">
+          <v-spacer></v-spacer>
+          <Button text :on-click="tagTime" class="ma-0">決定</Button>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-textarea
+      v-model.trim="bodys"
+      class="textbox-area"
+      label="JSの非同期処理(async,await)について学びました。"
+      flat
+      auto-grow
+      outlined
+      rows="1"
+      row-height="100"
+    />
+    <div v-if="btn" class="button ma-0 pa-0">
+      <Button :on-click.stop="add" class="ma-0">
+        <v-icon color="#70c2fd" class="pa-5"> mdi-send </v-icon>
+      </Button>
+    </div>
   </v-app>
 </template>
 
@@ -254,11 +247,8 @@ export default {
         return Element.id
       })
 
-      // tag削除してもリアクティブな変更にならない。
-      // console.log('前');
-      // this.$forceUpdate();
-      // console.log(this.$forceUpdate());
-      // console.log('後');
+      const tags = await TagModel.get()
+      this.items = tags
     },
     close(item) {
       this.times -= item.time
@@ -304,11 +294,6 @@ export default {
     },
     async edit(index, item) {
       if (!this.editing) {
-        // ここで編集前のデータ削除
-        // const editBefore = await dbTags.where('text', '==', item.text).get();
-        // editBefore.docs.forEach(doc => {
-        // 	dbTags.doc(doc.id).delete();
-        // });
         this.editing = item
         this.index = index
       } else {
@@ -340,7 +325,8 @@ export default {
   border: 1px solid rgb(161, 161, 161);
   -webkit-appearance: none;
 }
-h2 {
+h2,
+.headline {
   color: #6cb4e4;
   text-align: center;
   padding: 0.25em;
@@ -370,19 +356,13 @@ h2 {
 
 .tagcolor,
 .theme--light.v-chip:not(.v-chip--active) {
-  background: #a8ff78; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #78ffd6,
-    #a8ff78
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #78ffd6,
-    #a8ff78
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #a8d5ff;
 }
 .v-card > *:last-child:not(.v-btn):not(.v-chip) {
   margin: 0;
+}
+.field,
+.textbox-input {
+  border: solid 1px #7db4e6;
 }
 </style>
