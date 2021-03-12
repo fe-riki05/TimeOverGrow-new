@@ -160,50 +160,48 @@ export default {
       ],
     }
 
-    // this.BarChartOptions = {
-    //   responsive: true,
-    //   maintainAspectRatio: false,
-    //   scales: {
-    //     xAxes: [
-    //       {
-    //         stacked: true,
-    //         scaleLabel: {
-    //           display: true,
-    //           labelString: '',
-    //         },
-    //       },
-    //     ],
-    //     yAxes: [
-    //       {
-    //         ticks: {
-    //           beginAtZero: true,
-    //           max: optionTime[0],
-    //           stepSize: optionTime[1],
-    //           callback(label) {
-    //             return label + ' h'
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   tooltips: {
-    //     callbacks: {
-    //       label(tooltipItem) {
-    //         return tooltipItem.yLabel + ' h'
-    //       },
-    //     },
-    //   },
-    // }
+    const vuechartOptions = await this.getChartOptions()
+    console.log(vuechartOptions) // [800, 80]
+
+    this.BarChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [
+          {
+            stacked: true,
+            scaleLabel: {
+              display: true,
+              labelString: '',
+            },
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              max: vuechartOptions[0],
+              stepSize: vuechartOptions[1],
+              callback(label) {
+                return label + ' h'
+              },
+            },
+          },
+        ],
+      },
+      tooltips: {
+        callbacks: {
+          label(tooltipItem) {
+            return tooltipItem.yLabel + ' h'
+          },
+        },
+      },
+    }
+
+    console.log(this.BarChartOptions.scales.yAxes[0].ticks.max) // 800
+    console.log(this.BarChartOptions.scales.yAxes[0].ticks.stepSize) // 80
   },
   methods: {
-    // async timeScales() {
-    //   const chartdbtime = await MessageModel.dbtime()
-    //   if (chartdbtime < 100) {
-    //     let optionTime = [800, 80]
-    //     return optionTime
-    //     console.log('timeScales内部')
-    //   }
-    // },
     add(message) {
       this.messages.push(message)
       this.times += message.times
@@ -354,6 +352,14 @@ export default {
         return this.vuechartData
       } catch (error) {
         alert(error.message)
+      }
+    },
+    async getChartOptions() {
+      const totalTime = await this.getChart()
+      console.log(totalTime[0]) // 30
+      if (totalTime[0] < 100) {
+        let optionTime = [800, 80]
+        return optionTime
       }
     },
   },
