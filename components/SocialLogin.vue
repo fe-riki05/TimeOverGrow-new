@@ -57,8 +57,6 @@
 </template>
 
 <script>
-// import { auth } from '~/plugins/firebase.js';
-
 export default {
   methods: {
     googleLogin() {
@@ -67,41 +65,29 @@ export default {
         .then(() => {
           this.$router.push({
             name: 'index',
-          })
+          });
         })
         .catch(() => {
           this.$parent.socialLoginErrorMsg =
-            '現在Googleでのログインは使用できません。後ほどお試しください。'
-        })
+            '現在Googleでのログインは使用できません。後ほどお試しください。';
+        });
     },
-    // googleLogin() {
-    // 	this.$store
-    // 		.dispatch('signInWithGoogle')
-    // 		.then(() => {
-    // 			this.$router.push({
-    // 				name: 'index'
-    // 			});
-    // 		})
-    // 		.catch(() => {
-    // 			console.error('現在Googleでのログインは使用できません。後ほどお試しください。');
-    // 		});
-    // },
     guestLogin() {
       this.$store
         .dispatch('signInWithGuest')
         .then(() => {
           this.$router.push({
             name: 'index',
-          })
+          });
         })
         .catch(() => {
           console.error(
             '現在ゲストログインは使用できません。後ほどお試しください。'
-          )
-        })
+          );
+        });
     },
   },
-}
+};
 </script>
 
 <style lang="scss">

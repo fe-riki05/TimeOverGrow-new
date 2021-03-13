@@ -61,6 +61,7 @@
 
 <script>
 export default {
+  name: 'headerMenu',
   props: {
     title: {
       type: Boolean,
@@ -79,7 +80,7 @@ export default {
     return {
       drawer: false,
       group: null,
-    }
+    };
   },
   methods: {
     signOut() {
@@ -88,14 +89,14 @@ export default {
         .then(() => {
           this.$router.push({
             name: 'login',
-          })
+          });
         })
         .catch((err) => {
-          alert(err.message)
-        })
+          alert(err.message);
+        });
     },
   },
-}
+};
 </script>
 
 <style>

@@ -11,9 +11,9 @@
       </v-list-item>
     </Header>
     <v-container>
-      <v-row>
+      <!-- <v-row>
         <h1>TimeOverGrow</h1>
-      </v-row>
+      </v-row> -->
       <v-row>
         <img class="img" src="@/assets/app_top.jpg" />
       </v-row>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Header from '../layouts/Header'
+import Header from '../layouts/Header';
 
 export default {
   components: {
@@ -35,14 +35,14 @@ export default {
         .then(() => {
           this.$router.push({
             name: 'login',
-          })
+          });
         })
         .catch((err) => {
-          alert(err.message)
-        })
+          alert(err.message);
+        });
     },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -1,23 +1,10 @@
 // // 保存時、ESlint を自動整形
-// {
-//   "editor.codeActionsOnSave": {
-//     "source.fixAll.eslint": true
-//   },
-//   // Vetur のコード整形と Prettier がバッティングしないように無効化
-//   "vetur.format.enable": false
-// }
 {
-  // "eslint.autoFixOnSave": true,
-  // "eslint.validate": [
-  //   {
-  //     "language": "vue",
-  //     "autoFix": true
-  //   }
-  // ],
   "[vue]": {
     "editor.formatOnSave": false
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "vetur.format.enable": false
 }

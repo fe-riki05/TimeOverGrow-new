@@ -12,18 +12,21 @@
         </nuxt-link>
       </v-list-item>
     </Header>
-    <v-container class="pa-0">
-      <v-row cols="7" sm="7" md="4" class="container">
-        <v-col>
+    <v-container class="mt-5 pa-0 col">
+      <v-row class="pa-0 col">
+        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
+        <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
             <Chart
               :chart-data="TagBarChartData"
               :options="TagBarChartOptions"
-              class="m-2 pa-4"
+              class="pa-4"
             />
           </v-card>
+        </v-col>
+        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
+        <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
-            <!-- <Chart :chart-data="TimeBarChartData" :options="TimeBarChartOptions" class="m-2 pa-4" /> -->
             <CalendarHeatmap
               :values="heartmapData"
               :end-date="endData"
@@ -34,18 +37,19 @@
             </CalendarHeatmap>
           </v-card>
         </v-col>
+        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
       </v-row>
     </v-container>
   </v-app>
 </template>
 
 <script>
-import { CalendarHeatmap } from 'vue-calendar-heatmap'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
-import Chart from '../components/Chart'
-import 'chartjs-plugin-colorschemes'
-import Header from '../layouts/Header'
-import firebase, { dbMessages, dbTags } from '../plugins/firebase'
+import { CalendarHeatmap } from 'vue-calendar-heatmap';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Chart from '../components/Chart';
+import 'chartjs-plugin-colorschemes';
+import Header from '../layouts/Header';
+import firebase, { dbMessages, dbTags } from '../plugins/firebase';
 // import MessageModel from '../models/Message';
 
 export default {
@@ -93,10 +97,10 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                max: 500,
-                stepSize: 50,
+                max: 1000,
+                stepSize: 100,
                 callback(label) {
-                  return label + ' h'
+                  return label + ' h';
                 },
               },
             },
@@ -105,7 +109,7 @@ export default {
         tooltips: {
           callbacks: {
             label(tooltipItem) {
-              return tooltipItem.yLabel + ' h'
+              return tooltipItem.yLabel + ' h';
             },
           },
         },
@@ -124,65 +128,65 @@ export default {
           },
         ],
       },
-      TimeBarChartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          colorschemes: {
-            scheme: 'brewer.Paired12',
-            // custom: customColorFunction
-          },
-          ChartDataLabels,
-        },
-        scales: {
-          xAxes: [
-            {
-              stacked: true,
-              scaleLabel: {
-                display: true,
-                labelString: '',
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                max: 500,
-                stepSize: 50,
-                callback(label) {
-                  return label + ' h'
-                },
-              },
-            },
-          ],
-        },
-        tooltips: {
-          callbacks: {
-            label(tooltipItem) {
-              return tooltipItem.yLabel + ' h'
-            },
-          },
-        },
-      },
+      // TimeBarChartOptions: {
+      //   responsive: true,
+      //   maintainAspectRatio: false,
+      //   plugins: {
+      //     colorschemes: {
+      //       scheme: 'brewer.Paired12',
+      //       // custom: customColorFunction
+      //     },
+      //     ChartDataLabels,
+      //   },
+      //   scales: {
+      //     xAxes: [
+      //       {
+      //         stacked: true,
+      //         scaleLabel: {
+      //           display: true,
+      //           labelString: '',
+      //         },
+      //       },
+      //     ],
+      //     yAxes: [
+      //       {
+      //         ticks: {
+      //           beginAtZero: true,
+      //           max: 1000,
+      //           stepSize: 100,
+      //           callback(label) {
+      //             return label + ' h'
+      //           },
+      //         },
+      //       },
+      //     ],
+      //   },
+      //   tooltips: {
+      //     callbacks: {
+      //       label(tooltipItem) {
+      //         return tooltipItem.yLabel + ' h'
+      //       },
+      //     },
+      //   },
+      // },
       heartmapData: [],
       // 空白だとエラー発生
       endData: '2021-01-1',
       timeCount: 5,
-    }
+    };
   },
   async created() {
-    await this.tagChart()
-    await this.hearmap()
+    await this.tagChart();
+    await this.hearmap();
   },
   methods: {
     async tagChart() {
-      const uid = firebase.auth().currentUser.uid
-      const TagCollection = await dbTags.where('uid', '==', uid).get()
+      const uid = firebase.auth().currentUser.uid;
+      const TagCollection = await dbTags.where('uid', '==', uid).get();
       TagCollection.docs.map((e) => {
-        this.TagBarChartData.labels.push(e.data().text)
-        this.TagBarChartData.datasets[0].data.push(e.data().time)
-      })
+        this.TagBarChartData.labels.push(e.data().text);
+        this.TagBarChartData.datasets[0].data.push(e.data().time);
+      });
       this.TagBarChartData = {
         labels: this.TagBarChartData.labels,
         datasets: [
@@ -191,47 +195,46 @@ export default {
             data: this.TagBarChartData.datasets[0].data,
           },
         ],
-      }
+      };
     },
     async hearmap() {
-      const uid = firebase.auth().currentUser.uid
-      const messageData = await dbMessages.where('uid', '==', uid).get()
+      const uid = firebase.auth().currentUser.uid;
+      const messageData = await dbMessages.where('uid', '==', uid).get();
       const messagesDate = messageData.docs.map((doc) => {
         // console.log(doc.data().times);
-        let timeData = doc.data().times
+        let timeData = doc.data().times;
         if (timeData <= 1) {
-          timeData = 1
+          timeData = 1;
         } else if (timeData <= 3) {
-          timeData = 2
+          timeData = 2;
         } else if (timeData <= 5) {
-          timeData = 3
-        } else if (timeData <= 8) {
-          timeData = 4
-        } else if (timeData > 8) {
-          timeData = 5
+          timeData = 3;
+        } else if (timeData < 8) {
+          timeData = 4;
+        } else if ((timeData) => 8) {
+          timeData = 5;
         }
-        this.timeCount = timeData
-        return { date: doc.data().date.seconds * 1000, count: this.timeCount }
-      })
-      // console.log(messagesDate);
-
-      this.heartmapData = messagesDate
+        this.timeCount = timeData;
+        return { date: doc.data().date.seconds * 1000, count: this.timeCount };
+      });
+      this.heartmapData = messagesDate;
 
       // endData
-      const today = new Date()
-      const Year = new Date(today.setFullYear(today.getFullYear()))
-      this.endData = Year
-      // this.startData = Year;
-
-      // console.log(this.heartmapData);
+      const today = new Date();
+      const Year = new Date(today.setFullYear(today.getFullYear()));
+      this.endData = Year;
     },
   },
-}
+};
 </script>
 
 <style scoped>
 >>> .v-application--wrap {
   min-height: 0;
+}
+.col {
+  padding: 0;
+  margin: 0 auto;
 }
 .auth {
   text-decoration: none;
