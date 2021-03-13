@@ -31,9 +31,9 @@ export default {
   data() {
     return {
       image_src: require('@/assets/timeovergrow.png'),
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>

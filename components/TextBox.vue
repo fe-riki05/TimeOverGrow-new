@@ -36,8 +36,8 @@
             <v-icon
               small
               @click="
-                parent.selectItem(item)
-                close(item)
+                parent.selectItem(item);
+                close(item);
               "
               >mdi-close</v-icon
             >
@@ -112,10 +112,10 @@
 </template>
 
 <script>
-import MessageModel from '../models/Message'
-import TagModel from '../models/Tag'
-import firebase, { dbTags } from '../plugins/firebase'
-import Button from './Button'
+import MessageModel from '../models/Message';
+import TagModel from '../models/Tag';
+import firebase, { dbTags } from '../plugins/firebase';
+import Button from './Button';
 
 export default {
   components: {
@@ -147,175 +147,175 @@ export default {
       dbMessagesTags: [],
       search: null,
       dialog: false,
-    }
+    };
   },
   watch: {
     select(val, prev) {
-      if (val.length === prev.length) return
+      if (val.length === prev.length) return;
       this.select = Array.prototype.map.call(Object(val), (value) => {
         if (typeof value === 'string') {
           value = {
             text: value,
-          }
-          this.items.push(value)
+          };
+          this.items.push(value);
         }
         // ここでtag事の学習時間をdialogで入力させることができたらいいかも
-        this.dialogTime()
-        return value
-      })
+        this.dialogTime();
+        return value;
+      });
     },
   },
   async created() {
     try {
-      const tags = await TagModel.get()
-      this.items = tags
+      const tags = await TagModel.get();
+      this.items = tags;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   },
   methods: {
     async add() {
-      this.canPost = false
+      this.canPost = false;
       try {
         const message = await MessageModel.save({
           times: parseInt(this.times),
           bodys: this.bodys,
           tags: this.dbMessagesTags,
-        })
+        });
 
         // dbTagsへの保存処理。
-        const uid = firebase.auth().currentUser.uid
+        const uid = firebase.auth().currentUser.uid;
 
-        const newSelect = JSON.parse(JSON.stringify(this.select))
-        this.select = newSelect
+        const newSelect = JSON.parse(JSON.stringify(this.select));
+        this.select = newSelect;
 
         this.select.forEach(async (element) => {
-          const params = Object.assign(element, { uid })
+          const params = Object.assign(element, { uid });
           const TagSame = await dbTags
             .where('uid', '==', uid)
             .where('text', '==', params.text)
-            .get()
+            .get();
           if (TagSame.docs) {
-            let Tag = []
+            let Tag = [];
             TagSame.docs.forEach((e) => {
-              Tag = []
-              Tag.push(e.id)
-            })
+              Tag = [];
+              Tag.push(e.id);
+            });
 
-            let TagData = await (await dbTags.doc(Tag[0]).get()).data()
+            let TagData = await (await dbTags.doc(Tag[0]).get()).data();
             // let TagTime = TagData.data();
             if (TagData === undefined) {
-              TagData = []
+              TagData = [];
             }
             const dbMessagesTagTime = TagSame.docs.map((doc) => {
-              return doc.data()
-            })
+              return doc.data();
+            });
 
             if (dbMessagesTagTime.length !== 0) {
-              params.time += await dbMessagesTagTime[0].time
+              params.time += await dbMessagesTagTime[0].time;
             }
 
             await dbTags.doc(Tag[0]).set({
               text: params.text,
               time: params.time,
               uid: params.uid,
-            })
+            });
           }
-        })
+        });
 
-        this.onClick(message)
-        this.times = 0
-        this.bodys = ''
-        this.select = ''
-        this.dbMessagesTags = []
+        this.onClick(message);
+        this.times = 0;
+        this.bodys = '';
+        this.select = '';
+        this.dbMessagesTags = [];
       } catch (error) {
-        alert(error.message)
+        alert(error.message);
       }
-      this.canPost = true
+      this.canPost = true;
     },
     // tagの削除機能
     async tagDelete(index, item) {
-      item = JSON.parse(JSON.stringify(item))
+      item = JSON.parse(JSON.stringify(item));
       const tagData = await dbTags
         .where('text', '==', item.text)
         .where('time', '==', item.time)
         .where('uid', '==', item.uid)
-        .get()
+        .get();
 
       tagData.docs.map(async (Element) => {
-        await dbTags.doc(Element.id).delete()
-        return Element.id
-      })
+        await dbTags.doc(Element.id).delete();
+        return Element.id;
+      });
 
-      const tags = await TagModel.get()
-      this.items = tags
+      const tags = await TagModel.get();
+      this.items = tags;
     },
     close(item) {
-      this.times -= item.time
+      this.times -= item.time;
     },
     dialogTime() {
-      this.dialog = true
+      this.dialog = true;
     },
     // dialog内の決定ボタンで発火
     async tagTime() {
-      this.dialog = false
-      const uid = firebase.auth().currentUser.uid
+      this.dialog = false;
+      const uid = firebase.auth().currentUser.uid;
 
       Object.assign(
         this.select[this.select.length - 1],
         { time: parseInt(this.tagTimes) },
         { uid }
-      )
+      );
 
       Object.assign(this.dbMessagesTags, {
         tags: this.select[this.select.length - 1],
         uid,
-      })
+      });
       this.select[this.select.length - 1] = JSON.parse(
         JSON.stringify(this.select[this.select.length - 1])
-      )
+      );
 
-      this.dbMessagesTags.push(this.select[this.select.length - 1])
+      this.dbMessagesTags.push(this.select[this.select.length - 1]);
 
       this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
         return (
           array.findIndex((nextItem) => item.text === nextItem.text) === index
-        )
-      })
+        );
+      });
 
       this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
         JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
-      )
+      );
 
       // 合計値を格納
-      this.times += parseInt(this.tagTimes)
+      this.times += parseInt(this.tagTimes);
 
-      this.tagTimes = 0
+      this.tagTimes = 0;
     },
     async edit(index, item) {
       if (!this.editing) {
-        this.editing = item
-        this.index = index
+        this.editing = item;
+        this.index = index;
       } else {
-        this.editing = null
-        this.index = -1
+        this.editing = null;
+        this.index = -1;
       }
     },
     filter(item, queryText, itemText) {
-      if (item.header) return false
+      if (item.header) return false;
 
-      const hasValue = (val) => (val != null ? val : '')
+      const hasValue = (val) => (val != null ? val : '');
 
-      const text = hasValue(itemText)
-      const query = hasValue(queryText)
+      const text = hasValue(itemText);
+      const query = hasValue(queryText);
 
       return text
         .toString()
         .toLowerCase()
-        .includes(query.toString().toLowerCase())
+        .includes(query.toString().toLowerCase());
     },
   },
-}
+};
 </script>
 
 <style scoped>

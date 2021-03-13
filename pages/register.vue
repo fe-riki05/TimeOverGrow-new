@@ -114,9 +114,9 @@
 </template>
 
 <script>
-import zxcvbn from 'zxcvbn'
-import Header from '../layouts/Header'
-import SocialLogin from '../components/SocialLogin.vue'
+import zxcvbn from 'zxcvbn';
+import Header from '../layouts/Header';
+import SocialLogin from '../components/SocialLogin.vue';
 
 export default {
   components: {
@@ -136,9 +136,9 @@ export default {
           if (v) {
             return (
               /.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください'
-            )
+            );
           } else {
-            return true
+            return true;
           }
         },
       ],
@@ -154,47 +154,47 @@ export default {
             return (
               this.$refs.register_password.value === v ||
               'パスワードと一致しません'
-            )
+            );
           } else {
-            return true
+            return true;
           }
         },
       ],
       show_registerPassword: false,
-    }
+    };
   },
   computed: {
     progress() {
-      return this.score.value
+      return this.score.value;
     },
     score() {
-      const result = zxcvbn(this.register_password)
+      const result = zxcvbn(this.register_password);
       switch (result.score) {
         case 4:
           return {
             color: 'green',
             value: 100,
-          }
+          };
         case 3:
           return {
             color: 'light-green lighten-1',
             value: 75,
-          }
+          };
         case 2:
           return {
             color: 'amber accent-2',
             value: 50,
-          }
+          };
         case 1:
           return {
             color: 'deep-orange lighten-1',
             value: 25,
-          }
+          };
         default:
           return {
             color: 'red darken-3',
             value: 0,
-          }
+          };
       }
     },
   },
@@ -207,31 +207,31 @@ export default {
             password: this.register_password,
           })
           .then(() => {
-            this.register_email = ''
-            this.register_password = ''
+            this.register_email = '';
+            this.register_password = '';
             this.$router.push({
               name: 'index',
               params: {
                 dashboard_msg: true,
                 dashboard_msg_text: 'アカウントの登録が完了しました。',
               },
-            })
+            });
           })
           .catch((err) => {
-            console.log(err)
+            console.log(err);
             if (err.code === 'auth/email-already-in-use') {
               this.registerErrorMsg =
-                'このメールアドレスは既に登録されています。'
+                'このメールアドレスは既に登録されています。';
             } else if (err.code === 'auth/invalid-email') {
-              this.registerErrorMsg = '無効なメールアドレスです。'
+              this.registerErrorMsg = '無効なメールアドレスです。';
             } else {
-              this.registerErrorMsg = 'エラーにより登録できませんでした。'
+              this.registerErrorMsg = 'エラーにより登録できませんでした。';
             }
-          })
+          });
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>

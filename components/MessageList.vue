@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Message from './Message'
+import Message from './Message';
 
 export default {
   components: {
@@ -32,26 +32,26 @@ export default {
           // 	return false;
           // }
           if (typeof message.date !== 'string') {
-            return false
+            return false;
           }
           if (typeof message.bodys !== 'string') {
-            return false
+            return false;
           }
-          return true
-        })
+          return true;
+        });
       },
     },
   },
   methods: {
     clear() {
-      this.$emit('pop')
+      this.$emit('pop');
     },
     edit(docId) {
-      this.$emit('update', docId)
-      this.$emit('updatedDate', docId)
+      this.$emit('update', docId);
+      this.$emit('updatedDate', docId);
     },
   },
-}
+};
 </script>
 
 <style scoped>

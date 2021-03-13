@@ -44,12 +44,12 @@
 </template>
 
 <script>
-import { CalendarHeatmap } from 'vue-calendar-heatmap'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
-import Chart from '../components/Chart'
-import 'chartjs-plugin-colorschemes'
-import Header from '../layouts/Header'
-import firebase, { dbMessages, dbTags } from '../plugins/firebase'
+import { CalendarHeatmap } from 'vue-calendar-heatmap';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Chart from '../components/Chart';
+import 'chartjs-plugin-colorschemes';
+import Header from '../layouts/Header';
+import firebase, { dbMessages, dbTags } from '../plugins/firebase';
 // import MessageModel from '../models/Message';
 
 export default {
@@ -100,7 +100,7 @@ export default {
                 max: 1000,
                 stepSize: 100,
                 callback(label) {
-                  return label + ' h'
+                  return label + ' h';
                 },
               },
             },
@@ -109,7 +109,7 @@ export default {
         tooltips: {
           callbacks: {
             label(tooltipItem) {
-              return tooltipItem.yLabel + ' h'
+              return tooltipItem.yLabel + ' h';
             },
           },
         },
@@ -173,20 +173,20 @@ export default {
       // 空白だとエラー発生
       endData: '2021-01-1',
       timeCount: 5,
-    }
+    };
   },
   async created() {
-    await this.tagChart()
-    await this.hearmap()
+    await this.tagChart();
+    await this.hearmap();
   },
   methods: {
     async tagChart() {
-      const uid = firebase.auth().currentUser.uid
-      const TagCollection = await dbTags.where('uid', '==', uid).get()
+      const uid = firebase.auth().currentUser.uid;
+      const TagCollection = await dbTags.where('uid', '==', uid).get();
       TagCollection.docs.map((e) => {
-        this.TagBarChartData.labels.push(e.data().text)
-        this.TagBarChartData.datasets[0].data.push(e.data().time)
-      })
+        this.TagBarChartData.labels.push(e.data().text);
+        this.TagBarChartData.datasets[0].data.push(e.data().time);
+      });
       this.TagBarChartData = {
         labels: this.TagBarChartData.labels,
         datasets: [
@@ -195,37 +195,37 @@ export default {
             data: this.TagBarChartData.datasets[0].data,
           },
         ],
-      }
+      };
     },
     async hearmap() {
-      const uid = firebase.auth().currentUser.uid
-      const messageData = await dbMessages.where('uid', '==', uid).get()
+      const uid = firebase.auth().currentUser.uid;
+      const messageData = await dbMessages.where('uid', '==', uid).get();
       const messagesDate = messageData.docs.map((doc) => {
         // console.log(doc.data().times);
-        let timeData = doc.data().times
+        let timeData = doc.data().times;
         if (timeData <= 1) {
-          timeData = 1
+          timeData = 1;
         } else if (timeData <= 3) {
-          timeData = 2
+          timeData = 2;
         } else if (timeData <= 5) {
-          timeData = 3
+          timeData = 3;
         } else if (timeData < 8) {
-          timeData = 4
+          timeData = 4;
         } else if ((timeData) => 8) {
-          timeData = 5
+          timeData = 5;
         }
-        this.timeCount = timeData
-        return { date: doc.data().date.seconds * 1000, count: this.timeCount }
-      })
-      this.heartmapData = messagesDate
+        this.timeCount = timeData;
+        return { date: doc.data().date.seconds * 1000, count: this.timeCount };
+      });
+      this.heartmapData = messagesDate;
 
       // endData
-      const today = new Date()
-      const Year = new Date(today.setFullYear(today.getFullYear()))
-      this.endData = Year
+      const today = new Date();
+      const Year = new Date(today.setFullYear(today.getFullYear()));
+      this.endData = Year;
     },
   },
-}
+};
 </script>
 
 <style scoped>

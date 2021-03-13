@@ -36,7 +36,7 @@ export default {
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
-        config.devtool = 'inline-cheap-module-source-map'
+        config.devtool = 'inline-cheap-module-source-map';
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -45,7 +45,7 @@ export default {
           options: {
             fix: true,
           },
-        })
+        });
       }
     },
   },
@@ -54,4 +54,4 @@ export default {
   },
   ssr: false,
   target: 'server',
-}
+};

@@ -119,9 +119,9 @@
 </template>
 
 <script>
-import TagModel from '../models/Tag'
-import firebase, { dbTags } from '../plugins/firebase'
-import Button from '../components/Button'
+import TagModel from '../models/Tag';
+import firebase, { dbTags } from '../plugins/firebase';
+import Button from '../components/Button';
 
 export default {
   components: {
@@ -160,180 +160,180 @@ export default {
       menu: false,
       search: null,
       EditDialog: false,
-    }
+    };
   },
   computed: {
     updatedTime: {
       get() {
-        return this.updateTime
+        return this.updateTime;
       },
       set(value) {
-        this.$emit('update:updateTime', value)
+        this.$emit('update:updateTime', value);
       },
     },
     updatedSelect: {
       get() {
-        return this.updateSelect
+        return this.updateSelect;
       },
       set(value) {
-        this.$emit('update:updateSelect', value)
+        this.$emit('update:updateSelect', value);
       },
     },
     updatedBody: {
       get() {
-        return this.updateBody
+        return this.updateBody;
       },
       set(value) {
-        this.$emit('update:updateBody', value)
+        this.$emit('update:updateBody', value);
       },
     },
   },
   watch: {
     updatedSelect(val, prev) {
-      if (val.length === prev.length) return
+      if (val.length === prev.length) return;
       this.updatedSelect = Array.prototype.map.call(Object(val), (value) => {
         if (typeof value === 'string') {
           value = {
             // color: this.colors[this.nonce - 1],
             text: value,
-          }
-          this.items.push(value)
+          };
+          this.items.push(value);
           // this.nonce++;
         }
-        this.dialogTime()
-        return value
-      })
+        this.dialogTime();
+        return value;
+      });
     },
   },
   async created() {
     try {
-      const tags = await TagModel.get()
-      this.items = tags
+      const tags = await TagModel.get();
+      this.items = tags;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   },
   methods: {
     async update() {
       // Number(this.updateTime);
-      this.$emit('updatedDate')
-      this.canPost = false
+      this.$emit('updatedDate');
+      this.canPost = false;
       try {
-        const uid = firebase.auth().currentUser.uid
+        const uid = firebase.auth().currentUser.uid;
         this.updatedSelect.forEach(async (element) => {
-          const params = Object.assign(element, { uid })
+          const params = Object.assign(element, { uid });
           const TagSame = await dbTags
             .where('uid', '==', uid)
             .where('text', '==', params.text)
-            .get()
+            .get();
           if (TagSame.docs) {
-            let Tag = []
+            let Tag = [];
             TagSame.docs.forEach((e) => {
-              Tag = []
-              Tag.push(e.id)
-            })
+              Tag = [];
+              Tag.push(e.id);
+            });
 
-            let TagData = await (await dbTags.doc(Tag[0]).get()).data()
+            let TagData = await (await dbTags.doc(Tag[0]).get()).data();
             // let TagTime = TagData.data();
             if (TagData === undefined) {
-              TagData = []
+              TagData = [];
             }
             const dbMessagesTagTime = TagSame.docs.map((doc) => {
-              return doc.data()
-            })
+              return doc.data();
+            });
 
             if (dbMessagesTagTime.length !== 0) {
-              params.time += await dbMessagesTagTime[0].time
+              params.time += await dbMessagesTagTime[0].time;
             }
 
             await dbTags.doc(Tag[0]).set({
               text: params.text,
               time: params.time,
               uid: params.uid,
-            })
+            });
           }
-        })
+        });
       } catch (error) {
-        alert(error.message)
+        alert(error.message);
       }
-      this.canPost = true
+      this.canPost = true;
     },
     close(item) {
-      this.times -= item.time
+      this.times -= item.time;
     },
     dialogTime() {
-      this.EditDialog = true
+      this.EditDialog = true;
     },
     back() {
-      this.$emit('back')
+      this.$emit('back');
     },
     // dialog内の決定ボタンで発火
     async tagTime() {
-      this.EditDialog = false
-      const uid = firebase.auth().currentUser.uid
+      this.EditDialog = false;
+      const uid = firebase.auth().currentUser.uid;
 
       Object.assign(
         this.updatedSelect[this.updatedSelect.length - 1],
         { time: parseInt(this.tagTimes) },
         { uid }
-      )
+      );
 
       Object.assign(this.dbMessagesTags, {
         tags: this.updatedSelect[this.updatedSelect.length - 1],
         uid,
-      })
+      });
       this.updatedSelect[this.updatedSelect.length - 1] = JSON.parse(
         JSON.stringify(this.updatedSelect[this.updatedSelect.length - 1])
-      )
+      );
 
       this.dbMessagesTags.push(
         this.updatedSelect[this.updatedSelect.length - 1]
-      )
+      );
 
       this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
         return (
           array.findIndex((nextItem) => item.text === nextItem.text) === index
-        )
-      })
+        );
+      });
 
       this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
         JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
-      )
+      );
 
       // 合計値を格納
-      this.times += parseInt(this.tagTimes)
+      this.times += parseInt(this.tagTimes);
 
-      this.tagTimes = 0
+      this.tagTimes = 0;
     },
     async edit(index, item) {
       if (!this.editing) {
         // ここで編集前のデータ削除
-        const editBefore = await dbTags.where('text', '==', item.text).get()
+        const editBefore = await dbTags.where('text', '==', item.text).get();
         editBefore.docs.forEach((doc) => {
-          dbTags.doc(doc.id).delete()
-        })
-        this.editing = item
-        this.index = index
+          dbTags.doc(doc.id).delete();
+        });
+        this.editing = item;
+        this.index = index;
       } else {
-        this.editing = null
-        this.index = -1
+        this.editing = null;
+        this.index = -1;
       }
     },
     filter(item, queryText, itemText) {
-      if (item.header) return false
+      if (item.header) return false;
 
-      const hasValue = (val) => (val != null ? val : '')
+      const hasValue = (val) => (val != null ? val : '');
 
-      const text = hasValue(itemText)
-      const query = hasValue(queryText)
+      const text = hasValue(itemText);
+      const query = hasValue(queryText);
 
       return text
         .toString()
         .toLowerCase()
-        .includes(query.toString().toLowerCase())
+        .includes(query.toString().toLowerCase());
     },
   },
-}
+};
 </script>
 
 <style scoped>

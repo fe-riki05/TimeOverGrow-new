@@ -89,8 +89,8 @@
 </template>
 
 <script>
-import Header from '../layouts/Header'
-import SocialLogin from '../components/SocialLogin.vue'
+import Header from '../layouts/Header';
+import SocialLogin from '../components/SocialLogin.vue';
 
 export default {
   components: {
@@ -106,7 +106,7 @@ export default {
       show_loginpassword: false,
       loginErrorMsg: '',
       socialLoginErrorMsg: '',
-    }
+    };
   },
   methods: {
     email_login() {
@@ -116,24 +116,24 @@ export default {
           password: this.login_password,
         })
         .then(() => {
-          this.login_email = ''
-          this.login_password = ''
+          this.login_email = '';
+          this.login_password = '';
           this.$router.push({
             name: 'index',
-          })
+          });
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           if (err.code === 'auth/user-disabled') {
-            this.loginErrorMsg = 'このアカウントはロックされています。'
+            this.loginErrorMsg = 'このアカウントはロックされています。';
           } else {
             this.loginErrorMsg =
-              'メールアドレスまたはパスワードが間違っています。'
+              'メールアドレスまたはパスワードが間違っています。';
           }
-        })
+        });
     },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -30,21 +30,21 @@ export default {
   },
   computed: {
     clickable() {
-      return this.disabled === false
+      return this.disabled === false;
     },
   },
   methods: {
     async handleClick(event) {
       if (this.prevent && this.type === 'button') {
-        event.preventDefault()
+        event.preventDefault();
       }
       if (this.onClick === null) {
-        return
+        return;
       }
-      await this.onClick(event)
+      await this.onClick(event);
     },
   },
-}
+};
 </script>
 
 <style scoped>

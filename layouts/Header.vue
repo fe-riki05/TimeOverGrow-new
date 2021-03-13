@@ -80,7 +80,7 @@ export default {
     return {
       drawer: false,
       group: null,
-    }
+    };
   },
   methods: {
     signOut() {
@@ -89,14 +89,14 @@ export default {
         .then(() => {
           this.$router.push({
             name: 'login',
-          })
+          });
         })
         .catch((err) => {
-          alert(err.message)
-        })
+          alert(err.message);
+        });
     },
   },
-}
+};
 </script>
 
 <style>
