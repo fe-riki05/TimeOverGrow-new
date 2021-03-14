@@ -3,18 +3,13 @@
     <Header>
       <v-list-item text>
         <nuxt-link to="/" class="d-flex auth">
-          <v-list-item-icon>
-            <v-icon>mdi-reply-all</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title style="display: block"
-            >アプリへ戻る</v-list-item-title
-          >
+          <v-icon>mdi-account-check</v-icon>
+          <v-list-item-title class="pl-1">マイページへ戻る</v-list-item-title>
         </nuxt-link>
       </v-list-item>
     </Header>
     <v-container class="mt-5 pa-0 col">
       <v-row class="pa-0 col">
-        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
         <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
             <Chart
@@ -24,7 +19,6 @@
             />
           </v-card>
         </v-col>
-        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
         <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
             <CalendarHeatmap
@@ -37,7 +31,6 @@
             </CalendarHeatmap>
           </v-card>
         </v-col>
-        <!-- <v-spacer v-if="$vuetify.breakpoint.smAndUp" /> -->
       </v-row>
     </v-container>
   </v-app>
@@ -50,7 +43,6 @@ import Chart from '../components/Chart';
 import 'chartjs-plugin-colorschemes';
 import Header from '../layouts/Header';
 import firebase, { dbMessages, dbTags } from '../plugins/firebase';
-// import MessageModel from '../models/Message';
 
 export default {
   components: {
@@ -67,11 +59,7 @@ export default {
         datasets: [
           {
             label: ['学習時間'],
-            // ↓にtagのデータを格納
             data: [],
-            // ↓にtagの色を格納
-            // backgroundColor: [],
-            // borderColor: []
           },
         ],
       },
@@ -80,7 +68,7 @@ export default {
         maintainAspectRatio: false,
         plugins: {
           colorschemes: {
-            scheme: 'brewer.Paired12',
+            scheme: 'brewer.Blues3',
           },
         },
         scales: {
@@ -97,8 +85,6 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                max: 1000,
-                stepSize: 100,
                 callback(label) {
                   return label + ' h';
                 },
@@ -124,7 +110,7 @@ export default {
             data: [],
             // ↓にtagの色を格納
             // backgroundColor: [],
-            // borderColor: []
+            // borderColor: [],
           },
         ],
       },
@@ -177,16 +163,25 @@ export default {
   },
   async created() {
     await this.tagChart();
-    await this.hearmap();
+    await this.heartmap();
   },
   methods: {
+    // tag毎のグラフ
     async tagChart() {
       const uid = firebase.auth().currentUser.uid;
       const TagCollection = await dbTags.where('uid', '==', uid).get();
       TagCollection.docs.map((e) => {
         this.TagBarChartData.labels.push(e.data().text);
-        this.TagBarChartData.datasets[0].data.push(e.data().time);
+
+        // 分→時間へ
+        let minutesTime = Math.floor((e.data().time / 60) * 10) / 10;
+
+        console.log(e.data().time);
+        console.log(e.data().text);
+        this.TagBarChartData.datasets[0].data.push(minutesTime);
       });
+
+      console.log(this.TagBarChartData);
       this.TagBarChartData = {
         labels: this.TagBarChartData.labels,
         datasets: [
@@ -197,21 +192,25 @@ export default {
         ],
       };
     },
-    async hearmap() {
+    // heartmapのdata毎の配色分け
+    async heartmap() {
       const uid = firebase.auth().currentUser.uid;
       const messageData = await dbMessages.where('uid', '==', uid).get();
+
+      console.log(messageData);
       const messagesDate = messageData.docs.map((doc) => {
-        // console.log(doc.data().times);
+        console.log(doc.data().times);
+
         let timeData = doc.data().times;
-        if (timeData <= 1) {
+        if (0 < timeData <= 1) {
           timeData = 1;
-        } else if (timeData <= 3) {
+        } else if (2 <= timeData) {
           timeData = 2;
-        } else if (timeData <= 5) {
+        } else if (3 <= timeData) {
           timeData = 3;
-        } else if (timeData < 8) {
+        } else if (4 <= timeData) {
           timeData = 4;
-        } else if ((timeData) => 8) {
+        } else if (5 <= timeData) {
           timeData = 5;
         }
         this.timeCount = timeData;

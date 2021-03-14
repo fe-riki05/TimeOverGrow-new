@@ -5,6 +5,8 @@ class Message {
   constructor({ id, times, bodys, date, tags }) {
     this.id = id;
     this.times = times;
+    // this.hoursTimes = hoursTimes;
+    // this.minutesTimes = minutesTimes;
     this.bodys = bodys;
     this.date = date;
     this.tags = tags;
@@ -23,6 +25,8 @@ class Message {
 
     const postData = {
       times,
+      // hoursTimes,
+      // minutesTimes,
       bodys,
       date: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
@@ -73,6 +77,8 @@ class Message {
     return new Message({
       id,
       times: data.times,
+      // hoursTimes: data.hoursTimes,
+      // minutesTimes: data.minutesTimes,
       bodys: data.bodys,
       date: data.date.toDate().toLocaleString(),
       tags: data.tags,

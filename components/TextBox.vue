@@ -79,14 +79,25 @@
           学習時間を記入して下さい。
         </v-card-title>
         <input
-          v-model="tagTimes"
+          v-model="hoursTimes"
           class="textbox-input mt-4"
           type="number"
+          step="1"
           max="24"
           min="0"
           placeholder="3"
         />
         <span style="color: #70c2fd">時間</span>
+        <input
+          v-model="minutesTimes"
+          class="textbox-input mt-4"
+          type="number"
+          step="10"
+          max="60"
+          min="0"
+          placeholder="3"
+        />
+        <span style="color: #70c2fd">分</span>
         <v-card-actions class="pa-0">
           <v-spacer></v-spacer>
           <Button text :on-click="tagTime" class="ma-0">決定</Button>
@@ -136,6 +147,8 @@ export default {
       times: 0,
       bodys: '',
       tagTimes: 0,
+      hoursTimes: 0,
+      minutesTimes: 0,
       canPost: true,
       activator: null,
       attach: null,
@@ -178,7 +191,9 @@ export default {
       this.canPost = false;
       try {
         const message = await MessageModel.save({
-          times: parseInt(this.times),
+          times: this.times,
+          // hoursTimes: parseInt(this.hoursTimes),
+          // minutesTimes: parseInt(this.minutesTimes),
           bodys: this.bodys,
           tags: this.dbMessagesTags,
         });
@@ -224,7 +239,7 @@ export default {
         });
 
         this.onClick(message);
-        this.times = 0;
+        (this.hoursTimes = 0), (this.minutesTimes = 0), (this.times = 0);
         this.bodys = '';
         this.select = '';
         this.dbMessagesTags = [];
@@ -247,6 +262,10 @@ export default {
         return Element.id;
       });
 
+      await this.tagGet();
+    },
+    // tag一覧の同期
+    async tagGet() {
       const tags = await TagModel.get();
       this.items = tags;
     },
@@ -260,6 +279,10 @@ export default {
     async tagTime() {
       this.dialog = false;
       const uid = firebase.auth().currentUser.uid;
+
+      // 時間→分
+      this.tagTimes =
+        parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
 
       Object.assign(
         this.select[this.select.length - 1],
@@ -287,9 +310,17 @@ export default {
         JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
       );
 
-      // 合計値を格納
-      this.times += parseInt(this.tagTimes);
+      // ここで分→時間(小数点第一位切り捨て)
+      // if (this.hoursTimes !== 0) {
+      //   this.tagTimes = Math.floor(this.tagTimes / 60 * 10) / 10
+      // }
 
+      // 合計値を格納
+      console.log(this.tagTimes); // 1.6
+      this.times += this.tagTimes;
+
+      this.hoursTimes = 0;
+      this.minutesTimes = 0;
       this.tagTimes = 0;
     },
     async edit(index, item) {

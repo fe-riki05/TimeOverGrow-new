@@ -12,7 +12,8 @@
       <div class="totaltime d-flex justify-center">
         <p class="times_text">合計学習時間</p>
         <div class="arrow">
-          <p class="times">{{ times }}時間</p>
+          <!-- <p class="times">{{ times }}時間</p> -->
+          <p class="times">{{ hours }}時間 {{ minutes }}分</p>
           <span />
         </div>
       </div>
@@ -23,7 +24,15 @@
 <script>
 export default {
   props: {
-    times: {
+    // times: {
+    //   type: Number,
+    //   required: true,
+    // },
+    hours: {
+      type: Number,
+      required: true,
+    },
+    minutes: {
       type: Number,
       required: true,
     },
@@ -70,73 +79,4 @@ export default {
   padding-left: 5px;
   font-weight: bold;
 }
-/* .arrow span {
-  display: block;
-  width: 150px;
-  height: 2px;
-  background-color: rgb(0, 47, 255);
-  position: relative;
-  transform: scale(0, 1);
-  transform-origin: top left;
-  animation: arrow01 5s ease-in-out infinite forwards;
-}
-@keyframes arrow01 {
-  0% {
-    transform: scale(0, 1);
-  }
-  30% {
-    transform: scale(0, 1);
-  }
-  40% {
-    transform: scale(1, 1);
-  }
-  85% {
-    transform: scale(1, 1);
-    opacity: 1;
-  }
-  90% {
-    transform: scale(1, 1);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1, 1);
-    opacity: 0;
-  }
-}
-.arrow span::after {
-  content: '';
-  display: block;
-  width: 40px;
-  height: 15px;
-  border-right: 2px solid rgb(0, 47, 255);
-  transform: rotate(-45deg) scale(1, 0);
-  transform-origin: right bottom;
-  position: absolute;
-  bottom: 2px;
-  right: 1px;
-  animation: arrow02 5s ease-in-out infinite forwards;
-}
-@keyframes arrow02 {
-  0% {
-    transform: rotate(-45deg) scale(1, 0);
-  }
-  45% {
-    transform: rotate(-45deg) scale(1, 0);
-  }
-  55% {
-    transform: rotate(-45deg) scale(1, 1);
-  }
-  85% {
-    transform: rotate(-45deg) scale(1, 1);
-    opacity: 1;
-  }
-  90% {
-    transform: rotate(-45deg) scale(1, 1);
-    opacity: 0;
-  }
-  100% {
-    transform: rotate(-45deg) scale(1, 1);
-    opacity: 0;
-  }
-} */
 </style>
