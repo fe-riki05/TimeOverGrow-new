@@ -31,7 +31,7 @@
     "vue-calendar-heatmap": "^0.8.4",
     "vue-chartjs": "^3.5.1",
     "vue-eslint-parser": "^7.4.1",
-    "vuetify": "^2.4.3",
+    "vuetify": "^2.4.6",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

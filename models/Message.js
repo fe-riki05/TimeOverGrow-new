@@ -11,13 +11,17 @@ class Message {
   }
 
   static async save({ times, bodys, tags }) {
-    // if (!times) {
-    // 	throw new Error('入力欄が空欄です。');
-    // }
+    if (!times) {
+    	throw new Error();
+    }
 
-    // if (!bodys || !bodys.trim()) {
-    // 	throw new Error('入力欄が空欄です。');
-    // }
+    if (!bodys || !bodys.trim()) {
+    	throw new Error();
+    }
+
+    if (!bodys || !bodys.trim()) {
+    	throw new Error();
+    }
 
     const uid = firebase.auth().currentUser.uid;
 
@@ -40,10 +44,7 @@ class Message {
   static async clear() {
     const clearId = [];
     const uid = firebase.auth().currentUser.uid;
-    const collection = await dbMessages
-      .where('uid', '==', uid)
-      .orderBy('date')
-      .get();
+    const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get();
     try {
       collection.forEach((doc) => {
         clearId.unshift(doc.id);
@@ -56,10 +57,7 @@ class Message {
 
   static async fetchMessages() {
     const uid = firebase.auth().currentUser.uid;
-    const collection = await dbMessages
-      .where('uid', '==', uid)
-      .orderBy('date')
-      .get();
+    const collection = await dbMessages.where('uid', '==', uid).orderBy('date').get();
     if (collection.empty) {
       return [];
     }

@@ -1,8 +1,5 @@
 // // 保存時、ESlint を自動整形
 {
-  "[vue]": {
-    "editor.formatOnSave": false
-  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

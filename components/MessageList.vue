@@ -3,7 +3,8 @@
     <template v-for="(message, index) in messages">
       <Message
         :key="index"
-        :times="message.times"
+        :hours="Math.floor(message.times / 60)"
+        :minutes="message.times - Math.floor(message.times / 60) * 60"
         :bodys="message.bodys"
         :date="message.date"
         :tag="message.tags"

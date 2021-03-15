@@ -1,8 +1,16 @@
 <template>
   <!-- eslint-disable -->
-  <v-app class="ma-0" style="max-height: 400px">
-    <!-- <v-container fluid class="px-0"> -->
+  <v-app class="ma-0">
     <h2>今日のアウトプット内容</h2>
+    <v-card-subtitle>編集前データ</v-card-subtitle>
+    <v-chip v-for="(editBeforeDatas, index) in editBeforeData" :key="index" outlined label class="tag color ml-3 mb-3">
+      <v-icon left> mdi-check </v-icon>
+      <span>
+        {{ editBeforeDatas.text }} が {{ Math.floor(editBeforeDatas.time / 60) }} 時間
+        {{ editBeforeDatas.time - Math.floor(editBeforeDatas.time / 60) * 60 }}
+        分
+      </span>
+    </v-chip>
     <v-container fluid class="px-0 mt-3">
       <v-combobox
         v-model="updatedSelect"
@@ -29,14 +37,7 @@
           </v-list-item>
         </template>
         <template v-slot:selection="{ attrs, item, parent, selected }">
-          <v-chip
-            v-if="item === Object(item)"
-            v-bind="attrs"
-            color="tagcolor"
-            :input-value="selected"
-            label
-            small
-          >
+          <v-chip v-if="item === Object(item)" v-bind="attrs" color="tagcolor" :input-value="selected" label small>
             <span class="pr-2">
               {{ item.text }}
             </span>
@@ -59,35 +60,44 @@
           </v-chip>
           <v-spacer></v-spacer>
           <v-list-item-action @click.stop>
-            <v-btn icon @click.stop.prevent="edit(index, item)">
-              <v-icon>{{
-                editing !== item ? 'mdi-pencil' : 'mdi-check'
-              }}</v-icon>
-            </v-btn>
+            <div class="d-flex">
+              <v-btn icon @click.stop.prevent="edit(index, item)" class="field">
+                <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
+              </v-btn>
+              <v-btn icon @click="tagDelete(index, item)" class="field ml-2">
+                <v-icon> mdi-trash-can-outline </v-icon>
+              </v-btn>
+            </div>
           </v-list-item-action>
         </template>
       </v-combobox>
     </v-container>
-    <!-- </v-container> -->
     <v-dialog v-model="EditDialog" width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-2">
-          学習時間を記入して下さい。
-        </v-card-title>
+      <v-card class="pa-5">
+        <v-card-title class="headline px-2 text-center"> 学習時間を記入して下さい。 </v-card-title>
         <input
-          v-model="tagTimes"
+          v-model="hoursTimes"
           class="textbox-input mt-4"
           type="number"
+          step="1"
           max="24"
           min="0"
-          placeholder="3"
+          placeholder="0"
         />
-        時間
-        <!-- <v-card-text> </v-card-text>
-        <v-divider></v-divider> -->
-        <v-card-actions>
-          <!-- <v-spacer></v-spacer> -->
-          <Button color="primary" text :on-click="tagTime">決定</Button>
+        <span style="color: #70c2fd">時間</span>
+        <input
+          v-model="minutesTimes"
+          class="textbox-input mt-4"
+          type="number"
+          step="10"
+          max="60"
+          min="0"
+          placeholder="0"
+        />
+        <span style="color: #70c2fd">分</span>
+        <v-card-actions class="pa-0">
+          <v-spacer></v-spacer>
+          <Button class="ma-0" text :on-click="tagTime">決定</Button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -102,17 +112,14 @@
       row-height="100"
     />
     <div class="d-flex button ma-0 pa-0">
-      <!-- <v-card-actions>
-        <v-btn color="green darken-1" text @click="back"> 戻る </v-btn>
-      </v-card-actions> -->
       <Button :on-click="back">
         <v-icon> mdi-arrow-left-bold-box </v-icon>
-        <v-icon color="green darken-1"> 戻る </v-icon>
+        <v-icon color="#6cb4e4" class="pl-1 body-1"> 戻る </v-icon>
       </Button>
       <v-spacer></v-spacer>
       <Button :on-click="update">
         <v-icon color="#70c2fd"> mdi-send </v-icon>
-        <v-icon color="green darken-1"> 更新する </v-icon>
+        <v-icon color="#6cb4e4" class="pl-1 body-1"> 更新する </v-icon>
       </Button>
     </div>
   </v-app>
@@ -128,12 +135,12 @@ export default {
     Button,
   },
   props: {
-    // onClick: {
-    // 	type: Function,
-    // 	required: true
-    // },
     updateTime: {
       type: Number,
+      required: true,
+    },
+    editBeforeData: {
+      type: Array,
       required: true,
     },
     updateSelect: {
@@ -150,12 +157,13 @@ export default {
       times: 0,
       bodys: '',
       tagTimes: 0,
+      hoursTimes: 0,
+      minutesTimes: 0,
       canPost: true,
       activator: null,
       editing: null,
       index: -1,
       items: [{ header: 'タグを選択するか作成して下さい。' }],
-      // updatedSelect: [],
       dbMessagesTags: [],
       menu: false,
       search: null,
@@ -194,11 +202,9 @@ export default {
       this.updatedSelect = Array.prototype.map.call(Object(val), (value) => {
         if (typeof value === 'string') {
           value = {
-            // color: this.colors[this.nonce - 1],
             text: value,
           };
           this.items.push(value);
-          // this.nonce++;
         }
         this.dialogTime();
         return value;
@@ -215,17 +221,13 @@ export default {
   },
   methods: {
     async update() {
-      // Number(this.updateTime);
       this.$emit('updatedDate');
       this.canPost = false;
       try {
         const uid = firebase.auth().currentUser.uid;
         this.updatedSelect.forEach(async (element) => {
           const params = Object.assign(element, { uid });
-          const TagSame = await dbTags
-            .where('uid', '==', uid)
-            .where('text', '==', params.text)
-            .get();
+          const TagSame = await dbTags.where('uid', '==', uid).where('text', '==', params.text).get();
           if (TagSame.docs) {
             let Tag = [];
             TagSame.docs.forEach((e) => {
@@ -234,7 +236,6 @@ export default {
             });
 
             let TagData = await (await dbTags.doc(Tag[0]).get()).data();
-            // let TagTime = TagData.data();
             if (TagData === undefined) {
               TagData = [];
             }
@@ -242,9 +243,13 @@ export default {
               return doc.data();
             });
 
-            if (dbMessagesTagTime.length !== 0) {
-              params.time += await dbMessagesTagTime[0].time;
-            }
+            // console.log(dbMessagesTagTime);
+
+            // if (dbMessagesTagTime.length !== 0) {
+            //   params.time += await dbMessagesTagTime[0].time;
+            // }
+
+            // console.log(params); // 既に足されている・・・
 
             await dbTags.doc(Tag[0]).set({
               text: params.text,
@@ -257,6 +262,27 @@ export default {
         alert(error.message);
       }
       this.canPost = true;
+    },
+    // tagの削除機能
+    async tagDelete(index, item) {
+      item = JSON.parse(JSON.stringify(item));
+      const tagData = await dbTags
+        .where('text', '==', item.text)
+        .where('time', '==', item.time)
+        .where('uid', '==', item.uid)
+        .get();
+
+      tagData.docs.map(async (Element) => {
+        await dbTags.doc(Element.id).delete();
+        return Element.id;
+      });
+
+      await this.tagGet();
+    },
+    // tag一覧の同期
+    async tagGet() {
+      const tags = await TagModel.get();
+      this.items = tags;
     },
     close(item) {
       this.times -= item.time;
@@ -272,11 +298,14 @@ export default {
       this.EditDialog = false;
       const uid = firebase.auth().currentUser.uid;
 
-      Object.assign(
-        this.updatedSelect[this.updatedSelect.length - 1],
-        { time: parseInt(this.tagTimes) },
-        { uid }
-      );
+      // 時間→分
+      this.tagTimes = parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
+
+      console.log(this.tagTimes);
+      console.log(this.hoursTimes);
+      console.log(this.minutesTimes);
+
+      Object.assign(this.updatedSelect[this.updatedSelect.length - 1], { time: parseInt(this.tagTimes) }, { uid });
 
       Object.assign(this.dbMessagesTags, {
         tags: this.updatedSelect[this.updatedSelect.length - 1],
@@ -286,32 +315,32 @@ export default {
         JSON.stringify(this.updatedSelect[this.updatedSelect.length - 1])
       );
 
-      this.dbMessagesTags.push(
-        this.updatedSelect[this.updatedSelect.length - 1]
-      );
+      this.dbMessagesTags.push(this.updatedSelect[this.updatedSelect.length - 1]);
 
       this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
-        return (
-          array.findIndex((nextItem) => item.text === nextItem.text) === index
-        );
+        return array.findIndex((nextItem) => item.text === nextItem.text) === index;
       });
 
       this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
         JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
       );
 
-      // 合計値を格納
-      this.times += parseInt(this.tagTimes);
+      // ここで分→時間(小数点第一位切り捨て)
+      // if (this.updatedHours !== 0) {
+      //   this.tagTimes = Math.floor(this.tagTimes / 60 * 10) / 10
+      // }
 
+      console.log(this.tagTimes);
+
+      // 合計値を格納
+      this.times += this.tagTimes;
+
+      this.hoursTimes = 0;
+      this.minutesTimes = 0;
       this.tagTimes = 0;
     },
     async edit(index, item) {
       if (!this.editing) {
-        // ここで編集前のデータ削除
-        const editBefore = await dbTags.where('text', '==', item.text).get();
-        editBefore.docs.forEach((doc) => {
-          dbTags.doc(doc.id).delete();
-        });
         this.editing = item;
         this.index = index;
       } else {
@@ -327,44 +356,34 @@ export default {
       const text = hasValue(itemText);
       const query = hasValue(queryText);
 
-      return text
-        .toString()
-        .toLowerCase()
-        .includes(query.toString().toLowerCase());
+      return text.toString().toLowerCase().includes(query.toString().toLowerCase());
     },
   },
 };
 </script>
 
 <style scoped>
+>>> .v-application--wrap {
+  min-height: 0;
+}
 .textbox-input {
   margin: 0;
   padding: 3px 10px;
   border: 1px solid rgb(161, 161, 161);
   -webkit-appearance: none;
 }
-.input {
-  flex: 0;
+.color {
+  border: solid 1px #7db4e6;
+  color: #70c2fd;
 }
-/* Chrome, Safari, Edge */
-.textbox-input::-webkit-outer-spin-button,
-.textbox-input::-webkit-inner-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-h2 {
+h2,
+.headline {
   color: #6cb4e4;
   text-align: center;
   padding: 0.25em;
   border-top: solid 2px #6cb4e4;
   border-bottom: solid 2px #6cb4e4;
-  background: -webkit-repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
+  background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
 }
 .textbox-area {
   resize: none;
@@ -376,17 +395,7 @@ h2 {
 }
 .tagcolor,
 .theme--light.v-chip:not(.v-chip--active) {
-  background: #a8ff78; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #78ffd6,
-    #a8ff78
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #78ffd6,
-    #a8ff78
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #a8d5ff;
 }
 .textbox-area {
   resize: none;
@@ -397,9 +406,12 @@ h2 {
   max-height: 140px;
 }
 .button {
-  /* margin-right: 50px; */
   text-align: right;
   padding: 10px;
   color: #70c2fd;
+}
+.field,
+.textbox-input {
+  border: solid 1px #7db4e6;
 }
 </style>

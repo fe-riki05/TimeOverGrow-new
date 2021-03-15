@@ -1,422 +1,327 @@
 <template>
-	<v-app>
-		<v-container class="pa-0 col">
-			<v-row class="pa-0 col">
-				<v-spacer v-if="$vuetify.breakpoint.smAndUp" />
-				<v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
-					<TotalTime :times="times" />
-					<v-card :elevation="10" class="mt-5 py-5">
-						<Chart :chart-data="BarChartData" :options="BarChartOptions" class="pa-3" />
-					</v-card>
-				</v-col>
-				<v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
-					<v-card :elevation="10" class="pa-5">
-						<TextBox :on-click="add" />
-						<h2 v-if="messages.length === 0" class="mt-3 pa-5">投稿が0件です！！！</h2>
-					</v-card>
-					<MessageList :messages="reversedMessages" @pop="clear" @update="updated" @updatedDate="updatedDateId" />
-					<v-dialog v-model="dialog" persistent max-width="600">
-						<v-card>
-							<DialogEdit
-								:update-time.sync="updateTime"
-								:update-select.sync="updateSelect"
-								:update-body.sync="updateBody"
-								class="container"
-								@updatedDate="updatedDate"
-								@back="back"
-							>
-							</DialogEdit>
-						</v-card>
-					</v-dialog>
-					<!-- ここまで -->
-				</v-col>
-				<v-spacer v-if="$vuetify.breakpoint.smAndUp" />
-			</v-row>
-		</v-container>
-	</v-app>
+  <v-app>
+    <v-container class="pa-0 col">
+      <v-row class="pa-0 col">
+        <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
+        <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
+          <TotalTime :hours="Math.floor(times / 60)" :minutes="times - Math.floor(times / 60) * 60" />
+
+          <v-card :elevation="10" class="mt-5 py-5">
+            <Chart :chart-data="BarChartData" :options="BarChartOptions" class="pa-3" />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
+          <v-card :elevation="10" class="pa-5">
+            <TextBox :on-click="add" />
+            <h2 v-if="messages.length === 0" class="mt-3 pa-5">投稿が0件です！！！</h2>
+          </v-card>
+          <MessageList :messages="reversedMessages" @pop="getData" @update="updated" @updatedDate="updatedDateId" />
+          <v-dialog v-model="dialog" persistent max-width="600">
+            <v-card>
+              <DialogEdit
+                :update-time.sync="updateTime"
+                :edit-before-data.sync="editBeforeData"
+                :update-select.sync="updateSelect"
+                :update-body.sync="updateBody"
+                class="container"
+                @updatedDate="updatedDate"
+                @back="back"
+              >
+              </DialogEdit>
+            </v-card>
+          </v-dialog>
+          <!-- ここまで -->
+        </v-col>
+        <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
-	import MessageModel from '../models/Message';
-	import firebase, { dbMessages, dbTags } from '../plugins/firebase';
-	import TotalTime from './TotalTime';
-	import TextBox from './TextBox';
-	import MessageList from './MessageList';
-	import DialogEdit from './DialogEdit';
-	import Chart from './Chart';
-	import ChartDataLabels from 'chartjs-plugin-datalabels';
+import MessageModel from '../models/Message';
+import firebase, { dbMessages, dbTags } from '../plugins/firebase';
+import TotalTime from './TotalTime';
+import TextBox from './TextBox';
+import MessageList from './MessageList';
+import DialogEdit from './DialogEdit';
+import Chart from './Chart';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-	export default {
-		components: {
-			TotalTime,
-			Chart,
-			TextBox,
-			MessageList,
-			DialogEdit
-		},
-		data() {
-			return {
-				indexId: '',
-				updateTime: 0,
-				updateSelect: [],
-				updateBody: '',
-				editTagData: [],
-				dialog: false,
-				num: 0,
-				name: '',
-				index: '',
-				vuechartData: [],
-				done: false,
-				messages: [],
-				times: 0,
-				BarChartData: {
-					labels: ['学習時間'],
-					datasets: [
-						{
-							label: ['学習時間'],
-							data: [],
-							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)']
-						}
-					]
-				},
-				BarChartOptions: {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						xAxes: [
-							{
-								stacked: true,
-								scaleLabel: {
-									display: true,
-									labelString: ''
-								}
-							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									beginAtZero: true,
-									max: 1000,
-									stepSize: 100,
-									callback(label) {
-										return label + ' h';
-									}
-								}
-							}
-						]
-					},
-					tooltips: {
-						callbacks: {
-							label(tooltipItem) {
-								return tooltipItem.yLabel + ' h';
-							}
-						}
-					}
-				}
-			};
-		},
-    watch: {
-      
+export default {
+  components: {
+    TotalTime,
+    Chart,
+    TextBox,
+    MessageList,
+    DialogEdit,
+  },
+  data() {
+    return {
+      indexId: '',
+      updateTime: 0,
+      editBeforeData: [],
+      // updateHours: 0,
+      // updateMinutes: 0,
+      updateSelect: [],
+      updateBody: '',
+      editTagData: [],
+      dialog: false,
+      num: 0,
+      name: '',
+      index: '',
+      vuechartData: [],
+      done: false,
+      messages: [],
+      times: 0,
+      BarChartData: {
+        labels: ['学習時間'],
+        datasets: [
+          {
+            label: ['学習時間'],
+            data: [],
+            backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+            borderColor: ['rgba(54, 162, 235, 1)'],
+          },
+        ],
+      },
+      BarChartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: '',
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                // max: [],
+                // stepSize: [],
+                callback(label) {
+                  return label + ' h';
+                },
+              },
+            },
+          ],
+        },
+        tooltips: {
+          callbacks: {
+            label(tooltipItem) {
+              return tooltipItem.yLabel + ' h';
+            },
+          },
+        },
+      },
+    };
+  },
+  watch: {
+    chartmax(newVal, oldVal) {
+      console.log('chartmaxのwatchできてます！！！');
+      console.log(oldVal);
+      console.log(newVal);
+      this.BarChartOptions.scales.yAxes[0].ticks.max = newVal;
     },
-		computed: {
-			reversedMessages() {
-				return this.messages.slice().reverse();
-			}
-		},
-		async created() {
-			const messages = await this.fetchMessages();
-			const times = await this.totalTime();
-			const vuechartData = await this.getChart();
-			this.messages = messages;
-			this.times = times;
-			// if (this.BarChartData.datasets[0].data.length === 0) {
-			//   this.BarChartData.datasets[0].data.push(vuechartData[0])
-			// }
-			// this.BarChartData.datasets[0].data[0] = vuechartData[0]
+  },
+  computed: {
+    reversedMessages() {
+      return this.messages.slice().reverse();
+    },
+    chartmax() {
+      return this.BarChartOptions.scales.yAxes[0].ticks.max;
+    },
+  },
+  async created() {
+    const messages = await this.fetchMessages();
+    const times = await this.totalTime();
+    const vuechartData = await this.getChart();
+    this.messages = messages;
+    this.times = times;
+    vuechartData[0] = Math.floor((vuechartData[0] / 60) * 10) / 10;
 
-			this.BarChartData = {
-				labels: ['学習時間'],
-				datasets: [
-					{
-						label: ['学習時間'],
-						data: [vuechartData[0]],
-						backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-						borderColor: ['rgba(54, 162, 235, 1)']
-					}
-				]
-			};
+    this.BarChartData = {
+      labels: ['学習時間'],
+      datasets: [
+        {
+          label: ['学習時間'],
+          data: [vuechartData[0]],
+          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+          borderColor: ['rgba(54, 162, 235, 1)'],
+        },
+      ],
+    };
+  },
+  methods: {
+    async add(message) {
+      this.messages.push(message);
+      await this.getData();
+    },
+    async getData() {
+      this.messages = await this.fetchMessages();
+      this.times = await this.totalTime();
+      const vuechartData = await this.getChart();
+      vuechartData[0] = Math.floor((vuechartData[0] / 60) * 10) / 10;
+      this.BarChartData = {
+        datasets: [
+          {
+            label: ['学習時間'],
+            data: [vuechartData[0]],
+            backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+            borderColor: ['rgba(54, 162, 235, 1)'],
+          },
+        ],
+      };
+    },
+    back() {
+      this.dialog = false;
+      this.editTagData = [];
+    },
+    // ここで選択した投稿IDを取得し、bodyを入力。
+    async updated(docId) {
+      this.dialog = true;
+      const editId = await dbMessages.doc(docId).get();
+      const editData = editId.data();
+      this.editTagData = editData.tags;
+      // dialogにtag表示の記述
+      let newTagData = [];
+      editData.tags.map((tagData) => {
+        newTagData.push(tagData.text);
+        return newTagData;
+      });
 
-			const vuechartOptions = await this.getChartOptions();
-			console.log(vuechartOptions); // [800, 80]
+      // クリックしたtagのdata取得。
+      // console.log(editData.tags);
+      // console.log();
 
-			this.BarChartOptions = {
-				responsive: true,
-				maintainAspectRatio: false,
-				scales: {
-					xAxes: [
-						{
-							stacked: true,
-							scaleLabel: {
-								display: true,
-								labelString: ''
-							}
-						}
-					],
-					yAxes: [
-						{
-							ticks: {
-								beginAtZero: true,
-								suggestedMax: vuechartOptions[0],
-								stepSize: vuechartOptions[1],
-								callback(label) {
-									return label + ' h';
-								}
-							}
-						}
-					]
-				},
-				tooltips: {
-					callbacks: {
-						label(tooltipItem) {
-							return tooltipItem.yLabel + ' h';
-						}
-					}
-				}
-			};
+      // this.updateTime = parseInt(editData.times);
+      this.updateTime = parseInt(editData.times);
+      this.editBeforeData = editData.tags;
 
-			console.log(this.BarChartOptions.scales.yAxes[0].ticks.suggestedMax); // 800
-			console.log(this.BarChartOptions.scales.yAxes[0].ticks.stepSize); // 80
+      // this.updateHours = editData.tags;
+      // this.updateMinutes = editData.tags;
+      this.updateBody = editData.bodys;
+      // this.updateSelect = newTagData;
+    },
+    async updatedDateId(docId) {
+      const editId = await dbMessages.doc(docId).get();
+      this.indexId = editId.id;
+    },
+    // 編集dialogで決定した際の挙動
+    async updatedDate() {
+      this.dialog = false;
 
-			// const uid = firebase.auth().currentUser.uid
-			// console.log(uid);
+      // 入力したtagの合計time値をthis.updateTimeへ入力(複数dataの時も考える)
+      let tagTime = 0;
+      const tagText = [];
 
-			// const mAuth = FirebaseAuth.getInstance();
-			// FirebaseUser user = mAuth.getCurrentUser();
-			// console.log(au);
-		},
-		methods: {
-			async add(message) {
-				this.messages.push(message);
-				this.times += message.times;
-				const chartdbtime = message.times;
-				if (this.BarChartData.datasets[0].data.length === 0) {
-					this.BarChartData.datasets[0].data.push(chartdbtime);
-				}
-				this.BarChartData.datasets[0].data[0] += chartdbtime;
-				// もう1度作り直さないといけない。
-				this.BarChartData = {
-					datasets: [
-						{
-							label: ['学習時間'],
-							data: [(this.vuechartData[0] += chartdbtime)],
-							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)']
-						}
-					]
-				};
+      // console.log(this.updateSelect);
 
-				const vuechartOptions = await this.getChartOptions();
-				this.BarChartOptions = {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						xAxes: [
-							{
-								stacked: true,
-								scaleLabel: {
-									display: true,
-									labelString: ''
-								}
-							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									beginAtZero: true,
-									suggestedMax: await this.getChartOptions()[0],
-									stepSize: await this.getChartOptions()[1],
-									callback(label) {
-										return label + ' h';
-									}
-								}
-							}
-						]
-					},
-					tooltips: {
-						callbacks: {
-							label(tooltipItem) {
-								return tooltipItem.yLabel + ' h';
-							}
-						}
-					}
-				};
-			},
-			async clear() {
-				this.messages = await this.fetchMessages();
-				this.times = await this.totalTime();
-				this.vuechartData[0] = await MessageModel.dbtime();
-				await this.getChartOptions();
-				this.BarChartData = {
-					datasets: [
-						{
-							label: ['学習時間'],
-							data: [this.vuechartData[0]],
-							backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-							borderColor: ['rgba(54, 162, 235, 1)']
-						}
-					]
-				};
-			},
-			back() {
-				this.dialog = false;
-				this.editTagData = [];
-			},
-			// ここで選択した投稿IDを取得し、bodyを入力。
-			async updated(docId) {
-				this.dialog = true;
-				const editId = await dbMessages.doc(docId).get();
-				const editData = editId.data();
-				this.editTagData = editData.tags;
-				// dialogにtag表示の記述
-				// let newTagData = [];
-				// editData.tags.map(tagData => {
-				// 	newTagData.push(tagData.text);
-				// 	return newTagData;
-				// });
+      this.updateSelect.map((Element) => {
+        tagText.push(Element.text);
+        tagTime += Element.time;
+      });
+      console.log(this.updateSelect); // 編集後のデータ
+      this.updateTime = tagTime;
 
-				// クリックしたtagのdata取得。
-				// console.log(editData.tags);
+      // クリックしたtagのtime値をdbTagsからマイナス(複数dataの時も考える)
+      this.editTagData.map(async (Element) => {
+        Element = JSON.parse(JSON.stringify(Element));
 
-				// console.log(newTagData);
-				// console.log();
+        const uid = firebase.auth().currentUser.uid;
+        const sameTagText = await dbTags.where('uid', '==', uid).where('text', '==', Element.text).get();
+        sameTagText.docs.map(async (doc) => {
+          // クリックした箇所の元々のdataとid
+          let sameTagTime = doc.data().time;
+          sameTagTime -= Element.time;
 
-				this.updateTime = parseInt(editData.times);
-				this.updateBody = editData.bodys;
-				// this.updateSelect = newTagData;
-			},
-			async updatedDateId(docId) {
-				const editId = await dbMessages.doc(docId).get();
-				this.indexId = editId.id;
+          if (sameTagTime <= 0) {
+            await dbTags.doc(doc.id).delete();
+          } else {
+            await dbTags.doc(doc.id).update({
+              time: sameTagTime,
+            });
+          }
+          return doc.id, doc.data();
+        });
+      });
 
-				// editId.idは、選択したdocId
-				// 一度indexIdへ渡すことで取り出せる様にしてる。
-			},
-			// 編集dialogで決定した際の挙動
-			async updatedDate() {
-				this.dialog = false;
+      console.log(this.updateTime);
 
-				// 入力したtagの合計time値をthis.updateTimeへ入力(複数dataの時も考える)
-				let tagTime = 0;
-				const tagText = [];
-
-				this.updateSelect.map(Element => {
-					tagText.push(Element.text);
-					tagTime += Element.time;
-				});
-				this.updateTime = tagTime;
-
-				// クリックしたtagのtime値をdbTagsからマイナス(複数dataの時も考える)
-				this.editTagData.map(async Element => {
-					Element = JSON.parse(JSON.stringify(Element));
-
-					const uid = firebase.auth().currentUser.uid;
-					const sameTagText = await dbTags.where('uid', '==', uid).where('text', '==', Element.text).get();
-					sameTagText.docs.map(async doc => {
-						// クリックした箇所の元々のdataとid
-						let sameTagTime = doc.data().time;
-						sameTagTime -= Element.time;
-
-						if (sameTagTime <= 0) {
-							await dbTags.doc(doc.id).delete();
-						} else {
-							await dbTags.doc(doc.id).update({
-								time: sameTagTime
-							});
-						}
-						return doc.id, doc.data();
-					});
-				});
-
-				await dbMessages.doc(this.indexId).update({
-					times: this.updateTime,
-					tags: this.updateSelect,
-					bodys: this.updateBody
-				});
-				(this.updateTime = 0),
-					(this.updateSelect = []),
-					(this.editTagData = []),
-					(this.updateBody = ''),
-					// フロントでdbを反映
-					this.clear();
-			},
-			async fetchMessages() {
-				try {
-					let messages = [];
-					messages = await MessageModel.fetchMessages();
-					return messages;
-				} catch (error) {
-					alert(error.message);
-				}
-			},
-			async totalTime() {
-				try {
-					let times = 0;
-					const time = await MessageModel.dbtime();
-					times += time;
-					return times;
-				} catch (error) {
-					alert(error.message);
-				}
-			},
-			async getChart() {
-				try {
-					const chartdbtime = await MessageModel.dbtime();
-					if (this.BarChartData.datasets[0].data.length === 0) {
-						this.BarChartData.datasets[0].data.push(chartdbtime);
-					}
-					this.vuechartData[0] = chartdbtime;
-					this.BarChartData.datasets[0].data[0] = chartdbtime;
-					return this.vuechartData;
-				} catch (error) {
-					alert(error.message);
-				}
-			},
-			async getChartOptions() {
-				const totalTime = await this.getChart();
-				console.log(totalTime[0]); // 30
-				let optionTime = [1000, 100];
-				if (100 < totalTime[0]) {
-					optionTime = [800, 80];
-				}
-				return optionTime;
-			}
-		}
-	};
+      await dbMessages.doc(this.indexId).update({
+        times: this.updateTime,
+        tags: this.updateSelect,
+        bodys: this.updateBody,
+      });
+      (this.updateTime = 0),
+        (this.updateSelect = []),
+        (this.editTagData = []),
+        (this.updateBody = ''),
+        // 同期処理
+        this.getData();
+    },
+    async fetchMessages() {
+      try {
+        let messages = [];
+        messages = await MessageModel.fetchMessages();
+        return messages;
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    async totalTime() {
+      try {
+        let times = 0;
+        const time = await MessageModel.dbtime();
+        times += time;
+        return times;
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    async getChart() {
+      try {
+        const chartdbtime = await MessageModel.dbtime();
+        if (this.BarChartData.datasets[0].data.length === 0) {
+          this.BarChartData.datasets[0].data.push(chartdbtime);
+        }
+        this.vuechartData[0] = chartdbtime;
+        this.BarChartData.datasets[0].data[0] = chartdbtime;
+        return this.vuechartData;
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-	h2 {
-		position: relative;
-		padding: 0.6em;
-		background: #e0edff;
-	}
-
-	h2:after {
-		position: absolute;
-		content: '';
-		top: 100%;
-		left: 30px;
-		border: 15px solid transparent;
-		border-top: 15px solid #e0edff;
-		width: 0;
-		height: 0;
-	}
-	.col {
-		padding: 0;
-		margin: 0 auto;
-	}
-	.v-application .mx-2 {
-		margin: 0 auto;
-	}
+h2 {
+  position: relative;
+  padding: 0.6em;
+  background: #e0edff;
+}
+h2:after {
+  position: absolute;
+  content: '';
+  top: 100%;
+  left: 30px;
+  border: 15px solid transparent;
+  border-top: 15px solid #e0edff;
+  width: 0;
+  height: 0;
+}
+.col {
+  padding: 0;
+  margin: 0 auto;
+}
+.v-application .mx-2 {
+  margin: 0 auto;
+}
 </style>

@@ -1,12 +1,10 @@
 <template>
   <v-app>
-    <Header :title="false" :logout="false">
+    <Header :logout="false">
       <v-list-item>
         <nuxt-link to="/login" class="d-flex auth" @click="signIn">
-          <v-list-item-icon>
-            <v-icon>mdi-account-check</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>ログイン</v-list-item-title>
+          <v-icon>mdi-account-check</v-icon>
+          <v-list-item-title class="pl-1">ログイン</v-list-item-title>
         </nuxt-link>
       </v-list-item>
     </Header>

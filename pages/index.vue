@@ -3,10 +3,8 @@
     <Header>
       <v-list-item text nuxt>
         <nuxt-link to="/mypage" class="d-flex auth">
-          <v-list-item-icon>
-            <v-icon>mdi-account-check</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>マイページ</v-list-item-title>
+          <v-icon>mdi-account-box-multiple</v-icon>
+          <v-list-item-title>これまでの記録</v-list-item-title>
         </nuxt-link>
       </v-list-item>
     </Header>
