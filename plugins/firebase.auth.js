@@ -3,15 +3,17 @@ import { auth } from '~/plugins/firebase.js';
 export default (context) => {
   const { store } = context;
 
-  return new Promise((resolve) => {
+  return new Promise((resolve,reject) => {
     auth().onAuthStateChanged((user) => {
       store.commit('setUser', user);
+      let userObject = {}
 
       console.log(user);
-      // if (user.isAnonymous) {
-      //   console.log('匿名ログインON!!!');
-      // }
-      resolve();
+      userObject.uid = user.uid
+      userObject.isAnonymous = user.isAnonymous
+
+      console.log(userObject);
+      resolve(userObject);
     });
   });
 };

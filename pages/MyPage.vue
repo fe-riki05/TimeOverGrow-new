@@ -142,7 +142,7 @@ export default {
       const uid = firebase.auth().currentUser.uid;
       const messageData = await dbMessages.where('uid', '==', uid).get();
 
-      console.log(messageData);
+      // console.log(messageData);
       const messagesDate = messageData.docs.map((doc) => {
         console.log(doc.data()); // 学習合計時間
 
@@ -176,7 +176,7 @@ export default {
       });
       this.heartmapData = messagesDate;
 
-      console.log(messagesDate);
+      // console.log(messagesDate);
 
       // endData
       const today = new Date();
