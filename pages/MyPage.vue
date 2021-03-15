@@ -12,22 +12,12 @@
       <v-row class="pa-0 col">
         <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
-            <Chart
-              :chart-data="TagBarChartData"
-              :options="TagBarChartOptions"
-              class="pa-4"
-            />
+            <Chart :chart-data="TagBarChartData" :options="TagBarChartOptions" class="pa-4" />
           </v-card>
         </v-col>
         <v-col cols="10" sm="8" md="8" lg="8" xl="8" class="col">
           <v-card :elevation="10" class="mt-5 p-5">
-            <CalendarHeatmap
-              :values="heartmapData"
-              :end-date="endData"
-              :max="5"
-              tooltip-unit="点"
-              class="ma-10 py-4"
-            >
+            <CalendarHeatmap :values="heartmapData" :end-date="endData" :max="5" tooltip-unit="点" class="ma-10 py-4">
             </CalendarHeatmap>
           </v-card>
         </v-col>
@@ -106,59 +96,14 @@ export default {
         datasets: [
           {
             label: ['学習時間'],
-            // ↓にtagのデータを格納
             data: [],
-            // ↓にtagの色を格納
-            // backgroundColor: [],
-            // borderColor: [],
           },
         ],
       },
-      // TimeBarChartOptions: {
-      //   responsive: true,
-      //   maintainAspectRatio: false,
-      //   plugins: {
-      //     colorschemes: {
-      //       scheme: 'brewer.Paired12',
-      //       // custom: customColorFunction
-      //     },
-      //     ChartDataLabels,
-      //   },
-      //   scales: {
-      //     xAxes: [
-      //       {
-      //         stacked: true,
-      //         scaleLabel: {
-      //           display: true,
-      //           labelString: '',
-      //         },
-      //       },
-      //     ],
-      //     yAxes: [
-      //       {
-      //         ticks: {
-      //           beginAtZero: true,
-      //           max: 1000,
-      //           stepSize: 100,
-      //           callback(label) {
-      //             return label + ' h'
-      //           },
-      //         },
-      //       },
-      //     ],
-      //   },
-      //   tooltips: {
-      //     callbacks: {
-      //       label(tooltipItem) {
-      //         return tooltipItem.yLabel + ' h'
-      //       },
-      //     },
-      //   },
-      // },
       heartmapData: [],
       // 空白だとエラー発生
       endData: '2021-01-1',
-      timeCount: 5,
+      timeCount: null,
     };
   },
   async created() {
@@ -176,12 +121,12 @@ export default {
         // 分→時間へ
         let minutesTime = Math.floor((e.data().time / 60) * 10) / 10;
 
-        console.log(e.data().time);
-        console.log(e.data().text);
+        // console.log(e.data().time);
+        // console.log(e.data().text);
         this.TagBarChartData.datasets[0].data.push(minutesTime);
       });
 
-      console.log(this.TagBarChartData);
+      // console.log(this.TagBarChartData);
       this.TagBarChartData = {
         labels: this.TagBarChartData.labels,
         datasets: [
@@ -199,24 +144,39 @@ export default {
 
       console.log(messageData);
       const messagesDate = messageData.docs.map((doc) => {
-        console.log(doc.data().times);
+        console.log(doc.data()); // 学習合計時間
 
-        let timeData = doc.data().times;
-        if (0 < timeData <= 1) {
-          timeData = 1;
-        } else if (2 <= timeData) {
-          timeData = 2;
-        } else if (3 <= timeData) {
-          timeData = 3;
-        } else if (4 <= timeData) {
-          timeData = 4;
-        } else if (5 <= timeData) {
-          timeData = 5;
+        let timeData = Math.floor(doc.data().times / 60);
+
+        console.log(timeData);
+
+        if (timeData === 0) {
+          this.timeCount = 0;
         }
-        this.timeCount = timeData;
+        if (0 < timeData <= 1) {
+          this.timeCount = 1;
+        }
+        if (2 <= timeData) {
+          this.timeCount = 2;
+        }
+        if (3 <= timeData) {
+          this.timeCount = 3;
+        }
+        if (4 <= timeData) {
+          this.timeCount = 4;
+        }
+        if (5 <= timeData) {
+          this.timeCount = 5;
+        }
+        // this.timeCount = timeData;
+
+        console.log(this.timeCount);
+
         return { date: doc.data().date.seconds * 1000, count: this.timeCount };
       });
       this.heartmapData = messagesDate;
+
+      console.log(messagesDate);
 
       // endData
       const today = new Date();

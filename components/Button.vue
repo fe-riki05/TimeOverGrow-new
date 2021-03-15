@@ -1,11 +1,5 @@
 <template>
-  <v-btn
-    class="button"
-    outlined
-    :type="type"
-    :disabled="!clickable"
-    @click="handleClick"
-  >
+  <v-btn class="button" outlined :type="type" :disabled="!clickable" @click="handleClick">
     <slot />
   </v-btn>
 </template>

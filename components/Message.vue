@@ -24,10 +24,7 @@
       </div>
     </div>
     <p class="message-text mb-0 mr-3">
-      <span>今日の学習時間は</span
-      ><span style="text-decoration: underline"
-        >{{ hours }}時間 {{ minutes }}分</span
-      >
+      <span>今日の学習時間は</span><span style="text-decoration: underline">{{ hours }}時間 {{ minutes }}分</span>
     </p>
     <p class="message-text mb-0">
       {{ bodys }}
@@ -84,10 +81,7 @@ export default {
           Element = JSON.parse(JSON.stringify(Element));
 
           const uid = firebase.auth().currentUser.uid;
-          const sameTagText = await dbTags
-            .where('uid', '==', uid)
-            .where('text', '==', Element.text)
-            .get();
+          const sameTagText = await dbTags.where('uid', '==', uid).where('text', '==', Element.text).get();
           sameTagText.docs.map(async (doc) => {
             // クリックした箇所の元々のdataとid
             let sameTagTime = doc.data().time;

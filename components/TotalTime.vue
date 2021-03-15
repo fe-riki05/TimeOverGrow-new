@@ -1,12 +1,7 @@
 <template>
   <v-app>
     <v-card :elevation="10">
-      <v-img
-        :src="image_src"
-        max-width="350px"
-        max-height="350px"
-        style="margin: 0 auto"
-      />
+      <v-img :src="image_src" max-width="350px" max-height="350px" style="margin: 0 auto" />
     </v-card>
     <v-card :elevation="10" class="mt-5 card">
       <div class="totaltime d-flex justify-center">
@@ -55,13 +50,7 @@ export default {
   padding: 0.25em;
   border-top: solid 2px #6cb4e4;
   border-bottom: solid 2px #6cb4e4;
-  background: -webkit-repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
+  background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
 }
 .times_text,
 .times {

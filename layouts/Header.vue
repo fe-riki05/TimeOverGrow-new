@@ -12,12 +12,7 @@
       </v-btn>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-      <v-list
-        nav
-        dense
-        class="p-0 justify-end hidden-sm-and-down"
-        style="background: transparent"
-      >
+      <v-list nav dense class="p-0 justify-end hidden-sm-and-down" style="background: transparent">
         <v-list-item-group class="d-flex">
           <v-list-item v-if="logout" text @click="signOut" class="ma-0">
             <v-icon>mdi-arrow-left-bold</v-icon>
@@ -27,11 +22,7 @@
           <slot></slot>
         </v-list-item-group>
       </v-list>
-      <v-app-bar-nav-icon
-        v-if="humbargarmenu"
-        class="hidden-md-and-up"
-        @click="drawer = true"
-      ></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="humbargarmenu" class="hidden-md-and-up" @click="drawer = true"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
     </v-app-bar>
     <!-- ここからハンバーガーメニュー -->
@@ -105,12 +96,7 @@ export default {
 .header {
   background-color: #70c2fd;
   background: #2980b9; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #2980b9,
-    #6dd5fa,
-    #ffffff
-  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #2980b9, #6dd5fa, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
     #2980b9,

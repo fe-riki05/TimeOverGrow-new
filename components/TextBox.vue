@@ -22,14 +22,7 @@
         solo
       >
         <template v-slot:selection="{ attrs, item, parent, selected }">
-          <v-chip
-            v-if="item === Object(item)"
-            v-bind="attrs"
-            :input-value="selected"
-            label
-            small
-            color="tagcolor"
-          >
+          <v-chip v-if="item === Object(item)" v-bind="attrs" :input-value="selected" label small color="tagcolor">
             <span class="tagcolor">
               {{ item.text }}
             </span>
@@ -61,9 +54,7 @@
           <v-list-item-action @click.stop>
             <div class="d-flex">
               <v-btn icon @click.stop.prevent="edit(index, item)" class="field">
-                <v-icon>{{
-                  editing !== item ? 'mdi-pencil' : 'mdi-check'
-                }}</v-icon>
+                <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
               </v-btn>
               <v-btn icon @click="tagDelete(index, item)" class="field ml-2">
                 <v-icon> mdi-trash-can-outline </v-icon>
@@ -75,9 +66,7 @@
     </v-container>
     <v-dialog v-model="dialog" width="500">
       <v-card class="pa-5">
-        <v-card-title class="headline px-2 text-center">
-          学習時間を記入して下さい。
-        </v-card-title>
+        <v-card-title class="headline px-2 text-center"> 学習時間を記入して下さい。 </v-card-title>
         <input
           v-model="hoursTimes"
           class="textbox-input mt-4"
@@ -119,6 +108,13 @@
         <v-icon color="#70c2fd" class="pa-5"> mdi-send </v-icon>
       </Button>
     </div>
+    <v-alert class="mt-5" type="error" v-model="alert" dismissible outlined color="primary">
+      <div class="title">入力欄が空欄です！</div>
+      <div>
+        タグ、時間、アウトプット内容のいずれかが空欄となっています！<br />
+        もう一度確認をしたのち送信下さい！
+      </div>
+    </v-alert>
   </v-app>
 </template>
 
@@ -149,6 +145,7 @@ export default {
       tagTimes: 0,
       hoursTimes: 0,
       minutesTimes: 0,
+      alert: false,
       canPost: true,
       activator: null,
       attach: null,
@@ -190,10 +187,19 @@ export default {
     async add() {
       this.canPost = false;
       try {
+        // if (!this.times) {
+        //   this.alert = true;
+        // }
+        // if (!this.bodys) {
+        //   this.alert = true;
+        // }
+        // if (!this.dbMessagesTags) {
+        //   this.alert = true;
+        //   throw new Error(error);
+        // }
+
         const message = await MessageModel.save({
           times: this.times,
-          // hoursTimes: parseInt(this.hoursTimes),
-          // minutesTimes: parseInt(this.minutesTimes),
           bodys: this.bodys,
           tags: this.dbMessagesTags,
         });
@@ -206,10 +212,7 @@ export default {
 
         this.select.forEach(async (element) => {
           const params = Object.assign(element, { uid });
-          const TagSame = await dbTags
-            .where('uid', '==', uid)
-            .where('text', '==', params.text)
-            .get();
+          const TagSame = await dbTags.where('uid', '==', uid).where('text', '==', params.text).get();
           if (TagSame.docs) {
             let Tag = [];
             TagSame.docs.forEach((e) => {
@@ -243,8 +246,8 @@ export default {
         this.bodys = '';
         this.select = '';
         this.dbMessagesTags = [];
-      } catch (error) {
-        alert(error.message);
+      } catch {
+        this.alert = true;
       }
       this.canPost = true;
     },
@@ -281,29 +284,20 @@ export default {
       const uid = firebase.auth().currentUser.uid;
 
       // 時間→分
-      this.tagTimes =
-        parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
+      this.tagTimes = parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
 
-      Object.assign(
-        this.select[this.select.length - 1],
-        { time: parseInt(this.tagTimes) },
-        { uid }
-      );
+      Object.assign(this.select[this.select.length - 1], { time: parseInt(this.tagTimes) }, { uid });
 
       Object.assign(this.dbMessagesTags, {
         tags: this.select[this.select.length - 1],
         uid,
       });
-      this.select[this.select.length - 1] = JSON.parse(
-        JSON.stringify(this.select[this.select.length - 1])
-      );
+      this.select[this.select.length - 1] = JSON.parse(JSON.stringify(this.select[this.select.length - 1]));
 
       this.dbMessagesTags.push(this.select[this.select.length - 1]);
 
       this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
-        return (
-          array.findIndex((nextItem) => item.text === nextItem.text) === index
-        );
+        return array.findIndex((nextItem) => item.text === nextItem.text) === index;
       });
 
       this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
@@ -316,7 +310,7 @@ export default {
       // }
 
       // 合計値を格納
-      console.log(this.tagTimes); // 1.6
+      // console.log(this.tagTimes); // 1.6
       this.times += this.tagTimes;
 
       this.hoursTimes = 0;
@@ -340,10 +334,7 @@ export default {
       const text = hasValue(itemText);
       const query = hasValue(queryText);
 
-      return text
-        .toString()
-        .toLowerCase()
-        .includes(query.toString().toLowerCase());
+      return text.toString().toLowerCase().includes(query.toString().toLowerCase());
     },
   },
 };
@@ -363,13 +354,7 @@ h2,
   padding: 0.25em;
   border-top: solid 2px #6cb4e4;
   border-bottom: solid 2px #6cb4e4;
-  background: -webkit-repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
+  background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
 }
 .textbox-area {
   resize: none;

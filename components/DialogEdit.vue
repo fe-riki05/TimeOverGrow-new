@@ -1,23 +1,15 @@
 <template>
   <!-- eslint-disable -->
-  <v-app class="ma-0" style="max-height: 500px">
-    <!-- <v-container fluid class="px-0"> -->
+  <v-app class="ma-0">
     <h2>今日のアウトプット内容</h2>
     <v-card-subtitle>編集前データ</v-card-subtitle>
-    <v-chip
-      v-for="(editBeforeDatas, index) in editBeforeData"
-      :key="index"
-      outlined
-      label
-      class="tag color ml-3 mb-3"
-    >
+    <v-chip v-for="(editBeforeDatas, index) in editBeforeData" :key="index" outlined label class="tag color ml-3 mb-3">
       <v-icon left> mdi-check </v-icon>
-      <span
-        >{{ editBeforeDatas.text }} が
-        {{ Math.floor(editBeforeDatas.time / 60) }} 時間
+      <span>
+        {{ editBeforeDatas.text }} が {{ Math.floor(editBeforeDatas.time / 60) }} 時間
         {{ editBeforeDatas.time - Math.floor(editBeforeDatas.time / 60) * 60 }}
-        分</span
-      >
+        分
+      </span>
     </v-chip>
     <v-container fluid class="px-0 mt-3">
       <v-combobox
@@ -45,14 +37,7 @@
           </v-list-item>
         </template>
         <template v-slot:selection="{ attrs, item, parent, selected }">
-          <v-chip
-            v-if="item === Object(item)"
-            v-bind="attrs"
-            color="tagcolor"
-            :input-value="selected"
-            label
-            small
-          >
+          <v-chip v-if="item === Object(item)" v-bind="attrs" color="tagcolor" :input-value="selected" label small>
             <span class="pr-2">
               {{ item.text }}
             </span>
@@ -77,9 +62,7 @@
           <v-list-item-action @click.stop>
             <div class="d-flex">
               <v-btn icon @click.stop.prevent="edit(index, item)" class="field">
-                <v-icon>{{
-                  editing !== item ? 'mdi-pencil' : 'mdi-check'
-                }}</v-icon>
+                <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
               </v-btn>
               <v-btn icon @click="tagDelete(index, item)" class="field ml-2">
                 <v-icon> mdi-trash-can-outline </v-icon>
@@ -91,9 +74,7 @@
     </v-container>
     <v-dialog v-model="EditDialog" width="500">
       <v-card class="pa-5">
-        <v-card-title class="headline px-2 text-center">
-          学習時間を記入して下さい。
-        </v-card-title>
+        <v-card-title class="headline px-2 text-center"> 学習時間を記入して下さい。 </v-card-title>
         <input
           v-model="hoursTimes"
           class="textbox-input mt-4"
@@ -162,14 +143,6 @@ export default {
       type: Array,
       required: true,
     },
-    // updateHours: {
-    //   type: Number,
-    //   required: true,
-    // },
-    // updateMinutes: {
-    //   type: Number,
-    //   required: true,
-    // },
     updateSelect: {
       type: Array,
       required: true,
@@ -182,8 +155,6 @@ export default {
   data() {
     return {
       times: 0,
-      // updateHours: 0,
-      // updateMinutes: 0,
       bodys: '',
       tagTimes: 0,
       hoursTimes: 0,
@@ -208,22 +179,6 @@ export default {
         this.$emit('update:updateTime', value);
       },
     },
-    // updatedHours: {
-    //   get() {
-    //     return parseInt(this.updateHours);
-    //   },
-    //   set(value) {
-    //     this.$emit('update:updateHours', value);
-    //   },
-    // },
-    // updatedMinutes: {
-    //   get() {
-    //     return parseInt(this.updateMinutes);
-    //   },
-    //   set(value) {
-    //     this.$emit('update:updateMinutes', value);
-    //   },
-    // },
     updatedSelect: {
       get() {
         return this.updateSelect;
@@ -272,10 +227,7 @@ export default {
         const uid = firebase.auth().currentUser.uid;
         this.updatedSelect.forEach(async (element) => {
           const params = Object.assign(element, { uid });
-          const TagSame = await dbTags
-            .where('uid', '==', uid)
-            .where('text', '==', params.text)
-            .get();
+          const TagSame = await dbTags.where('uid', '==', uid).where('text', '==', params.text).get();
           if (TagSame.docs) {
             let Tag = [];
             TagSame.docs.forEach((e) => {
@@ -347,18 +299,13 @@ export default {
       const uid = firebase.auth().currentUser.uid;
 
       // 時間→分
-      this.tagTimes =
-        parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
+      this.tagTimes = parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
 
       console.log(this.tagTimes);
       console.log(this.hoursTimes);
       console.log(this.minutesTimes);
 
-      Object.assign(
-        this.updatedSelect[this.updatedSelect.length - 1],
-        { time: parseInt(this.tagTimes) },
-        { uid }
-      );
+      Object.assign(this.updatedSelect[this.updatedSelect.length - 1], { time: parseInt(this.tagTimes) }, { uid });
 
       Object.assign(this.dbMessagesTags, {
         tags: this.updatedSelect[this.updatedSelect.length - 1],
@@ -368,14 +315,10 @@ export default {
         JSON.stringify(this.updatedSelect[this.updatedSelect.length - 1])
       );
 
-      this.dbMessagesTags.push(
-        this.updatedSelect[this.updatedSelect.length - 1]
-      );
+      this.dbMessagesTags.push(this.updatedSelect[this.updatedSelect.length - 1]);
 
       this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
-        return (
-          array.findIndex((nextItem) => item.text === nextItem.text) === index
-        );
+        return array.findIndex((nextItem) => item.text === nextItem.text) === index;
       });
 
       this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
@@ -413,10 +356,7 @@ export default {
       const text = hasValue(itemText);
       const query = hasValue(queryText);
 
-      return text
-        .toString()
-        .toLowerCase()
-        .includes(query.toString().toLowerCase());
+      return text.toString().toLowerCase().includes(query.toString().toLowerCase());
     },
   },
 };
@@ -443,13 +383,7 @@ h2,
   padding: 0.25em;
   border-top: solid 2px #6cb4e4;
   border-bottom: solid 2px #6cb4e4;
-  background: -webkit-repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
+  background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
 }
 .textbox-area {
   resize: none;

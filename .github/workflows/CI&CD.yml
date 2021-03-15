@@ -18,6 +18,9 @@ jobs:
   #     - name: yarn install
   #       run: yarn install
 
+  # - name: ESLint & Prettier
+  #   run: yarn lint
+
   #     - name: Run jest test
   #       run: yarn test
 

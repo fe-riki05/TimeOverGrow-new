@@ -4,31 +4,18 @@
       <v-row class="pa-0 col">
         <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
         <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
-          <TotalTime
-            :hours="Math.floor(times / 60)"
-            :minutes="times - Math.floor(times / 60) * 60"
-          />
+          <TotalTime :hours="Math.floor(times / 60)" :minutes="times - Math.floor(times / 60) * 60" />
+
           <v-card :elevation="10" class="mt-5 py-5">
-            <Chart
-              :chart-data="BarChartData"
-              :options="BarChartOptions"
-              class="pa-3"
-            />
+            <Chart :chart-data="BarChartData" :options="BarChartOptions" class="pa-3" />
           </v-card>
         </v-col>
         <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
           <v-card :elevation="10" class="pa-5">
             <TextBox :on-click="add" />
-            <h2 v-if="messages.length === 0" class="mt-3 pa-5">
-              投稿が0件です！！！
-            </h2>
+            <h2 v-if="messages.length === 0" class="mt-3 pa-5">投稿が0件です！！！</h2>
           </v-card>
-          <MessageList
-            :messages="reversedMessages"
-            @pop="getData"
-            @update="updated"
-            @updatedDate="updatedDateId"
-          />
+          <MessageList :messages="reversedMessages" @pop="getData" @update="updated" @updatedDate="updatedDateId" />
           <v-dialog v-model="dialog" persistent max-width="600">
             <v-card>
               <DialogEdit
@@ -247,10 +234,7 @@ export default {
         Element = JSON.parse(JSON.stringify(Element));
 
         const uid = firebase.auth().currentUser.uid;
-        const sameTagText = await dbTags
-          .where('uid', '==', uid)
-          .where('text', '==', Element.text)
-          .get();
+        const sameTagText = await dbTags.where('uid', '==', uid).where('text', '==', Element.text).get();
         sameTagText.docs.map(async (doc) => {
           // クリックした箇所の元々のdataとid
           let sameTagTime = doc.data().time;

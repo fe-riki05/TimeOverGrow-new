@@ -2,18 +2,9 @@
   <v-row justify="center">
     <v-col cols="12" sm="10" md="10">
       <v-card class="login">
-        <v-btn
-          block
-          class="color text-capitalize mb-2"
-          height="50px"
-          @click="googleLogin"
-        >
+        <v-btn block class="color text-capitalize mb-2" height="50px" @click="googleLogin">
           <span class="color-google__icon v-icon notranslate v-icon--left">
-            <svg
-              enable-background="new 0 0 46 46"
-              viewBox="0 0 46 46"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg enable-background="new 0 0 46 46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
               <g transform="translate(14 14)">
                 <g clip-rule="evenodd" fill-rule="evenodd">
                   <path
@@ -41,15 +32,8 @@
         </v-btn>
       </v-card>
       <v-card class="login">
-        <v-btn
-          block
-          class="mb-2 mt-5 color text-capitalize"
-          height="50px"
-          @click="guestLogin"
-        >
-          <v-icon class="notranslate v-icon--left theme--light">
-            mdi-account </v-icon
-          >ゲストログイン
+        <v-btn block class="mb-2 mt-5 color text-capitalize" height="50px" @click="guestLogin">
+          <v-icon class="notranslate v-icon--left theme--light"> mdi-account </v-icon>ゲストログイン
         </v-btn>
       </v-card>
     </v-col>
@@ -68,8 +52,7 @@ export default {
           });
         })
         .catch(() => {
-          this.$parent.socialLoginErrorMsg =
-            '現在Googleでのログインは使用できません。後ほどお試しください。';
+          this.$parent.socialLoginErrorMsg = '現在Googleでのログインは使用できません。後ほどお試しください。';
         });
     },
     guestLogin() {
@@ -81,9 +64,7 @@ export default {
           });
         })
         .catch(() => {
-          console.error(
-            '現在ゲストログインは使用できません。後ほどお試しください。'
-          );
+          console.error('現在ゲストログインは使用できません。後ほどお試しください。');
         });
     },
   },

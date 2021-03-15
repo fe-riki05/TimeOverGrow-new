@@ -5,18 +5,10 @@
     <v-container class="mt-8">
       <v-row justify="center">
         <v-col cols="10" sm="8" md="6" class="form">
-          <h2 class="text-center subtitle-1 font-weight-bold mb-2">
-            メールアドレスで登録
-          </h2>
+          <h2 class="text-center subtitle-1 font-weight-bold mb-2">メールアドレスで登録</h2>
           <v-row>
             <v-col>
-              <v-tabs
-                v-model="tab"
-                background-color="transparent"
-                color="blue accent-2"
-                grow
-                class="mb-3"
-              >
+              <v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3">
                 <v-tab to="/login"> ログイン </v-tab>
                 <v-tab to="/register"> アカウント登録 </v-tab>
               </v-tabs>
@@ -24,11 +16,7 @@
                 <v-col sm="12">
                   <v-card flat class="pa-5">
                     <v-card-text class="pa-0">
-                      <v-form
-                        ref="register_form"
-                        v-model="register_valid"
-                        lazy-validation
-                      >
+                      <v-form ref="register_form" v-model="register_valid" lazy-validation>
                         <v-text-field
                           v-model="register_email"
                           label="メールアドレス"
@@ -41,46 +29,28 @@
                           v-model="register_password"
                           label="パスワード"
                           required
-                          :append-icon="
-                            show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'
-                          "
+                          :append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="show_registerPassword ? 'text' : 'password'"
                           :rules="register_passwordRules"
                           validate-on-blur
                           loading
-                          @click:append="
-                            show_registerPassword = !show_registerPassword
-                          "
+                          @click:append="show_registerPassword = !show_registerPassword"
                         >
                           <template #progress>
-                            <v-progress-linear
-                              :value="score.value"
-                              :color="score.color"
-                              absolute
-                              height="2"
-                            />
+                            <v-progress-linear :value="score.value" :color="score.color" absolute height="2" />
                           </template>
                         </v-text-field>
                         <v-text-field
                           v-model="register_password_again"
                           label="パスワード（確認）"
                           required
-                          :append-icon="
-                            show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'
-                          "
+                          :append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="show_registerPassword ? 'text' : 'password'"
                           validate-on-blur
                           :rules="register_passwordAgainRules"
-                          @click:append="
-                            show_registerPassword = !show_registerPassword
-                          "
+                          @click:append="show_registerPassword = !show_registerPassword"
                         />
-                        <v-alert
-                          v-if="registerErrorMsg"
-                          dense
-                          text
-                          type="error"
-                        >
+                        <v-alert v-if="registerErrorMsg" dense text type="error">
                           {{ registerErrorMsg }}
                         </v-alert>
                         <v-btn
@@ -99,9 +69,7 @@
               <v-divider class="my-8" />
               <v-row>
                 <v-col sm="12">
-                  <h2 class="text-center subtitle-1 font-weight-bold mb-2">
-                    その他のアカウントでログイン
-                  </h2>
+                  <h2 class="text-center subtitle-1 font-weight-bold mb-2">その他のアカウントでログイン</h2>
                 </v-col>
               </v-row>
               <SocialLogin />
@@ -134,9 +102,7 @@ export default {
       emailRules: [
         (v) => {
           if (v) {
-            return (
-              /.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください'
-            );
+            return /.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください';
           } else {
             return true;
           }
@@ -144,17 +110,12 @@ export default {
       ],
       register_passwordRules: [
         (v) => !!v || 'パスワードを入力してください',
-        (v) =>
-          zxcvbn(v).score >= 3 ||
-          '大文字・小文字・数字・記号を混ぜた強いパスワードにしてください',
+        (v) => zxcvbn(v).score >= 3 || '大文字・小文字・数字・記号を混ぜた強いパスワードにしてください',
       ],
       register_passwordAgainRules: [
         (v) => {
           if (v) {
-            return (
-              this.$refs.register_password.value === v ||
-              'パスワードと一致しません'
-            );
+            return this.$refs.register_password.value === v || 'パスワードと一致しません';
           } else {
             return true;
           }
@@ -220,8 +181,7 @@ export default {
           .catch((err) => {
             console.log(err);
             if (err.code === 'auth/email-already-in-use') {
-              this.registerErrorMsg =
-                'このメールアドレスは既に登録されています。';
+              this.registerErrorMsg = 'このメールアドレスは既に登録されています。';
             } else if (err.code === 'auth/invalid-email') {
               this.registerErrorMsg = '無効なメールアドレスです。';
             } else {
@@ -241,20 +201,8 @@ export default {
 .form {
   padding: 0.5em 1em;
   margin: 2em 0;
-  background: -webkit-repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
-  background: repeating-linear-gradient(
-    -45deg,
-    #f0f8ff,
-    #f0f8ff 3px,
-    #e9f4ff 3px,
-    #e9f4ff 7px
-  );
+  background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
+  background: repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
 }
 .form p {
   margin: 0;

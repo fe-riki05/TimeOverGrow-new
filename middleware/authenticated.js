@@ -9,10 +9,7 @@ export default ({ store, route, redirect }) => {
   ) {
     redirect('/top');
   }
-  if (
-    store.getters.isAuthenticated &&
-    (route.name === 'login' || route.name === 'register')
-  ) {
+  if (store.getters.isAuthenticated && (route.name === 'login' || route.name === 'register')) {
     redirect('/');
   }
 };
