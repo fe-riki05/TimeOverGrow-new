@@ -144,7 +144,6 @@ export default {
     this.messages = messages;
     this.times = times;
     vuechartData[0] = Math.floor((vuechartData[0] / 60) * 10) / 10;
-
     this.BarChartData = {
       labels: ['学習時間'],
       datasets: [
@@ -156,6 +155,19 @@ export default {
         },
       ],
     };
+
+    // もし匿名ログインならuidを'testUser'へ上書き処理
+    // let uid = firebase.auth().currentUser.uid;
+    // firebase.auth().currentUser.uid = 'testUser';
+    // console.log(uid);
+    // console.log(firebase.auth().currentUser.uid);
+    // console.log(firebase.auth().currentUser); // testUser
+    // if (firebase.auth().currentUser.isAnonymous) {
+    //   firebase.auth().currentUser.uid = 'testUser';
+    // }
+    // console.log(uid);
+    // console.log(firebase.auth().currentUser); // testUser
+    // uid = firebase.auth().currentUser.uid;
   },
   methods: {
     async add(message) {
@@ -251,7 +263,7 @@ export default {
         });
       });
 
-      console.log(this.updateTime);
+      // console.log(this.updateTime);
 
       await dbMessages.doc(this.indexId).update({
         times: this.updateTime,

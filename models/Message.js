@@ -12,15 +12,15 @@ class Message {
 
   static async save({ times, bodys, tags }) {
     if (!times) {
-    	throw new Error();
+      throw new Error();
     }
 
     if (!bodys || !bodys.trim()) {
-    	throw new Error();
+      throw new Error();
     }
 
     if (!bodys || !bodys.trim()) {
-    	throw new Error();
+      throw new Error();
     }
 
     const uid = firebase.auth().currentUser.uid;
