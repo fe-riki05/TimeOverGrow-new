@@ -15,16 +15,16 @@
 <script>
 import Header from '../layouts/Header';
 import Main from '../components/Main';
-import auth from '../plugins/firebase.auth';
+// import auth from '../plugins/firebase.auth';
 
 export default {
   components: {
     Header,
     Main,
   },
-  created() {
-    console.log(auth.Promise);
-  },
+  // created() {
+  //   console.log(auth);
+  // },
 };
 </script>
 

@@ -33,7 +33,8 @@
       </v-card>
       <v-card class="login">
         <v-btn block class="mb-2 mt-5 color text-capitalize" height="50px" @click="guestLogin">
-          <v-icon class="notranslate v-icon--left theme--light"> mdi-account </v-icon>ゲストログイン
+          <v-icon class="notranslate v-icon--left theme--light" color="#7db4e6"> mdi-account-check </v-icon>
+          <span>テストログイン</span>
         </v-btn>
       </v-card>
     </v-col>
@@ -57,14 +58,24 @@ export default {
     },
     guestLogin() {
       this.$store
-        .dispatch('signInWithGuest')
+        .dispatch('signInWithEmail', {
+          email: 'test@test.com',
+          password: 'test_login',
+        })
         .then(() => {
+          // this.login_email = '';
+          // this.login_password = '';
           this.$router.push({
             name: 'index',
           });
         })
-        .catch(() => {
-          console.error('現在ゲストログインは使用できません。後ほどお試しください。');
+        .catch((err) => {
+          console.log(err);
+          if (err.code === 'auth/user-disabled') {
+            this.loginErrorMsg = 'このアカウントはロックされています。';
+          } else {
+            this.loginErrorMsg = 'メールアドレスまたはパスワードが間違っています。';
+          }
         });
     },
   },

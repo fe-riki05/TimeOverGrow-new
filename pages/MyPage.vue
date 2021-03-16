@@ -109,6 +109,9 @@ export default {
   async created() {
     await this.tagChart();
     await this.heartmap();
+
+    const uid = firebase.auth().currentUser.uid;
+    console.log(uid);
   },
   methods: {
     // tag毎のグラフ
