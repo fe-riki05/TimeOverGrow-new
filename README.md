@@ -22,7 +22,7 @@ https://timeovergrow-d76f5.web.app/
 エンジニアになりたいのにモチベーションが保てないので妥協をしてしまう、そんな課題を解決する為「TIMEOVERGROW」を開発しました。
 
 # 実際のアプリの動画
-[こっちからgoogle][]
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/70131371/111287871-fdfeb580-8686-11eb-82de-b59d14715cca.gif)
 
 ## アプリ概要
 
