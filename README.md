@@ -81,7 +81,7 @@ https://timeovergrow-d76f5.web.app/
 - フロントエンド：JavaScript(Nuxt.js/Vue.js)
 - UIフレームワーク：Vuetify
 - バックエンド：Firebase
-　- 認証：Firebase Authentication
+  - 認証：Firebase Authentication
 - データベース：Cloud Firestore
 - 本番環境：Firebase Hosting
 - テスト：Jest
@@ -126,7 +126,6 @@ https://timeovergrow-d76f5.web.app/
 # 機能詳細
 ## ユーザー機能
 - 新規登録、ログイン、ログアウト
-- 新規登録とログインのページはnuxt-linkによって高速遷移が可能
 - テストログイン機能
 
 ## リダイレクト機能
