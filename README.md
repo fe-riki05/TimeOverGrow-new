@@ -70,11 +70,20 @@ https://timeovergrow-d76f5.web.app/
 (タグ名は**同じ名称**でないと別のタグだと認識しますので注意しましょう！)<br>
 
 # 使用技術等
-OSはmacOSで、開発環境はDockerです。<br>
-フロントはNuxt.js/Vue.js、バックエンドはFirebaseで制作しました。<br>
-本番環境はFirebase Hosting、バージョン管理はGitHubです。<br>
-静的検証ツールにESLint、コードフォーマッターにPrettier、テストにJestを用いており、<br>
-GitHub Actionsを導入することで、テスト→コード整形→ビルド→デプロイまで自動化しております。<br>
+- OS：macOS
+- 開発環境：Docker node.jsコンテナを用意して、docker-composeで起動します。(このアプリでは必要なさそうに見えましたが、ここ最近モダンな現場ではDockerを用いる事例が多いとリサーチ済みですので、経験のため導入致しました。)
+- フロントエンド：JavaScript(Nuxt.js/Vue.js)
+- UIフレームワーク：Vuetify
+- バックエンド：Firebase
+　- 認証：Firebase Authentication
+- データベース：Cloud Firestore
+- 本番環境：Firebase Hosting
+- テスト：Jest
+- ソースコード管理：GitHub
+- 静的検証ツール：ESLint
+- コードフォーマッター：Prettier
+- CI/CD：GitHub Actions
+ - GitHubのマスターブランチにマージされた時のみテストと自動デプロイが実行されます。
 
 
 ## バージョン
@@ -104,18 +113,4 @@ GitHub Actionsを導入することで、テスト→コード整形→ビルド
 
 # 機能詳細
 
-## 使い方
 
-### 学習の記録
-
-1. 学習時間記入
-2. 学習した言語および FW などをタグ付け
-3. アウトプット内容を記入
-4. 送信
-
-
-## その他
-
-現在も開発を継続しており、順次実装予定です。  
-実装予定の機能は Issues よりご確認いただけます。  
-https://github.com/yoshida-riki/TimeOverGrow-new/issues
