@@ -301,9 +301,9 @@ export default {
       // 時間→分
       this.tagTimes = parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
 
-      console.log(this.tagTimes);
-      console.log(this.hoursTimes);
-      console.log(this.minutesTimes);
+      // console.log(this.tagTimes);
+      // console.log(this.hoursTimes);
+      // console.log(this.minutesTimes);
 
       Object.assign(this.updatedSelect[this.updatedSelect.length - 1], { time: parseInt(this.tagTimes) }, { uid });
 
@@ -330,7 +330,7 @@ export default {
       //   this.tagTimes = Math.floor(this.tagTimes / 60 * 10) / 10
       // }
 
-      console.log(this.tagTimes);
+      // console.log(this.tagTimes);
 
       // 合計値を格納
       this.times += this.tagTimes;

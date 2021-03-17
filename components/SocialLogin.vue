@@ -70,7 +70,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           if (err.code === 'auth/user-disabled') {
             this.loginErrorMsg = 'このアカウントはロックされています。';
           } else {

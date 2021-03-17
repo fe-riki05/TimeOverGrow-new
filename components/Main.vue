@@ -5,7 +5,6 @@
         <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
         <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
           <TotalTime :hours="Math.floor(times / 60)" :minutes="times - Math.floor(times / 60) * 60" />
-
           <v-card :elevation="10" class="mt-5 py-5">
             <Chart :chart-data="BarChartData" :options="BarChartOptions" class="pa-3" />
           </v-card>
@@ -123,9 +122,9 @@ export default {
   },
   watch: {
     chartmax(newVal, oldVal) {
-      console.log('chartmaxのwatchできてます！！！');
-      console.log(oldVal);
-      console.log(newVal);
+      // console.log('chartmaxのwatchできてます！！！');
+      // console.log(oldVal);
+      // console.log(newVal);
       this.BarChartOptions.scales.yAxes[0].ticks.max = newVal;
     },
   },
@@ -155,19 +154,6 @@ export default {
         },
       ],
     };
-
-    // もし匿名ログインならuidを'testUser'へ上書き処理
-    // let uid = firebase.auth().currentUser.uid;
-    // firebase.auth().currentUser.uid = 'testUser';
-    // console.log(uid);
-    // console.log(firebase.auth().currentUser.uid);
-    // console.log(firebase.auth().currentUser); // testUser
-    // if (firebase.auth().currentUser.isAnonymous) {
-    //   firebase.auth().currentUser.uid = 'testUser';
-    // }
-    // console.log(uid);
-    // console.log(firebase.auth().currentUser); // testUser
-    // uid = firebase.auth().currentUser.uid;
   },
   methods: {
     async add(message) {
@@ -238,7 +224,7 @@ export default {
         tagText.push(Element.text);
         tagTime += Element.time;
       });
-      console.log(this.updateSelect); // 編集後のデータ
+      // console.log(this.updateSelect); // 編集後のデータ
       this.updateTime = tagTime;
 
       // クリックしたtagのtime値をdbTagsからマイナス(複数dataの時も考える)
