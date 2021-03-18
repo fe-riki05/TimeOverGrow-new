@@ -14,28 +14,28 @@
         </nuxt-link>
       </v-list-item>
       <v-list-item class="ma-0 pa-0">
-        <v-btn text block class="guest" @click="guestLogin">
+        <v-btn text class="guest" @click="guestLogin">
           <v-icon color="#7db4e6">mdi-account-check</v-icon>
           <v-list-item-title class="pl-1">テストログイン</v-list-item-title>
         </v-btn>
       </v-list-item>
     </Header>
-    <v-container fill-height>
+    <v-container fill-height class="col">
       <v-row class="col" align="center">
-        <v-spacer></v-spacer>
-        <v-col cols="12" sm="5" md="5" lg="5" xl="5">
+        <v-spacer />
+        <v-col class="col mx-2 mt-5" cols="12" sm="5" md="5" lg="5" xl="5">
           <v-img :src="imgPath" />
         </v-col>
-        <v-col cols="12" sm="5" md="5" lg="5" xl="5">
+        <v-col class="col mx-4 mt-5" cols="12" sm="5" md="5" lg="5" xl="5">
           <h2 class="chat">沢山勉強したいのにモチベーションが上がらない。。。</h2>
           <h2 class="chat">Twitterでは転職活動終了のお知らせばかり。。。</h2>
           <h2 class="chat">このままでエンジニアへ転職することはできるのか。。。</h2>
         </v-col>
-        <v-spacer></v-spacer>
+        <v-spacer />
       </v-row>
       <div class="col my-9">
         <h2 class="text-color text-center">
-          <span class="mx-3 title h2">TIMEOVERGROW</span>はそんなあなたの想いを払拭する為の自己管理アプリです！
+          <span class="mx-3 title">TIMEOVERGROW</span>はそんなあなたの想いを払拭する為の自己管理アプリです！
         </h2>
       </div>
       <v-row class="text-center bg-card">
@@ -126,7 +126,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           if (err.code === 'auth/user-disabled') {
             this.loginErrorMsg = 'このアカウントはロックされています。';
           } else {

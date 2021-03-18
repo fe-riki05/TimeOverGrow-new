@@ -111,7 +111,7 @@ export default {
     await this.heartmap();
 
     const uid = firebase.auth().currentUser.uid;
-    console.log(uid);
+    // console.log(uid);
   },
   methods: {
     // tag毎のグラフ
@@ -147,11 +147,11 @@ export default {
 
       // console.log(messageData);
       const messagesDate = messageData.docs.map((doc) => {
-        console.log(doc.data()); // 学習合計時間
+        // console.log(doc.data()); // 学習合計時間
 
         let timeData = Math.floor(doc.data().times / 60);
 
-        console.log(timeData);
+        // console.log(timeData);
 
         if (timeData === 0) {
           this.timeCount = 0;
@@ -173,7 +173,7 @@ export default {
         }
         // this.timeCount = timeData;
 
-        console.log(this.timeCount);
+        // console.log(this.timeCount);
 
         return { date: doc.data().date.seconds * 1000, count: this.timeCount };
       });
