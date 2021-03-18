@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -254,7 +254,21 @@
 <a name='L195'></a><a href='#L195'>195</a>
 <a name='L196'></a><a href='#L196'>196</a>
 <a name='L197'></a><a href='#L197'>197</a>
-<a name='L198'></a><a href='#L198'>198</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -347,7 +361,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -439,215 +452,241 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-	&lt;v-container&gt;
-		&lt;v-row justify="center"&gt;
-			&lt;v-col cols="12" sm="8" md="6"&gt;
-				&lt;h2 class="text-center subtitle-1 font-weight-bold mb-2"&gt;メールアドレスで登録&lt;/h2&gt;
-				&lt;v-row&gt;
-					&lt;v-col&gt;
-						&lt;v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3"&gt;&lt;v-tab to="/login"&gt; ログイン &lt;/v-tab&gt;
-							&lt;v-tab to="/register"&gt;アカウント登録 &lt;/v-tab&gt;
-						&lt;/v-tabs&gt;
-&nbsp;
-						&lt;v-row&gt;
-							&lt;v-col sm="12"&gt;
-								&lt;v-card flat&gt;
-									&lt;v-card-text class="pa-0"&gt;
-										&lt;v-form ref="register_form" v-model="register_valid" lazy-validation&gt;
-											&lt;v-text-field
-												v-model="register_email"
-												label="メールアドレス"
-												:rules="emailRules"
-												required
-												validate-on-blur
-											/&gt;
-&nbsp;
-											&lt;v-text-field
-												ref="register_password"
-												v-model="register_password"
-												label="パスワード"
-												required
-												:append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
-												:type="show_registerPassword ? 'text' : 'password'"
-												:rules="register_passwordRules"
-												validate-on-blur
-												loading
-												@click:append="show_registerPassword = !show_registerPassword"
-											&gt;
-												&lt;template #progress&gt;
-													&lt;v-progress-linear :value="score.value" :color="score.color" absolute height="2" /&gt;
-												&lt;/template&gt;
-											&lt;/v-text-field&gt;
-											&lt;v-text-field
-												v-model="register_password_again"
-												label="パスワード（確認）"
-												required
-												:append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
-												:type="show_registerPassword ? 'text' : 'password'"
-												validate-on-blur
-												:rules="register_passwordAgainRules"
-												@click:append="show_registerPassword = !show_registerPassword"
-											/&gt;
-&nbsp;
-											&lt;v-alert v-if="registerErrorMsg" dense text type="error"&gt;
-												{{ registerErrorMsg }}
-											&lt;/v-alert&gt;
-&nbsp;
-											&lt;v-btn
-												:disabled="!register_valid"
-												color="blue darken-3"
-												class="mr-4 white--text"
-												@click="email_register()"
-											&gt;
-												登録
-											&lt;/v-btn&gt;
-										&lt;/v-form&gt;
-									&lt;/v-card-text&gt;
-								&lt;/v-card&gt;
-							&lt;/v-col&gt;
-						&lt;/v-row&gt;
-						&lt;v-divider class="my-8" /&gt;
-						&lt;v-row&gt;
-							&lt;v-col sm="12"&gt;
-								&lt;h2 class="text-center subtitle-1 font-weight-bold mb-2"&gt;その他のアカウントでログイン&lt;/h2&gt;
-							&lt;/v-col&gt;
-						&lt;/v-row&gt;
-						&lt;SocialLogin /&gt;
-					&lt;/v-col&gt;
-				&lt;/v-row&gt;
-			&lt;/v-col&gt;
-		&lt;/v-row&gt;
-	&lt;/v-container&gt;
+  &lt;v-app&gt;
+    &lt;Header :logout="false" :humbargarmenu="false" /&gt;
+    &lt;v-spacer&gt;&lt;/v-spacer&gt;
+    &lt;v-container class="mt-8"&gt;
+      &lt;v-row justify="center"&gt;
+        &lt;v-col cols="10" sm="8" md="6" class="form"&gt;
+          &lt;h2 class="text-center subtitle-1 font-weight-bold mb-2"&gt;メールアドレスで登録&lt;/h2&gt;
+          &lt;v-row&gt;
+            &lt;v-col&gt;
+              &lt;v-tabs v-model="tab" background-color="transparent" color="blue accent-2" grow class="mb-3"&gt;
+                &lt;v-tab to="/login"&gt; ログイン &lt;/v-tab&gt;
+                &lt;v-tab to="/register"&gt; アカウント登録 &lt;/v-tab&gt;
+              &lt;/v-tabs&gt;
+              &lt;v-row&gt;
+                &lt;v-col sm="12"&gt;
+                  &lt;v-card flat class="pa-5"&gt;
+                    &lt;v-card-text class="pa-0"&gt;
+                      &lt;v-form ref="register_form" v-model="register_valid" lazy-validation&gt;
+                        &lt;v-text-field
+                          v-model="register_email"
+                          label="メールアドレス"
+                          :rules="emailRules"
+                          required
+                          validate-on-blur
+                        /&gt;
+                        &lt;v-text-field
+                          ref="register_password"
+                          v-model="register_password"
+                          label="パスワード"
+                          required
+                          :append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="show_registerPassword ? 'text' : 'password'"
+                          :rules="register_passwordRules"
+                          validate-on-blur
+                          loading
+                          @click:append="show_registerPassword = !show_registerPassword"
+                        &gt;
+                          &lt;template #progress&gt;
+                            &lt;v-progress-linear :value="score.value" :color="score.color" absolute height="2" /&gt;
+                          &lt;/template&gt;
+                        &lt;/v-text-field&gt;
+                        &lt;v-text-field
+                          v-model="register_password_again"
+                          label="パスワード（確認）"
+                          required
+                          :append-icon="show_registerPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="show_registerPassword ? 'text' : 'password'"
+                          validate-on-blur
+                          :rules="register_passwordAgainRules"
+                          @click:append="show_registerPassword = !show_registerPassword"
+                        /&gt;
+                        &lt;v-alert v-if="registerErrorMsg" dense text type="error"&gt;
+                          {{ registerErrorMsg }}
+                        &lt;/v-alert&gt;
+                        &lt;v-btn
+                          :disabled="!register_valid"
+                          color="blue darken-3"
+                          class="mr-4 white--text"
+                          @click="email_register"
+                        &gt;
+                          登録
+                        &lt;/v-btn&gt;
+                      &lt;/v-form&gt;
+                    &lt;/v-card-text&gt;
+                  &lt;/v-card&gt;
+                &lt;/v-col&gt;
+              &lt;/v-row&gt;
+              &lt;v-divider class="my-8" /&gt;
+              &lt;v-row&gt;
+                &lt;v-col sm="12"&gt;
+                  &lt;h2 class="text-center subtitle-1 font-weight-bold mb-2"&gt;その他のアカウントでログイン&lt;/h2&gt;
+                &lt;/v-col&gt;
+              &lt;/v-row&gt;
+              &lt;SocialLogin /&gt;
+            &lt;/v-col&gt;
+          &lt;/v-row&gt;
+        &lt;/v-col&gt;
+      &lt;/v-row&gt;
+    &lt;/v-container&gt;
+  &lt;/v-app&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >	import zxcvbn from 'zxcvbn'</span>
-<span class="cstat-no" title="statement not covered" >	import SocialLogin from '../components/SocialLogin.vue'</span>
-<span class="cstat-no" title="statement not covered" >	import { auth } from '../plugins/firebase'</span>
+<span class="cstat-no" title="statement not covered" >import zxcvbn from 'zxcvbn';</span>
+<span class="cstat-no" title="statement not covered" >import Header from '../layouts/Header';</span>
+<span class="cstat-no" title="statement not covered" >import SocialLogin from '../components/SocialLogin.vue';</span>
 &nbsp;
-	
-	export default {
-		components: {
-			SocialLogin
-		},
-		layout: 'signin',
-<span class="fstat-no" title="function not covered" >		data() {</span>
-<span class="cstat-no" title="statement not covered" >			return {</span>
-				registerErrorMsg: '',
-				tab: null,
-				register_valid: true,
-				register_email: '',
-				register_password: '',
-				register_password_again: '',
-<span class="fstat-no" title="function not covered" >				emailRules: [</span>
-					v =&gt; {
-<span class="cstat-no" title="statement not covered" >						if (v) {</span>
-<span class="cstat-no" title="statement not covered" >							return /.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください'</span>
-						} else {
-<span class="cstat-no" title="statement not covered" >							return true</span>
-						}
-					}
-				],
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >				register_passwordRules: [</span></span>
-					v =&gt; !!v || 'パスワードを入力してください',
-					v =&gt; zxcvbn(v).score &gt;= 3 || '大文字・小文字・数字・記号を混ぜた強いパスワードにしてください'
-				],
-<span class="fstat-no" title="function not covered" >				register_passwordAgainRules: [</span>
-					v =&gt; {
-<span class="cstat-no" title="statement not covered" >						if (v) {</span>
-<span class="cstat-no" title="statement not covered" >							return this.$refs.register_password.value === v || 'パスワードと一致しません'</span>
-						} else {
-<span class="cstat-no" title="statement not covered" >							return true</span>
-						}
-					}
-				],
-				show_registerPassword: false
-			}
-		},
-		computed: {
-<span class="fstat-no" title="function not covered" >			progress() {</span>
-<span class="cstat-no" title="statement not covered" >				return this.score.value</span>
-			},
-<span class="fstat-no" title="function not covered" >			score() {</span>
-<span class="cstat-no" title="statement not covered" >				const result = zxcvbn(this.register_password)</span>
-<span class="cstat-no" title="statement not covered" >				switch (result.score) {</span>
-					case 4:
-<span class="cstat-no" title="statement not covered" >						return {</span>
-							color: 'green',
-							value: 100
-						}
-					case 3:
-<span class="cstat-no" title="statement not covered" >						return {</span>
-							color: 'light-green lighten-1',
-							value: 75
-						}
-					case 2:
-<span class="cstat-no" title="statement not covered" >						return {</span>
-							color: 'amber accent-2',
-							value: 50
-						}
-					case 1:
-<span class="cstat-no" title="statement not covered" >						return {</span>
-							color: 'deep-orange lighten-1',
-							value: 25
-						}
-					default:
-<span class="cstat-no" title="statement not covered" >						return {</span>
-							color: 'red darken-3',
-							value: 0
-						}
-				}
-			}
-		},
-		methods: {
-<span class="fstat-no" title="function not covered" >			email_register() {</span>
-<span class="cstat-no" title="statement not covered" >				if (this.$refs.register_form.validate()) {</span>
-<span class="cstat-no" title="statement not covered" >					this.$store</span>
-<span class="fstat-no" title="function not covered" >						.dispatch('signUp', {</span>
-							email: this.register_email,
-							password: this.register_password
-						})
-						.then(() =&gt; {
-<span class="cstat-no" title="statement not covered" >							this.register_email = ''</span>
-<span class="cstat-no" title="statement not covered" >							this.register_password = ''</span>
-<span class="cstat-no" title="statement not covered" >							this.$router.push({</span>
-								name: 'index',
-								params: {
-									dashboard_msg: true,
-									dashboard_msg_text: 'アカウントの登録が完了しました。'
-								}
-							})
-<span class="fstat-no" title="function not covered" >						})</span>
-						.catch(err =&gt; {
-<span class="cstat-no" title="statement not covered" >							console.error(err)</span>
-<span class="cstat-no" title="statement not covered" >							if (err.code === 'auth/email-already-in-use') {</span>
-<span class="cstat-no" title="statement not covered" >								this.registerErrorMsg = 'このメールアドレスは既に登録されています。'</span>
-<span class="cstat-no" title="statement not covered" >							} else if (err.code === 'auth/invalid-email') {</span>
-<span class="cstat-no" title="statement not covered" >								this.registerErrorMsg = '無効なメールアドレスです。'</span>
-							} else {
-<span class="cstat-no" title="statement not covered" >								this.registerErrorMsg = 'エラーにより登録できませんでした。'</span>
-							}
-						})
-<span class="cstat-no" title="statement not covered" >					this.email = "";</span>
-<span class="cstat-no" title="statement not covered" >					this.password = "";</span>
-				}
-			},
-		}
-	}
+export default {
+  components: {
+    Header,
+    SocialLogin,
+  },
+<span class="fstat-no" title="function not covered" >  data() {</span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      registerErrorMsg: '',
+      tab: null,
+      register_valid: true,
+      register_email: '',
+      register_password: '',
+      register_password_again: '',
+<span class="fstat-no" title="function not covered" >      emailRules: [</span>
+        (v) =&gt; {
+<span class="cstat-no" title="statement not covered" >          if (v) {</span>
+<span class="cstat-no" title="statement not covered" >            return /.+@.+\..+/.test(v) || '有効なメールアドレスを入力してください';</span>
+          } else {
+<span class="cstat-no" title="statement not covered" >            return true;</span>
+          }
+        },
+      ],
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      register_passwordRules: [</span></span>
+        (v) =&gt; !!v || 'パスワードを入力してください',
+        (v) =&gt; zxcvbn(v).score &gt;= 3 || '大文字・小文字・数字・記号を混ぜた強いパスワードにしてください',
+      ],
+<span class="fstat-no" title="function not covered" >      register_passwordAgainRules: [</span>
+        (v) =&gt; {
+<span class="cstat-no" title="statement not covered" >          if (v) {</span>
+<span class="cstat-no" title="statement not covered" >            return this.$refs.register_password.value === v || 'パスワードと一致しません';</span>
+          } else {
+<span class="cstat-no" title="statement not covered" >            return true;</span>
+          }
+        },
+      ],
+      show_registerPassword: false,
+    };
+  },
+  computed: {
+<span class="fstat-no" title="function not covered" >    progress() {</span>
+<span class="cstat-no" title="statement not covered" >      return this.score.value;</span>
+    },
+<span class="fstat-no" title="function not covered" >    score() {</span>
+<span class="cstat-no" title="statement not covered" >      const result = zxcvbn(this.register_password);</span>
+<span class="cstat-no" title="statement not covered" >      switch (result.score) {</span>
+        case 4:
+<span class="cstat-no" title="statement not covered" >          return {</span>
+            color: 'green',
+            value: 100,
+          };
+        case 3:
+<span class="cstat-no" title="statement not covered" >          return {</span>
+            color: 'light-green lighten-1',
+            value: 75,
+          };
+        case 2:
+<span class="cstat-no" title="statement not covered" >          return {</span>
+            color: 'amber accent-2',
+            value: 50,
+          };
+        case 1:
+<span class="cstat-no" title="statement not covered" >          return {</span>
+            color: 'deep-orange lighten-1',
+            value: 25,
+          };
+        default:
+<span class="cstat-no" title="statement not covered" >          return {</span>
+            color: 'red darken-3',
+            value: 0,
+          };
+      }
+    },
+  },
+  methods: {
+<span class="fstat-no" title="function not covered" >    email_register() {</span>
+<span class="cstat-no" title="statement not covered" >      if (this.$refs.register_form.validate()) {</span>
+<span class="cstat-no" title="statement not covered" >        this.$store</span>
+<span class="fstat-no" title="function not covered" >          .dispatch('signUp', {</span>
+            email: this.register_email,
+            password: this.register_password,
+          })
+          .then(() =&gt; {
+<span class="cstat-no" title="statement not covered" >            this.register_email = '';</span>
+<span class="cstat-no" title="statement not covered" >            this.register_password = '';</span>
+<span class="cstat-no" title="statement not covered" >            this.$router.push({</span>
+              name: 'index',
+              params: {
+                dashboard_msg: true,
+                dashboard_msg_text: 'アカウントの登録が完了しました。',
+              },
+            });
+<span class="fstat-no" title="function not covered" >          })</span>
+          .catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >            if (err.code === 'auth/email-already-in-use') {</span>
+<span class="cstat-no" title="statement not covered" >              this.registerErrorMsg = 'このメールアドレスは既に登録されています。';</span>
+<span class="cstat-no" title="statement not covered" >            } else if (err.code === 'auth/invalid-email') {</span>
+<span class="cstat-no" title="statement not covered" >              this.registerErrorMsg = '無効なメールアドレスです。';</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >              this.registerErrorMsg = 'エラーにより登録できませんでした。';</span>
+            }
+          });
+      }
+    },
+  },
+};
 &lt;/script&gt;
+&nbsp;
+&lt;style scoped&gt;
+&gt;&gt;&gt; .v-application--wrap {
+  min-height: 0;
+}
+.form {
+  padding: 0.5em 1em;
+  margin: 2em 0;
+  background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
+  background: repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px, #e9f4ff 3px, #e9f4ff 7px);
+}
+.form p {
+  margin: 0;
+  padding: 0;
+}
+&lt;/style&gt;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -655,7 +694,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jan 28 2021 10:38:49 GMT+0900 (Japan Standard Time)
+                at Thu Mar 18 2021 15:47:07 GMT+0900 (日本標準時)
             </div>
         </div>
         <script src="../prettify.js"></script>

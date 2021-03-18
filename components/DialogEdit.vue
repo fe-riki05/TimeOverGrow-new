@@ -1,8 +1,7 @@
 <template>
-  <!-- eslint-disable -->
   <v-app class="ma-0">
     <h2>今日のアウトプット内容</h2>
-    <v-card-subtitle>編集前データ</v-card-subtitle>
+    <p class="pt-3">編集前データ</p>
     <v-chip v-for="(editBeforeDatas, index) in editBeforeData" :key="index" outlined label class="tag color ml-3 mb-3">
       <v-icon left> mdi-check </v-icon>
       <span>
@@ -159,8 +158,8 @@ export default {
       tagTimes: 0,
       hoursTimes: 0,
       minutesTimes: 0,
-      canPost: true,
-      activator: null,
+      // canPost: true,
+      // activator: null,
       editing: null,
       index: -1,
       items: [{ header: 'タグを選択するか作成して下さい。' }],
@@ -222,7 +221,7 @@ export default {
   methods: {
     async update() {
       this.$emit('updatedDate');
-      this.canPost = false;
+      // this.canPost = false;
       try {
         const uid = firebase.auth().currentUser.uid;
         this.updatedSelect.forEach(async (element) => {
@@ -243,14 +242,6 @@ export default {
               return doc.data();
             });
 
-            // console.log(dbMessagesTagTime);
-
-            // if (dbMessagesTagTime.length !== 0) {
-            //   params.time += await dbMessagesTagTime[0].time;
-            // }
-
-            // console.log(params); // 既に足されている・・・
-
             await dbTags.doc(Tag[0]).set({
               text: params.text,
               time: params.time,
@@ -261,7 +252,7 @@ export default {
       } catch (error) {
         alert(error.message);
       }
-      this.canPost = true;
+      // this.canPost = true;
     },
     // tagの削除機能
     async tagDelete(index, item) {
@@ -301,19 +292,16 @@ export default {
       // 時間→分
       this.tagTimes = parseInt(this.hoursTimes) * 60 + parseInt(this.minutesTimes);
 
-      // console.log(this.tagTimes);
-      // console.log(this.hoursTimes);
-      // console.log(this.minutesTimes);
-
+      // タグに時間とuidを紐付け
       Object.assign(this.updatedSelect[this.updatedSelect.length - 1], { time: parseInt(this.tagTimes) }, { uid });
 
-      Object.assign(this.dbMessagesTags, {
-        tags: this.updatedSelect[this.updatedSelect.length - 1],
-        uid,
-      });
-      this.updatedSelect[this.updatedSelect.length - 1] = JSON.parse(
-        JSON.stringify(this.updatedSelect[this.updatedSelect.length - 1])
-      );
+      // Object.assign(this.dbMessagesTags, {
+      //   tags: this.updatedSelect[this.updatedSelect.length - 1],
+      //   uid,
+      // });
+      // this.updatedSelect[this.updatedSelect.length - 1] = JSON.parse(
+      //   JSON.stringify(this.updatedSelect[this.updatedSelect.length - 1])
+      // );
 
       this.dbMessagesTags.push(this.updatedSelect[this.updatedSelect.length - 1]);
 

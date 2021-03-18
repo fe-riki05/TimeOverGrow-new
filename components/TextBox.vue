@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable -->
   <v-app class="ma-0">
     <h2>今日のアウトプット内容</h2>
     <v-container fluid class="px-0 mt-3">
@@ -64,6 +63,7 @@
         </template>
       </v-combobox>
     </v-container>
+    <!-- ここからdialog設定 -->
     <v-dialog v-model="dialog" width="500">
       <v-card class="pa-5">
         <v-card-title class="headline px-2 text-center"> 学習時間を記入して下さい。 </v-card-title>
@@ -104,10 +104,12 @@
       row-height="100"
     />
     <div v-if="btn" class="button ma-0 pa-0">
-      <Button :on-click.stop="add" class="ma-0">
+      <Button :on-click="add" class="ma-0">
         <v-icon color="#70c2fd" class="pa-5"> mdi-send </v-icon>
       </Button>
     </div>
+    <!-- ここまで -->
+    <!-- ここからアラート設定 -->
     <v-alert class="mt-5" type="error" v-model="alert" dismissible outlined color="primary">
       <div class="title">入力欄が空欄です！</div>
       <div>
@@ -115,6 +117,7 @@
         もう一度確認をしたのち送信下さい！
       </div>
     </v-alert>
+    <!-- ここまで -->
   </v-app>
 </template>
 
@@ -146,13 +149,9 @@ export default {
       hoursTimes: 0,
       minutesTimes: 0,
       alert: false,
-      canPost: true,
-      activator: null,
-      attach: null,
       editing: null,
       index: -1,
       items: [{ header: 'タグを選択するか作成して下さい。' }],
-      menu: false,
       select: [],
       dbMessagesTags: [],
       search: null,
@@ -175,29 +174,10 @@ export default {
       });
     },
   },
-  async created() {
-    try {
-      const tags = await TagModel.get();
-      this.items = tags;
-    } catch (error) {
-      console.error(error);
-    }
-  },
   methods: {
     async add() {
-      this.canPost = false;
       try {
-        // if (!this.times) {
-        //   this.alert = true;
-        // }
-        // if (!this.bodys) {
-        //   this.alert = true;
-        // }
-        // if (!this.dbMessagesTags) {
-        //   this.alert = true;
-        //   throw new Error(error);
-        // }
-
+        // messagesコレクションに保存処理。
         const message = await MessageModel.save({
           times: this.times,
           bodys: this.bodys,
@@ -247,9 +227,10 @@ export default {
         this.select = '';
         this.dbMessagesTags = [];
       } catch {
+        // this.select = '';
+        // this.dbMessagesTags = [];
         this.alert = true;
       }
-      this.canPost = true;
     },
     // tagの削除機能
     async tagDelete(index, item) {
@@ -271,6 +252,9 @@ export default {
     async tagGet() {
       const tags = await TagModel.get();
       this.items = tags;
+      console.log(this.items);
+      this.$emit('tagGet');
+      console.log('aaa');
     },
     close(item) {
       this.times -= item.time;
@@ -304,13 +288,7 @@ export default {
         JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
       );
 
-      // ここで分→時間(小数点第一位切り捨て)
-      // if (this.hoursTimes !== 0) {
-      //   this.tagTimes = Math.floor(this.tagTimes / 60 * 10) / 10
-      // }
-
       // 合計値を格納
-      // console.log(this.tagTimes); // 1.6
       this.times += this.tagTimes;
 
       this.hoursTimes = 0;
@@ -327,10 +305,11 @@ export default {
       }
     },
     filter(item, queryText, itemText) {
-      if (item.header) return false;
+      if (item.header) {
+        return false;
+      }
 
       const hasValue = (val) => (val != null ? val : '');
-
       const text = hasValue(itemText);
       const query = hasValue(queryText);
 

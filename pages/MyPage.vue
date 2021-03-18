@@ -44,7 +44,6 @@ export default {
     return {
       vuechartData: [],
       TagBarChartData: {
-        // ↓にtagの名前を格納
         labels: [],
         datasets: [
           {
@@ -91,7 +90,6 @@ export default {
         },
       },
       TimeBarChartData: {
-        // ↓にtagの名前を格納
         labels: [],
         datasets: [
           {
@@ -124,12 +122,9 @@ export default {
         // 分→時間へ
         let minutesTime = Math.floor((e.data().time / 60) * 10) / 10;
 
-        // console.log(e.data().time);
-        // console.log(e.data().text);
         this.TagBarChartData.datasets[0].data.push(minutesTime);
       });
 
-      // console.log(this.TagBarChartData);
       this.TagBarChartData = {
         labels: this.TagBarChartData.labels,
         datasets: [
@@ -145,13 +140,8 @@ export default {
       const uid = firebase.auth().currentUser.uid;
       const messageData = await dbMessages.where('uid', '==', uid).get();
 
-      // console.log(messageData);
       const messagesDate = messageData.docs.map((doc) => {
-        // console.log(doc.data()); // 学習合計時間
-
         let timeData = Math.floor(doc.data().times / 60);
-
-        // console.log(timeData);
 
         if (timeData === 0) {
           this.timeCount = 0;
@@ -171,15 +161,10 @@ export default {
         if (5 <= timeData) {
           this.timeCount = 5;
         }
-        // this.timeCount = timeData;
-
-        // console.log(this.timeCount);
 
         return { date: doc.data().date.seconds * 1000, count: this.timeCount };
       });
       this.heartmapData = messagesDate;
-
-      // console.log(messagesDate);
 
       // endData
       const today = new Date();

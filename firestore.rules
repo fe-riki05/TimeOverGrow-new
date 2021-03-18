@@ -5,10 +5,6 @@ service cloud.firestore {
     		allow read;
         allow write;
     		}
-    match /users/{userId} {
-    		allow read;
-        allow create, update, delete: if request.auth.uid == resource.data.uid;
-    		}
     match /messages/{messageId} {
         allow read;
         allow create: if request.auth.uid == request.resource.data.uid;
