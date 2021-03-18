@@ -174,6 +174,10 @@ export default {
       });
     },
   },
+  async created() {
+    const tags = await TagModel.get();
+    this.items = tags;
+  },
   methods: {
     async add() {
       try {
@@ -252,9 +256,9 @@ export default {
     async tagGet() {
       const tags = await TagModel.get();
       this.items = tags;
-      console.log(this.items);
-      this.$emit('tagGet');
-      console.log('aaa');
+      // console.log(this.items);
+      // this.$emit('tagGet');
+      // console.log('aaa');
     },
     close(item) {
       this.times -= item.time;
