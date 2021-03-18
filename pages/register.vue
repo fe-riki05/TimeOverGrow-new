@@ -179,7 +179,6 @@ export default {
             });
           })
           .catch((err) => {
-            // console.log(err);
             if (err.code === 'auth/email-already-in-use') {
               this.registerErrorMsg = 'このメールアドレスは既に登録されています。';
             } else if (err.code === 'auth/invalid-email') {

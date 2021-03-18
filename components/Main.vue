@@ -11,10 +11,11 @@
         </v-col>
         <v-col cols="12" sm="4" md="4" lg="4" xl="4" class="col mx-2 mt-5">
           <v-card :elevation="10" class="pa-5">
-            <TextBox :on-click="add" />
+            <TextBox :on-click="add" @tagGet="getData" />
             <h2 v-if="messages.length === 0" class="mt-3 pa-5">投稿が0件です！！！</h2>
           </v-card>
           <MessageList :messages="reversedMessages" @pop="getData" @update="updated" @updatedDate="updatedDateId" />
+          <!-- ここからdialog設定 -->
           <v-dialog v-model="dialog" persistent max-width="600">
             <v-card>
               <DialogEdit
@@ -60,17 +61,11 @@ export default {
       indexId: '',
       updateTime: 0,
       editBeforeData: [],
-      // updateHours: 0,
-      // updateMinutes: 0,
       updateSelect: [],
       updateBody: '',
       editTagData: [],
       dialog: false,
-      num: 0,
-      name: '',
-      index: '',
       vuechartData: [],
-      done: false,
       messages: [],
       times: 0,
       BarChartData: {
@@ -101,8 +96,6 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                // max: [],
-                // stepSize: [],
                 callback(label) {
                   return label + ' h';
                 },
@@ -120,20 +113,9 @@ export default {
       },
     };
   },
-  watch: {
-    chartmax(newVal, oldVal) {
-      // console.log('chartmaxのwatchできてます！！！');
-      // console.log(oldVal);
-      // console.log(newVal);
-      this.BarChartOptions.scales.yAxes[0].ticks.max = newVal;
-    },
-  },
   computed: {
     reversedMessages() {
       return this.messages.slice().reverse();
-    },
-    chartmax() {
-      return this.BarChartOptions.scales.yAxes[0].ticks.max;
     },
   },
   async created() {
@@ -161,6 +143,7 @@ export default {
       await this.getData();
     },
     async getData() {
+      console.log('削除ぼたん！');
       this.messages = await this.fetchMessages();
       this.times = await this.totalTime();
       const vuechartData = await this.getChart();
@@ -218,8 +201,6 @@ export default {
       let tagTime = 0;
       const tagText = [];
 
-      // console.log(this.updateSelect);
-
       this.updateSelect.map((Element) => {
         tagText.push(Element.text);
         tagTime += Element.time;
@@ -248,8 +229,6 @@ export default {
           return doc.id, doc.data();
         });
       });
-
-      // console.log(this.updateTime);
 
       await dbMessages.doc(this.indexId).update({
         times: this.updateTime,

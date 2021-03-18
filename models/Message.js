@@ -19,10 +19,6 @@ class Message {
       throw new Error();
     }
 
-    if (!bodys || !bodys.trim()) {
-      throw new Error();
-    }
-
     const uid = firebase.auth().currentUser.uid;
 
     const postData = {
