@@ -52,7 +52,6 @@ https://timeovergrow-d76f5.web.app/
 
 # 苦労したこと
 ## DB設計のやり直し
-
 **DBの参照**について理解不足だった為、ユーザー毎の識別の実装をしておらずデータが共有されている状態でした。
 デプロイ後にエンジニアの方からのレビューで誤りに気づくことができました。
 
@@ -149,7 +148,7 @@ https://timeovergrow-d76f5.web.app/
 - Chart.js、vue-chartjsを使用し、これまでの合計学習時間を表示
 
 ## タグ毎の合計学習時間を表示
-- Chart.js、vue-chartjsを使用し、これまでの合計学習時間を表示
+- タグのデータ、Chart.js、vue-chartjsを使用し、これまでのタグ毎の合計学習時間を表示
 
 ## 毎日学習できるかチェック機能
 - vue-calendar-heatmapを導入することでGitHubのマップを再現
