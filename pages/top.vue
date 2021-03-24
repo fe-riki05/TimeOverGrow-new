@@ -119,14 +119,11 @@ export default {
           password: 'test_login',
         })
         .then(() => {
-          // this.login_email = '';
-          // this.login_password = '';
           this.$router.push({
             name: 'index',
           });
         })
         .catch((err) => {
-          // console.log(err);
           if (err.code === 'auth/user-disabled') {
             this.loginErrorMsg = 'このアカウントはロックされています。';
           } else {

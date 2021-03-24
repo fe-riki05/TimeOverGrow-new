@@ -33,6 +33,7 @@ import Chart from '../components/Chart';
 import 'chartjs-plugin-colorschemes';
 import Header from '../layouts/Header';
 import firebase, { dbMessages, dbTags } from '../plugins/firebase';
+import MessageModel from '../models/Message';
 
 export default {
   components: {
@@ -74,6 +75,8 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
+                max: 0,
+                stepSize: 0,
                 callback(label) {
                   return label + ' h';
                 },
@@ -89,15 +92,6 @@ export default {
           },
         },
       },
-      TimeBarChartData: {
-        labels: [],
-        datasets: [
-          {
-            label: ['学習時間'],
-            data: [],
-          },
-        ],
-      },
       heartmapData: [],
       // 空白だとエラー発生
       endData: '2021-01-1',
@@ -107,9 +101,6 @@ export default {
   async created() {
     await this.tagChart();
     await this.heartmap();
-
-    const uid = firebase.auth().currentUser.uid;
-    // console.log(uid);
   },
   methods: {
     // tag毎のグラフ
@@ -133,6 +124,61 @@ export default {
             data: this.TagBarChartData.datasets[0].data,
           },
         ],
+      };
+
+      // グラフの最大値とメモリの間隔を設定
+      const vuechartData = (await MessageModel.dbtime()) / 60;
+      let max = 0;
+      let stepSize = 0;
+      if (vuechartData < 30) {
+        max = 30;
+        stepSize = 3;
+      }
+      if (30 <= vuechartData) {
+        max = 50;
+        stepSize = 5;
+      }
+      if (50 <= vuechartData) {
+        max = 100;
+        stepSize = 10;
+      }
+      if (100 <= vuechartData) {
+        max = vuechartData + 20;
+        stepSize = 20;
+      }
+      this.TagBarChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: '',
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                max: max,
+                stepSize: stepSize,
+                callback(label) {
+                  return label + ' h';
+                },
+              },
+            },
+          ],
+        },
+        tooltips: {
+          callbacks: {
+            label(tooltipItem) {
+              return tooltipItem.yLabel + ' h';
+            },
+          },
+        },
       };
     },
     // heartmapのdata毎の配色分け

@@ -7,7 +7,6 @@
       <div class="totaltime d-flex justify-center">
         <p class="times_text">合計学習時間</p>
         <div class="arrow">
-          <!-- <p class="times">{{ times }}時間</p> -->
           <p class="times">{{ hours }}時間 {{ minutes }}分</p>
           <span />
         </div>
@@ -19,10 +18,6 @@
 <script>
 export default {
   props: {
-    // times: {
-    //   type: Number,
-    //   required: true,
-    // },
     hours: {
       type: Number,
       required: true,

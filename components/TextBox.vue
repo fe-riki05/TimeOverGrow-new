@@ -150,7 +150,7 @@ export default {
       minutesTimes: 0,
       alert: false,
       editing: null,
-      index: -1,
+      // index: -1,
       items: [{ header: 'タグを選択するか作成して下さい。' }],
       select: [],
       dbMessagesTags: [],
@@ -205,7 +205,6 @@ export default {
             });
 
             let TagData = await (await dbTags.doc(Tag[0]).get()).data();
-            // let TagTime = TagData.data();
             if (TagData === undefined) {
               TagData = [];
             }
@@ -256,9 +255,6 @@ export default {
     async tagGet() {
       const tags = await TagModel.get();
       this.items = tags;
-      // console.log(this.items);
-      // this.$emit('tagGet');
-      // console.log('aaa');
     },
     close(item) {
       this.times -= item.time;
@@ -305,7 +301,6 @@ export default {
         this.index = index;
       } else {
         this.editing = null;
-        this.index = -1;
       }
     },
     filter(item, queryText, itemText) {

@@ -11,6 +11,11 @@ export default {
       required: true,
     },
   },
+  watch: {
+    options(val) {
+      this.renderChart(this.chartData, this.options);
+    },
+  },
   mounted() {
     this.renderChart(this.chartData, this.options);
   },
