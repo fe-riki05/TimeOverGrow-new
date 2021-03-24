@@ -96,6 +96,8 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
+                max: 0,
+                stepSize: 0,
                 callback(label) {
                   return label + ' h';
                 },
@@ -119,23 +121,7 @@ export default {
     },
   },
   async created() {
-    const messages = await this.fetchMessages();
-    const times = await this.totalTime();
-    const vuechartData = await this.getChart();
-    this.messages = messages;
-    this.times = times;
-    vuechartData[0] = Math.floor((vuechartData[0] / 60) * 10) / 10;
-    this.BarChartData = {
-      labels: ['学習時間'],
-      datasets: [
-        {
-          label: ['学習時間'],
-          data: [vuechartData[0]],
-          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-          borderColor: ['rgba(54, 162, 235, 1)'],
-        },
-      ],
-    };
+    await this.getData();
   },
   methods: {
     async add(message) {
@@ -143,20 +129,73 @@ export default {
       await this.getData();
     },
     async getData() {
-      console.log('削除ぼたん！');
       this.messages = await this.fetchMessages();
       this.times = await this.totalTime();
-      const vuechartData = await this.getChart();
-      vuechartData[0] = Math.floor((vuechartData[0] / 60) * 10) / 10;
+      const vuechartData = Math.floor(((await MessageModel.dbtime()) / 60) * 10) / 10;
       this.BarChartData = {
+        labels: ['学習時間'],
         datasets: [
           {
             label: ['学習時間'],
-            data: [vuechartData[0]],
+            data: [vuechartData],
             backgroundColor: ['rgba(54, 162, 235, 0.2)'],
             borderColor: ['rgba(54, 162, 235, 1)'],
           },
         ],
+      };
+
+      // グラフの最大値とメモリの間隔を設定
+      let max = 0;
+      let stepSize = 0;
+      if (vuechartData < 30) {
+        max = 30;
+        stepSize = 3;
+      }
+      if (30 <= vuechartData) {
+        max = 50;
+        stepSize = 5;
+      }
+      if (50 <= vuechartData) {
+        max = 100;
+        stepSize = 10;
+      }
+      if (100 <= vuechartData) {
+        max = vuechartData + 20;
+        stepSize = 20;
+      }
+      this.BarChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: '',
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                max: max,
+                stepSize: stepSize,
+                callback(label) {
+                  return label + ' h';
+                },
+              },
+            },
+          ],
+        },
+        tooltips: {
+          callbacks: {
+            label(tooltipItem) {
+              return tooltipItem.yLabel + ' h';
+            },
+          },
+        },
       };
     },
     back() {
@@ -169,25 +208,15 @@ export default {
       const editId = await dbMessages.doc(docId).get();
       const editData = editId.data();
       this.editTagData = editData.tags;
-      // dialogにtag表示の記述
       let newTagData = [];
       editData.tags.map((tagData) => {
         newTagData.push(tagData.text);
         return newTagData;
       });
 
-      // クリックしたtagのdata取得。
-      // console.log(editData.tags);
-      // console.log();
-
-      // this.updateTime = parseInt(editData.times);
       this.updateTime = parseInt(editData.times);
       this.editBeforeData = editData.tags;
-
-      // this.updateHours = editData.tags;
-      // this.updateMinutes = editData.tags;
       this.updateBody = editData.bodys;
-      // this.updateSelect = newTagData;
     },
     async updatedDateId(docId) {
       const editId = await dbMessages.doc(docId).get();
@@ -205,10 +234,8 @@ export default {
         tagText.push(Element.text);
         tagTime += Element.time;
       });
-      // console.log(this.updateSelect); // 編集後のデータ
       this.updateTime = tagTime;
 
-      // クリックしたtagのtime値をdbTagsからマイナス(複数dataの時も考える)
       this.editTagData.map(async (Element) => {
         Element = JSON.parse(JSON.stringify(Element));
 
@@ -257,19 +284,6 @@ export default {
         const time = await MessageModel.dbtime();
         times += time;
         return times;
-      } catch (error) {
-        alert(error.message);
-      }
-    },
-    async getChart() {
-      try {
-        const chartdbtime = await MessageModel.dbtime();
-        if (this.BarChartData.datasets[0].data.length === 0) {
-          this.BarChartData.datasets[0].data.push(chartdbtime);
-        }
-        this.vuechartData[0] = chartdbtime;
-        this.BarChartData.datasets[0].data[0] = chartdbtime;
-        return this.vuechartData;
       } catch (error) {
         alert(error.message);
       }

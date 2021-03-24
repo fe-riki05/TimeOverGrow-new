@@ -63,8 +63,6 @@ export default {
           password: 'test_login',
         })
         .then(() => {
-          // this.login_email = '';
-          // this.login_password = '';
           this.$router.push({
             name: 'index',
           });

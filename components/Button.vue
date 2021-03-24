@@ -12,7 +12,10 @@ export default {
       type: String,
       default: 'button',
     },
-    onClick: { type: [Function, Boolean], default: null },
+    onClick: {
+      type: [Function, Boolean],
+      default: null,
+    },
     disabled: {
       type: Boolean,
       default: false,

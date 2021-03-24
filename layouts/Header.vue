@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <!-- <v-container> -->
-    <!-- <v-card class="overflow-hidden"> -->
     <v-app-bar app height="100" class="header-menu header py-0 px-4">
       <v-spacer></v-spacer>
       <v-btn v-if="title" text>
@@ -41,8 +39,6 @@
       </v-navigation-drawer>
       <!-- ここまで -->
     </div>
-    <!-- </v-card> -->
-    <!-- </v-container> -->
   </v-app>
 </template>
 
@@ -95,14 +91,9 @@ export default {
 }
 .header {
   background-color: #70c2fd;
-  background: #2980b9; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #2980b9, #6dd5fa, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #2980b9,
-    #6dd5fa,
-    #ffffff
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #2980b9;
+  background: -webkit-linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
+  background: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
 }
 .title {
   font-size: 35px;

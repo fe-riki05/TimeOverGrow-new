@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/77</span>
+                <span class='fraction'>0/75</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>0/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/77</span>
+                <span class='fraction'>0/75</span>
             </div>
         
             
@@ -419,8 +419,7 @@
 <a name='L360'></a><a href='#L360'>360</a>
 <a name='L361'></a><a href='#L361'>361</a>
 <a name='L362'></a><a href='#L362'>362</a>
-<a name='L363'></a><a href='#L363'>363</a>
-<a name='L364'></a><a href='#L364'>364</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L363'></a><a href='#L363'>363</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -597,6 +596,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -623,7 +626,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -672,11 +674,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -722,7 +721,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -935,7 +933,7 @@ export default {
       minutesTimes: 0,
       alert: false,
       editing: null,
-      index: -1,
+      // index: -1,
       items: [{ header: 'タグを選択するか作成して下さい。' }],
       select: [],
       dbMessagesTags: [],
@@ -958,6 +956,10 @@ export default {
 <span class="cstat-no" title="statement not covered" >        return value;</span>
       });
     },
+  },
+<span class="fstat-no" title="function not covered" >  async created() {</span>
+<span class="cstat-no" title="statement not covered" >    const tags = await TagModel.get();</span>
+<span class="cstat-no" title="statement not covered" >    this.items = tags;</span>
   },
   methods: {
 <span class="fstat-no" title="function not covered" >    async add() {</span>
@@ -986,7 +988,6 @@ export default {
             });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >            let TagData = await (await dbTags.doc(Tag[0]).get()).data();</span>
-            // let TagTime = TagData.data();
 <span class="cstat-no" title="statement not covered" >            if (TagData === undefined) {</span>
 <span class="cstat-no" title="statement not covered" >              TagData = [];</span>
             }
@@ -1037,9 +1038,6 @@ export default {
 <span class="fstat-no" title="function not covered" >    async tagGet() {</span>
 <span class="cstat-no" title="statement not covered" >      const tags = await TagModel.get();</span>
 <span class="cstat-no" title="statement not covered" >      this.items = tags;</span>
-<span class="cstat-no" title="statement not covered" >      console.log(this.items);</span>
-<span class="cstat-no" title="statement not covered" >      this.$emit('tagGet');</span>
-<span class="cstat-no" title="statement not covered" >      console.log('aaa');</span>
     },
 <span class="fstat-no" title="function not covered" >    close(item) {</span>
 <span class="cstat-no" title="statement not covered" >      this.times -= item.time;</span>
@@ -1086,7 +1084,6 @@ export default {
 <span class="cstat-no" title="statement not covered" >        this.index = index;</span>
       } else {
 <span class="cstat-no" title="statement not covered" >        this.editing = null;</span>
-<span class="cstat-no" title="statement not covered" >        this.index = -1;</span>
       }
     },
 <span class="fstat-no" title="function not covered" >    filter(item, queryText, itemText) {</span>
@@ -1153,7 +1150,7 @@ h2,
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Mar 18 2021 15:47:07 GMT+0900 (日本標準時)
+                at Sun Mar 21 2021 11:27:57 GMT+0900 (日本標準時)
             </div>
         </div>
         <script src="../prettify.js"></script>

@@ -158,8 +158,6 @@ export default {
       tagTimes: 0,
       hoursTimes: 0,
       minutesTimes: 0,
-      // canPost: true,
-      // activator: null,
       editing: null,
       index: -1,
       items: [{ header: 'タグを選択するか作成して下さい。' }],
@@ -221,7 +219,6 @@ export default {
   methods: {
     async update() {
       this.$emit('updatedDate');
-      // this.canPost = false;
       try {
         const uid = firebase.auth().currentUser.uid;
         this.updatedSelect.forEach(async (element) => {
@@ -252,7 +249,6 @@ export default {
       } catch (error) {
         alert(error.message);
       }
-      // this.canPost = true;
     },
     // tagの削除機能
     async tagDelete(index, item) {
@@ -295,14 +291,6 @@ export default {
       // タグに時間とuidを紐付け
       Object.assign(this.updatedSelect[this.updatedSelect.length - 1], { time: parseInt(this.tagTimes) }, { uid });
 
-      // Object.assign(this.dbMessagesTags, {
-      //   tags: this.updatedSelect[this.updatedSelect.length - 1],
-      //   uid,
-      // });
-      // this.updatedSelect[this.updatedSelect.length - 1] = JSON.parse(
-      //   JSON.stringify(this.updatedSelect[this.updatedSelect.length - 1])
-      // );
-
       this.dbMessagesTags.push(this.updatedSelect[this.updatedSelect.length - 1]);
 
       this.dbMessagesTags = this.dbMessagesTags.filter((item, index, array) => {
@@ -312,13 +300,6 @@ export default {
       this.dbMessagesTags[this.dbMessagesTags.length - 1] = JSON.parse(
         JSON.stringify(this.dbMessagesTags[this.dbMessagesTags.length - 1])
       );
-
-      // ここで分→時間(小数点第一位切り捨て)
-      // if (this.updatedHours !== 0) {
-      //   this.tagTimes = Math.floor(this.tagTimes / 60 * 10) / 10
-      // }
-
-      // console.log(this.tagTimes);
 
       // 合計値を格納
       this.times += this.tagTimes;
