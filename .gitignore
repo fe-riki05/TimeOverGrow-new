@@ -91,3 +91,5 @@ sw.*
 
 # depencies
 node_modules/
+
+coverage/
